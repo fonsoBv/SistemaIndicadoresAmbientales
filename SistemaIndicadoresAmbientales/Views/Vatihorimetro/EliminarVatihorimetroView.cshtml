@@ -1,0 +1,24 @@
+﻿@model IEnumerable<SistemaIndicadoresAmbientales.Entity.Vatihorimetro>
+
+<div id="Etiqueta">
+    <h1 class="H1-Etiqueta">Eliminar Vatihorimetro</h1>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Numero_Vatihorimetro)
+        </th>
+    </tr>
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Numero_Vatihorimetro)
+        </td>
+        <td>
+            @Html.ActionLink("Eliminar", "EliminarVatihorimetro", new { id = item.Id_Vatihorimetro }, new { onclick = "return confirm('Seguro que desea eliminar esta planta: " + item.Numero_Vatihorimetro + "');" })
+        </td>
+    </tr>
+}
+
+</table>

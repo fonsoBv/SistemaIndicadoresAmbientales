@@ -1,0 +1,24 @@
+﻿@model IEnumerable<SistemaIndicadoresAmbientales.Entity.Hidrometro>
+
+<div id="Etiqueta">
+    <h1 class="H1-Etiqueta">Eliminar Hidrometro</h1>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Numero_Hidrometro)
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numero_Hidrometro)
+            </td>
+            <td>
+                @Html.ActionLink("Eliminar", "EliminarHidrometro", new { id = item.Id_Hidrometro }, new { onclick = "return confirm('Seguro que desea eliminar esta planta: " + item.Numero_Hidrometro + "');" })
+            </td>
+        </tr>
+    }
+
+</table>

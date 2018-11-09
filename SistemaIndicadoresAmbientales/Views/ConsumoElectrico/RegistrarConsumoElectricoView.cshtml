@@ -1,0 +1,59 @@
+﻿@model SistemaIndicadoresAmbientales.Entity.ConsumoElectrico
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div id="Formulario">
+        <div id="Etiqueta">
+            <h1 class="H1-Etiqueta">Registrar Consumo Electrico</h1>
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+      
+        <table class="table">
+            @foreach (var item in (ViewData["Vatis"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Vatihorimetro>))
+            {
+                <tr>
+                    <td>
+                        @Html.Label(item.Numero_Vatihorimetro + ":")
+                    </td>
+                    <td>
+                        <input type="hidden" name="tamanio" id="tamanio" value="sizeof(@item)" />
+                        <input type="hidden" value="@item.Id_Vatihorimetro" />
+                        <input type="number" name="kilowatt" id="kilowatt" />
+                    </td>
+                </tr>
+            }
+            </table>
+        <div>
+            <div style="text-align: center;">
+                <input value="Ingresar" id="ingresar" name="Registrar" type="submit" class="from-control">
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    
+   
+   function insertarCOnsumo() {
+        var datos = ViewData["Vatis"];
+        $.ajax({
+            url: 'RegistrarConsumoElectrico/GetRegionesDePaises/',
+            datatType: 'json',
+            data: JSON.stringify(datos),
+            cache: false,
+            type: 'POST',
+            success: function (data) {
+                alert(data);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                showError(xhr.status, xhr.responseText);
+            }
+        });
+    }//insertar
+</script>

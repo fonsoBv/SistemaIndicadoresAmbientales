@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SistemaIndicadoresAmbientales.Entity.Inspeccion>
+
+<div id="Etiqueta">
+    <h1 class="H1-Etiqueta">Eliminar Evaluación</h1>
+</div>
+<div id="Formulario">
+    <div style="margin: 0 auto; width: 25%;">
+        @if (TempData["success"] != null)
+        {
+            TempData.Remove("success");
+            <spam class="text-success">Evaluación eliminada</spam>
+        }
+        @if (TempData["error"] != null)
+        {
+            TempData.Remove("error");
+            <spam class="text-danger">Error al eliminar la evaluación</spam>
+        }
+    </div>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Inspecciones")
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.ActionLink("Eliminar", "EliminarInspeccion", new { id = item.id_Inspeccion }, new { onclick = "return confirm('Seguro que desea eliminar la inspección: " + item.Nombre + "');" })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

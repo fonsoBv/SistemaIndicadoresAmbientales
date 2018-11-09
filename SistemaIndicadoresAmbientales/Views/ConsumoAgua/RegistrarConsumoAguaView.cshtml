@@ -1,0 +1,94 @@
+﻿@model SistemaIndicadoresAmbientales.Entity.ConsumodeAgua
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div id="Formulario">
+        <div id="Etiqueta">
+            <h1 class="H1-Etiqueta">Registrar Consumo de Agua</h1>
+        </div>
+        <div class="Formulario">
+            @Html.Label("Mes del Consumo:", htmlAttributes: new { @class = "control-label" })
+            <select name="Mes" id="Mes">
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div class="Formulario">
+            <table class="table">
+                @{
+                    int cont = 0;
+                    foreach (var item in (ViewData["Hidros"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Hidrometro>))
+                    {
+                        <tr>
+                            <td>
+                                @Html.Label(item.Numero_Hidrometro + ":")
+                            </td>
+                            <td>
+                                <input type="hidden" value="@item.Id_Hidrometro" name="id+@cont" id="id+@cont" />
+                                <input type="number" name="m3+@cont" id="m3+@cont" />
+                            </td>
+                        </tr>
+                        cont++;
+                    }//end for
+                }
+            </table>
+            <input type="hidden" value="@cont" id="tamanio" />
+
+        </div>
+        <div>
+            <div style="text-align: center;">
+                <input value="Ingresar" id="ingresar" name="Registrar" type="button" onclick="insertarConsumo();" class="from-control">
+            </div>
+        </div>
+    </div>
+                    }
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    function insertarConsumo() {
+        var cantidad = document.getElementById("tamanio").value;
+
+        alert(document.getElementById("id+" + 1).value);
+        var json = new Array();
+        consumos = new Array();
+
+        for (i = 0; i < cantidad ; i++) {
+            var id = document.getElementById("id+" + i).value;
+            var cant = document.getElementById("m3+" + i).value;
+            consumos.push({
+                Id_Hidrometro: document.getElementById("id+" + i).value,
+                Cantidad: document.getElementById("m3+" + i).value,
+                Mes: document.getElementById("Mes").value,
+
+            });
+
+        }//
+        var dataPost = JSON.stringify({ consumo: consumos });
+        alert(dataPost);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'ResgistrarConsumoAguaView');
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+        xhr.send(dataPost);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                alert(xhr.responseText);
+            }//end if
+        }//end function
+    }
+
+</script>
