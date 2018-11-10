@@ -394,8 +394,9 @@ namespace SistemaIndicadoresAmbientales.Controllers
 
             //
             // POST: /Account/LogOff
-            [HttpPost]
-            [ValidateAntiForgeryToken]
+            //[HttpPost]
+            //[ValidateAntiForgeryToken]
+            [AllowAnonymous]
             public ActionResult LogOff()
             {
                 AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

@@ -46,6 +46,28 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("obtenerCriterioInspeccion")',
+            dataType: 'json',
+            data: { id: $("#inspecciones").val() },
+
+            success: function (criterios) {
+                var row = "";
+                $.each(criterios, function (i, criterio) {
+                    $("#Prueba").append('<option value="' + criterio.Value + '">' + criterio.Text + '</option>');
+                    row += "<tr><td>" + criterio.Text + "</td><td><a href='/Criterio/EliminarCriterio/" + criterio.Value + "' onclick='return confirm(&#39;Seguro que desea eliminar la inspección: " + criterio.Text + "&#39;);'>Eliminar</a></td></tr>";
+                });
+                $("#criterios").html(row);
+            },
+            error: function (ex) {
+                alert('Fallo al cargar los Macrotemas.' + ex);
+            }
+        });
+        return false;
+    });
+
+    $(document).ready(function () {
         $("#inspecciones").change(function () {
             $("#Prueba").empty();
             $.ajax({

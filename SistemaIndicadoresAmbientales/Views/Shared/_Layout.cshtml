@@ -256,7 +256,7 @@
 
                             <div>
                                 <label>
-                                    <a href="#">Ver Evaluación</a>
+                                    <a href="~/Inspeccion/VerInspeccionView">Ver Evaluación</a>
                                 </label>
                             </div>
 
@@ -311,17 +311,14 @@
                     @using Microsoft.AspNet.Identity
                     @if (Request.IsAuthenticated)
                     {
-                        //using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                        //{
                         @Html.AntiForgeryToken()
                         <li style="float: right;">
-                            @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                            @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
                         </li>
-                            <li style="float: right;">
-                                @*<a href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a>*@
-                                @Html.ActionLink("Cerrar sesión", "LogOff", "Account", routeValues: null, htmlAttributes: new { id = "logoutForm" })
-                            </li>
-                        //}
+                        <li style="float: right;">
+                            @*<a href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a>*@
+                            @Html.ActionLink("Cerrar sesión", "LogOff", "Account", routeValues: null, htmlAttributes: new { id = "logoutForm" })
+                        </li>
                     }
                     else
                     {

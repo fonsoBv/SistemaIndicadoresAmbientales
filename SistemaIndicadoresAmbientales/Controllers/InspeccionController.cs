@@ -94,28 +94,52 @@ namespace SistemaIndicadoresAmbientales.Controllers
             return Json(new SelectList(criterioModel.obtenerCriterioInspeccion(id), "id_Criterio", "Nombre"));
         }//obtenerCriterioInspeccion
 
-        public void guardarEvaluacion(List<MacroTema> MacroTemas, List<Hallazgo> Hallazgos, int Planta, int Evaluacion, string Fecha)
+        public JsonResult guardarEvaluacion(List<MacroTema> MacroTemas, List<Hallazgo> Hallazgos, int Planta, int Evaluacion, string Fecha)
         {
-
+            InspeccionModel inspeccionModel = new InspeccionModel();
             foreach (MacroTema macroTema in MacroTemas)
             {
-                string name = macroTema.Id + macroTema.Nombre;
-
-            }
+                int Id_Evaluacion_MacroTema = 0;
+                Id_Evaluacion_MacroTema = inspeccionModel.guardarEvaluacion(macroTema.Id, macroTema.Nombre, macroTema.Cumple, Planta, Evaluacion, Fecha);
+                if (macroTema.Cumple == "N")
+                {
+                    foreach (Hallazgo hallazgo in Hallazgos)
+                    {
+                        inspeccionModel.guardarHallazgo(hallazgo.Descripcion, macroTema.Id, Id_Evaluacion_MacroTema);
+                    }//foreach hallagoz
+                }//if no cumple
+            }//foreach MacroTemas
+            TempData["success"] = "true";
+            return Json("true", JsonRequestBehavior.AllowGet);
         }//guardarEvaluacion
+
+        public ActionResult VerInspeccionView()
+        {
+            InspeccionModel inspeccionModel = new InspeccionModel();
+            ViewData["inspecciones"] = new SelectList(inspeccionModel.obtenerInspeccion(), "id_Inspeccion", "Nombre");
+            PlantaModel plantaModel = new PlantaModel();
+            ViewData["plantas"] = plantaModel.obtenerPlantas();
+            return View();
+        }//VerInspeccionView
+
+        public JsonResult obtenerEvaluacion(int id_inspeccion, int id_planta, string fecha)
+        {
+            InspeccionModel inspeccionModel = new InspeccionModel();
+            return Json(inspeccionModel.obtenerEvaluacion(id_inspeccion, id_planta, fecha), JsonRequestBehavior.AllowGet);
+        }//obtenerCriterioInspeccion
 
     }//class
 
     public class MacroTema
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Nombre { get; set; }
         public string Cumple { get; set; }
     }//class
 
     public class Hallazgo
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Descripcion { get; set; }
     }//class
 
