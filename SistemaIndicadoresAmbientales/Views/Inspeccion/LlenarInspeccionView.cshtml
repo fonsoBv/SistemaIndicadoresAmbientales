@@ -41,11 +41,9 @@
             }
             <br />
             <br />
-            <div class="Formulario">
+            <div class="FormularioLlenar">
                 @Html.Label("Evaluaciones", htmlAttributes: new { @class = "control-label" })
                 @Html.DropDownList("inspecciones", ViewData["inspecciones"] as SelectList, new { @class = "form-control" })
-            </div>
-            <div class="Formulario">
                 @Html.Label("Fecha", htmlAttributes: new { @class = "control-label" })
                 <input type="date" id="fecha" name="fecha" class="form-control">
                 <p id="spanFecha" class="text-danger"></p>
@@ -122,7 +120,7 @@
             success: function (criterios) {
                 var row = "";
                 $.each(criterios, function (i, criterio) {
-                    row += "<tr><td style='display:none;'>" + criterio.Value + "</td><td>" + criterio.Text + "</td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='Si' class='my_chkBox' /></td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='No' class='my_chkBox' /></td><td><a href='#' onclick='hallazgo(" + criterio.Value + ");'>Hallazgo</a></td></tr>";
+                    row += "<tr><td style='display:none;'>" + criterio.Value + "</td><td>" + criterio.Text + "</td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='S' class='my_chkBox' /></td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='N' class='my_chkBox' /></td><td><a href='#' onclick='hallazgo(" + criterio.Value + ");'>Hallazgo</a></td></tr>";
                 });
                 $("#criterios").html(row);
             },
@@ -144,7 +142,7 @@
                 success: function (criterios) {
                     var row = "";
                     $.each(criterios, function (i, criterio) {
-                        row += "<tr><td style='display:none;'>" + criterio.Value + "</td><td>" + criterio.Text + "</td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='Si' class='my_chkBox' /></td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='No' class='my_chkBox' /></td><td><a href='#' onclick='hallazgo(" + criterio.Value + ");'>Hallazgo</a></td></tr>";
+                        row += "<tr><td style='display:none;'>" + criterio.Value + "</td><td>" + criterio.Text + "</td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='S' class='my_chkBox' /></td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='N' class='my_chkBox' /></td><td><a href='#' onclick='hallazgo(" + criterio.Value + ");'>Hallazgo</a></td></tr>";
                     });
                     $("#criterios").html(row);
                 },
@@ -158,7 +156,7 @@
 
     function hallazgo(criterio) {
         var seleccion = $('input[name=' + criterio + ']:checked').val();
-        if (seleccion == "No") {
+        if (seleccion == "N") {
             document.getElementById('registrarHallazgo').style.display = "block";
             document.getElementById('idCriterio').value = criterio;
             for (var j = 0; j < hallazgos.length; j++) {
@@ -193,6 +191,7 @@
                 var hallazgo = { Id: criterio, Descripcion: descripcion};
                 hallazgos.push(hallazgo);
             }//if si es nuevo
+            document.getElementById("spanDescripcion").innerHTML = "";
         } else {
             document.getElementById("spanDescripcion").innerHTML = "Se requiere una descripción para el hallazgo";
         }//if-else
@@ -210,6 +209,7 @@
                 if (validarHallazgos() == 0) {
                     document.getElementById("spanHallazgo").innerHTML = "";
                     guardar(planta, evaluacion, fecha);
+                    macroTemas = new Array();
                 }else{
                     document.getElementById("spanHallazgo").innerHTML = "Hay Macrotemas que no cumplen que no cuentan con un Hallazgo";
                     macroTemas = new Array();
@@ -244,7 +244,7 @@
         var flag = 1;
         var noCumplen = 0;
         for (var i = 0; i < macroTemas.length; i++) {
-            if (macroTemas[i].Cumple == "No") {
+            if (macroTemas[i].Cumple == "N") {
                 noCumplen++;
             }
         }//for i
@@ -262,7 +262,14 @@
             contentType: "application/json; charset=utf-8", // specify the content type
             dataType: 'JSON', // make sure you use the correct case for dataType
             data: dataToPost,
-            traditional: true
+            traditional: true,
+
+            success: function (response) {
+                window.location.href = 'LlenarInspeccionView';
+            },
+            error: function (ex) {
+                alert('Error al guardar evaluación.' + ex);
+            }
         });
     }//guardarEvaluacion
 

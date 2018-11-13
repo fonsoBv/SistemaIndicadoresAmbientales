@@ -250,7 +250,11 @@
     <Content Include="Views\Hidrometro\RegistrarHidrometroView.cshtml" />
     <Content Include="Views\Hidrometro\EliminarHidrometroView.cshtml" />
     <Content Include="Views\CompostEntrada\RegistrarCompostEntradaView.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\CompostSalida\RegistrarCompostSalidaView.cshtml" />
+=======
+    <Content Include="Views\Inspeccion\VerInspeccionView.cshtml" />
+>>>>>>> 1868c0b918db653ed9163db80282fe7b2da1e08c
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -295,13 +299,13 @@
     <Compile Include="Controllers\InspeccionController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PlantaController.cs" />
-    <Compile Include="Controllers\SesionController.cs" />
     <Compile Include="Controllers\VatihorimetroController.cs" />
     <Compile Include="Entity\ConsumoCombustible.cs" />
     <Compile Include="Entity\ConsumodeAgua.cs" />
     <Compile Include="Entity\ConsumoElectrico.cs" />
     <Compile Include="Entity\Criterio.cs" />
     <Compile Include="Entity\Entrada.cs" />
+    <Compile Include="Entity\Evaluacion.cs" />
     <Compile Include="Entity\Hidrometro.cs" />
     <Compile Include="Entity\Inspeccion.cs" />
     <Compile Include="Entity\Planta.cs" />
@@ -355,7 +359,6 @@
     <Content Include="Public\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Public\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Public\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Views\Sesion\Index.cshtml" />
     <Content Include="Views\Planta\RegistrarPlantaView.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Planta\EliminarPlantaView.cshtml" />

@@ -144,7 +144,7 @@
                                 </label>
                                 <ul class="children">
                                     <li>
-                                        <a href="#">Insertar Material Organico</a>
+                                        <a href="~/CompostEntrada/RegistrarCompostEntradaView">Insertar Material Organico</a>
                                     </li>
                                 </ul>
                                 <ul class="children">
@@ -194,12 +194,12 @@
                                 <label>
                                     <a href="#">Vatihorimetro</a>
                                 </label>
-                                <ul>
+                                <ul class="children">
                                     <li>
                                         <a href="~/Vatihorimetro/RegistrarVatihorimetroView">Insertar</a>
                                     </li>
                                 </ul>
-                                <ul>
+                                <ul class="children">
                                     <li>
                                         <a href="~/Vatihorimetro/EliminarVatihorimetroView">Eliminar</a>
                                     </li>
@@ -209,12 +209,12 @@
                                 <label>
                                     <a href="#">Hidrometro</a>
                                 </label>
-                                <ul>
+                                <ul class="children">
                                     <li>
                                         <a href="~/Hidrometro/RegistrarHidrometroView">Insertar</a>
                                     </li>
                                 </ul>
-                                <ul>
+                                <ul class="children">
                                     <li>
                                         <a href="~/Hidrometro/EliminarHidrometroView">Eliminar</a>
                                     </li>
@@ -256,7 +256,7 @@
 
                             <div>
                                 <label>
-                                    <a href="#">Ver Evaluación</a>
+                                    <a href="~/Inspeccion/VerInspeccionView">Ver Evaluación</a>
                                 </label>
                             </div>
 
@@ -276,12 +276,17 @@
                                 </ul>
                                 <ul class="children">
                                     <li>
-                                        <a href="~/Criterio/RegistrarCriterioView">Insertar Criterio</a>
+                                        <a href="~/Criterio/RegistrarCriterioView">Insertar Macrotema</a>
                                     </li>
                                 </ul>
                                 <ul class="children">
                                     <li>
-                                        <a href="~/Criterio/EliminarCriterioView">Eliminar Criterio</a>
+                                        <a href="~/Criterio/EliminarCriterioView">Eliminar Macrotema</a>
+                                    </li>
+                                </ul>
+                                <ul class="children">
+                                    <li>
+                                        <a href="">Actualizar Hallazgo</a>
                                     </li>
                                 </ul>
                             </div>
@@ -296,8 +301,8 @@
                                     <a href="#">Usuarios</a>
                                 </label>
                                 <ul class="children">
-                                    <li>
-                                        <a href="#">Insertar Usuario</a>
+                                    <li style="float: right;">
+                                        @Html.ActionLink("Insertar Usuario", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
                                     </li>
                                 </ul>
                                 <ul class="children">
@@ -311,36 +316,21 @@
                     @using Microsoft.AspNet.Identity
                     @if (Request.IsAuthenticated)
                     {
-                        //using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                        //{
                         @Html.AntiForgeryToken()
                         <li style="float: right;">
-                            @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                            @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
                         </li>
-                            <li style="float: right;">
-                                @*<a href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a>*@
-                                @Html.ActionLink("Cerrar sesión", "LogOff", "Account", routeValues: null, htmlAttributes: new { id = "logoutForm" })
-                            </li>
-                        //}
+                        <li style="float: right;">
+                            @*<a href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a>*@
+                            @Html.ActionLink("Cerrar sesión", "LogOff", "Account", routeValues: null, htmlAttributes: new { id = "logoutForm" })
+                        </li>
                     }
                     else
                     {
                         <li style="float: right;">
-                            @Html.ActionLink("Registrarse", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
-                        </li>
-                        <li style="float: right;">
                             @Html.ActionLink("Iniciar sesión", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
                         </li>
                     }
-                    @*<li style="float: right;">
-                            @Html.Partial("_LoginPartial")
-                            <a href="~/Account/Login">Iniciar Sesion</a>
-                        </li>
-                        <li style="float: right;">
-                            @Html.Partial("_LoginPartial")
-                            <a href="~/Account/Register">Registrar Usuario</a>
-                        </li>*@
-
                     <li style="float: right;">
                         <a href="#">Acerca de</a>
                     </li>
