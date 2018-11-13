@@ -41,11 +41,9 @@
             }
             <br />
             <br />
-            <div class="Formulario">
+            <div class="FormularioLlenar">
                 @Html.Label("Evaluaciones", htmlAttributes: new { @class = "control-label" })
                 @Html.DropDownList("inspecciones", ViewData["inspecciones"] as SelectList, new { @class = "form-control" })
-            </div>
-            <div class="Formulario">
                 @Html.Label("Fecha", htmlAttributes: new { @class = "control-label" })
                 <input type="date" id="fecha" name="fecha" class="form-control">
                 <p id="spanFecha" class="text-danger"></p>
@@ -74,6 +72,10 @@
                     </tr>
                 </thead>
                 <tbody id="criterios"></tbody>
+            </table>
+            <table id="tb_Evaluacion" class="table" style="display: none;">
+                <thead id="titulos"></thead>
+                <tbody id="macrotemas"></tbody>
             </table>
             <p id="spanEvaluacion" class="text-danger"></p>
             <p id="spanHallazgo" class="text-danger"></p>
@@ -118,6 +120,8 @@
         var planta = $('input[name="planta"]:checked').val();
         var evaluacion = $("#inspecciones").val();
         var fecha = $("#fecha").val();
+        var combo = document.getElementById("inspecciones");
+        var selected = combo.options[combo.selectedIndex].text;
 
         if (planta != "" && evaluacion != "" && fecha != "") {
             $.ajax({
@@ -127,17 +131,26 @@
                 data: { id_inspeccion: $("#inspecciones").val(), id_planta: $('input[name="planta"]:checked').val(), fecha: $("#fecha").val() },
 
                 success: function (evaluacion) {
+                    var rowT = "";
+                    var rowM = "";
+                    rowT += "<tr><th>Fecha: " + fecha + "</th><th>Evaluación: " + selected + "</th><th>Planta: No se como recuperar la planta</th></tr>";
+                    rowT += "<tr></th><th>Macrotema</th><th>Si</th><th>No</th><th>Hallazgo</th></tr>";
                     var row = "";
                     for (var i = 0; i < evaluacion.length; i++) {
                         row += "<tr><td style='display:none;'>" + evaluacion[i].id_Macrotema + "</td><td>" + evaluacion[i].Macrotema + "</td>";
+                        rowM += "<tr><td style='display:none;'>" + evaluacion[i].id_Macrotema + "</td><td>" + evaluacion[i].Macrotema + "</td>";
                         if (evaluacion[i].Cumple == "S") {
                             row += "<td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' checked/></td><td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' /></td><td><a href='#' onclick='hallazgo(" + evaluacion[i].id_Macrotema + ");'>Hallazgo</a></td></tr>";
+                            rowM += "<td><input type='radio' id='radio" + evaluacion[i].id_Macrotema + "' name='radio" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' checked/></td><td><input type='radio' id='radio" + evaluacion[i].id_Macrotema + "' name='radio" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' /></td><td>No Aplica</td></tr>";
                         } else {
                             row += "<td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' /></td><td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' checked /></td><td><a href='#' onclick='hallazgo(" + evaluacion[i].id_Macrotema + ");'>Hallazgo</a></td></tr>";
+                            rowM += "<td><input type='radio' id='radio" + evaluacion[i].id_Macrotema + "' name='radio" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' /></td><td><input type='radio' id='radio" + evaluacion[i].id_Macrotema + "' name='radio" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' checked /></td><td>" + evaluacion[i].hallazgo + "</td></tr>";
                             var hallazgo = { Id: evaluacion[i].id_Macrotema, Descripcion: evaluacion[i].hallazgo };
                             hallazgos.push(hallazgo);
                         }
                     }
+                    $("#titulos").html(rowT);
+                    $("#macrotemas").html(rowM);
                     $("#criterios").html(row);
                     document.getElementById("spanFecha").innerHTML = "";
                 },

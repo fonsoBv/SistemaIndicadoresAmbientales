@@ -41,11 +41,9 @@
             }
             <br />
             <br />
-            <div class="Formulario">
+            <div class="FormularioLlenar">
                 @Html.Label("Evaluaciones", htmlAttributes: new { @class = "control-label" })
                 @Html.DropDownList("inspecciones", ViewData["inspecciones"] as SelectList, new { @class = "form-control" })
-            </div>
-            <div class="Formulario">
                 @Html.Label("Fecha", htmlAttributes: new { @class = "control-label" })
                 <input type="date" id="fecha" name="fecha" class="form-control">
                 <p id="spanFecha" class="text-danger"></p>

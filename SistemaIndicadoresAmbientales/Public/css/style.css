@@ -130,6 +130,28 @@ label {
         width: 40%;
     }
 
+.FormularioLlenar {
+    display: flex;
+    width: 100%;
+    text-align: center;
+}
+
+    .FormularioLlenar input {
+        width: 25%;
+    }
+
+    .FormularioLlenar label {
+        width: 15%;
+    }
+
+    .FormularioLlenar select {
+        width: 25%;
+    }
+
+    .FormularioLlenar p {
+        width: 15%;
+    }
+
 .H1-Etiqueta {
     font-size: 40px;
     font-family: euroforencelight;

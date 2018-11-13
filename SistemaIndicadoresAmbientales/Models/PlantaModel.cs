@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
@@ -93,7 +94,47 @@ namespace SistemaIndicadoresAmbientales.Models
                 return true;
             else
                 return false;
-        }
+        }//EliminarPlanta
+
+        public bool UsuarioPlanta(string correo, int planta)
+        {
+            SqlCommand cmd = new SqlCommand("sp_usuarioPlanta", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@Correo", correo);
+            cmd.Parameters.AddWithValue("@Id_Planta", planta);
+
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if (i >= 1)
+                return true;
+            else
+                return false;
+        }//UsuarioPlanta
+
+        public int obtenerUsuarioPlanta(string email)
+        {
+            SqlCommand cmd = new SqlCommand("sp_obtenerUsuarioPlanta", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@Email", email);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            int Id_Planta = -1;
+            foreach (DataRow dr in dt.Rows)
+            {
+                Id_Planta = Convert.ToInt32(dr["Id_Planta"]);
+            }//foreach
+            return Id_Planta;
+        }//obtenerUsuarioPlanta
 
     }//emnd class
 

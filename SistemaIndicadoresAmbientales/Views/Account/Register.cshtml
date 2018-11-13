@@ -1,37 +1,57 @@
 ﻿@model SistemaIndicadoresAmbientales.Models.RegisterViewModel
-@{
-    ViewBag.Title = "Registrarse";
-}
-
-<h2>@ViewBag.Title.</h2>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Cree una cuenta nueva.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+    <div class="form-horizontal">
+        <div id="Etiqueta">
+            <h1 class="H1-Etiqueta">Insertar Usuario</h1>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Registrarse" />
+        <hr />
+        <div id="Formulario">
+            @{
+                int primero = 0;
+                foreach (var planta in (ViewData["plantas"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Planta>))
+                {
+                    if (primero == 0)
+                    {
+                        <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' checked="checked" />
+                        <label class="control-label">@planta.nombre &nbsp;</label>
+                        primero++;
+                    }
+                    else
+                    {
+                        <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' />
+                        <label class="control-label">@planta.nombre &nbsp;</label>
+                    }
+                }
+                <input type="radio" id="planta" name="planta" value="-1" class='my_chkBox' />
+                <label class="control-label">Todas &nbsp;</label>
+            }
+            <br />
+            <br />
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <div class="Formulario">
+                @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            </div>
+            <div class="Formulario">
+                @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            </div>
+            <div class="Formulario">
+                @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            </div>
+            <div class="Formulario">
+                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+            </div>
+            <div>
+                <div style="text-align: center;">
+                    <input type="submit" class="btn btn-default" value="Registrar" />
+                </div>
+            </div>
         </div>
     </div>
 }

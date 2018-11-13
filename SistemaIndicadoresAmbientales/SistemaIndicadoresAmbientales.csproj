@@ -294,7 +294,6 @@
     <Compile Include="Controllers\InspeccionController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PlantaController.cs" />
-    <Compile Include="Controllers\SesionController.cs" />
     <Compile Include="Controllers\VatihorimetroController.cs" />
     <Compile Include="Entity\ConsumoCombustible.cs" />
     <Compile Include="Entity\ConsumodeAgua.cs" />
@@ -354,7 +353,6 @@
     <Content Include="Public\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Public\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Public\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Views\Sesion\Index.cshtml" />
     <Content Include="Views\Planta\RegistrarPlantaView.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Planta\EliminarPlantaView.cshtml" />

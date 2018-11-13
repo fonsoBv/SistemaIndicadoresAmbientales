@@ -80,12 +80,15 @@ namespace SistemaIndicadoresAmbientales.Controllers
                     return View(model);
                 }
 
+                var user = UserManager.FindByEmail(model.Email);
+
                 // No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
                 // Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
-                var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+                var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
                 switch (result)
                 {
                     case SignInStatus.Success:
+                        Session["email"] = model.Email;
                         return RedirectToLocal(returnUrl);
                     case SignInStatus.LockedOut:
                         return View("Lockout");
@@ -146,7 +149,9 @@ namespace SistemaIndicadoresAmbientales.Controllers
             [AllowAnonymous]
             public ActionResult Register()
             {
-                return View();
+            PlantaModel plantaModel = new PlantaModel();
+            ViewData["plantas"] = plantaModel.obtenerPlantas();
+            return View();
             }
 
             //
@@ -154,11 +159,13 @@ namespace SistemaIndicadoresAmbientales.Controllers
             [HttpPost]
             [AllowAnonymous]
             [ValidateAntiForgeryToken]
-            public async Task<ActionResult> Register(RegisterViewModel model)
+            public async Task<ActionResult> Register(RegisterViewModel model, int planta)
             {
-                if (ModelState.IsValid)
+            PlantaModel plantaModel = new PlantaModel();
+            ViewData["plantas"] = plantaModel.obtenerPlantas();
+            if (ModelState.IsValid)
                 {
-                    var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                    var user = new ApplicationUser { UserName = model.Name, Email = model.Email };
                     var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
@@ -169,7 +176,7 @@ namespace SistemaIndicadoresAmbientales.Controllers
                         // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                         // await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", "Para confirmar la cuenta, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
-
+                        plantaModel.UsuarioPlanta(model.Email, planta);
                         return RedirectToAction("Index", "Home");
                     }
                     AddErrors(result);

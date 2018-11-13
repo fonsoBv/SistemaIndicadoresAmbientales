@@ -2954,12 +2954,12 @@ select[multiple].form-group-lg .form-control {
 .form-horizontal .radio-inline,
 .form-horizontal .checkbox-inline {
   padding-top: 7px;
-  margin-top: 0;
+  margin-top: auto;
   margin-bottom: 0;
 }
 .form-horizontal .radio,
 .form-horizontal .checkbox {
-  min-height: 27px;
+  min-height: 20px;
 }
 .form-horizontal .form-group {
   margin-right: -15px;

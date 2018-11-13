@@ -144,7 +144,7 @@
                                 </label>
                                 <ul class="children">
                                     <li>
-                                        <a href="#">Insertar Material Organico</a>
+                                        <a href="~/CompostEntrada/RegistrarCompostEntradaView">Insertar Material Organico</a>
                                     </li>
                                 </ul>
                                 <ul class="children">
@@ -301,8 +301,8 @@
                                     <a href="#">Usuarios</a>
                                 </label>
                                 <ul class="children">
-                                    <li>
-                                        <a href="#">Insertar Usuario</a>
+                                    <li style="float: right;">
+                                        @Html.ActionLink("Insertar Usuario", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
                                     </li>
                                 </ul>
                                 <ul class="children">
@@ -328,21 +328,9 @@
                     else
                     {
                         <li style="float: right;">
-                            @Html.ActionLink("Registrarse", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
-                        </li>
-                        <li style="float: right;">
                             @Html.ActionLink("Iniciar sesión", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
                         </li>
                     }
-                    @*<li style="float: right;">
-                            @Html.Partial("_LoginPartial")
-                            <a href="~/Account/Login">Iniciar Sesion</a>
-                        </li>
-                        <li style="float: right;">
-                            @Html.Partial("_LoginPartial")
-                            <a href="~/Account/Register">Registrar Usuario</a>
-                        </li>*@
-
                     <li style="float: right;">
                         <a href="#">Acerca de</a>
                     </li>
