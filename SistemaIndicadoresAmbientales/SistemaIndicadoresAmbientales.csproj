@@ -250,6 +250,7 @@
     <Content Include="Views\Hidrometro\RegistrarHidrometroView.cshtml" />
     <Content Include="Views\Hidrometro\EliminarHidrometroView.cshtml" />
     <Content Include="Views\CompostEntrada\RegistrarCompostEntradaView.cshtml" />
+    <Content Include="Views\CompostSalida\RegistrarCompostSalidaView.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -285,6 +286,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CompostEntradaController.cs" />
+    <Compile Include="Controllers\CompostSalidaController.cs" />
     <Compile Include="Controllers\ConsumoAguaController.cs" />
     <Compile Include="Controllers\ConsumoElectricoController.cs" />
     <Compile Include="Controllers\CriterioController.cs" />
@@ -310,6 +312,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ComposEntradaModel.cs" />
+    <Compile Include="Models\CompostSalidaModel.cs" />
     <Compile Include="Models\ConsumoCombustibleModel.cs" />
     <Compile Include="Models\ConsumodeAguaModel.cs" />
     <Compile Include="Models\ConsumoElectricoModel.cs" />
