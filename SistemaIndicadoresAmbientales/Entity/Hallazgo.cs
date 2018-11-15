@@ -5,26 +5,18 @@ using System.Web;
 
 namespace SistemaIndicadoresAmbientales.Entity
 {
-    public class Evaluacion
+    public class Hallazgo
     {
 
-        public string NombrePlanta { get; set; }
+        public int id_Hallazgo { get; set; }
 
-        public int id_Macrotema { get; set; }
-
-        
-        public string Macrotema { get; set; }
-
-        
-        public string Cumple { get; set; }
-
-        
-        public string Hallazgo { get; set; }
+        public string HallazgoD { get; set; }
 
         public string Referencia { get; set; }
 
         public string Estado { get; set; }
 
         public string Solucion { get; set; }
+
     }//class
 }//namespace

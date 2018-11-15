@@ -33,6 +33,39 @@ namespace SistemaIndicadoresAmbientales.Controllers
             return Json("true", JsonRequestBehavior.AllowGet);
         }//end registrar
 
+        public ActionResult ActualizarConsumoAguaView()
+        {
+            Models.PlantaModel palnta = new Models.PlantaModel();
+            ViewData["plantas"] = new SelectList(palnta.obtenerPlantas(), "id", "nombre");
+            ViewData["MesAnterior"] = (System.DateTime.Now.Month)+1;
+
+            return View();
+        }//end registrar
+
+        public JsonResult obtenerConsumoAguaActualizar(int mes, int planta)
+        {
+            Models.ConsumodeAguaModel model = new Models.ConsumodeAguaModel();
+            List<Entity.ConsumoAguaActualizar> list = model.obtenerConsumosActualizarAgua(mes, planta);
+            ViewData["cantidadConsumos"] = list.Count;
+            return (Json(list, JsonRequestBehavior.AllowGet));
+        }//end obtenerConsumoAguaActualizar
+
+        public JsonResult ActualizarConsumoAgua(List<ActualizarConsumo> consumos)
+        {
+            Models.ConsumodeAguaModel bdconsumo = new Models.ConsumodeAguaModel();
+
+            foreach (ActualizarConsumo item in consumos)
+            {
+                bdconsumo.actualizarConsumodeAgua(item.Cantidad,item.Id_Consumo_Agua);
+            }//foreach
+            return Json("exitoso", JsonRequestBehavior.AllowGet);
+        }
+        public class ActualizarConsumo
+        {
+            public int Id_Consumo_Agua { get; set; }
+            public int Cantidad { get; set; }
+
+        }
         public class ConsumoAgua
         {
             public int Id_Hidrometro { get; set; }

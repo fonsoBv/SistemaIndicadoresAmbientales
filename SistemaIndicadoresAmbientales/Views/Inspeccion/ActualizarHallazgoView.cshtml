@@ -1,0 +1,150 @@
+﻿@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div id="Etiqueta">
+            <h1 class="H1-Etiqueta">Actualizar Aspecto de mejora</h1>
+        </div>
+        <hr />
+        <div id="Formulario">
+            <div style="margin: 0 auto; width: 25%;">
+                <p id="mensajeActualizar" class="text-success"></p>
+            </div>
+            @{
+                int primero = 0;
+                foreach (var planta in (ViewData["plantas"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Planta>
+                    ))
+                {
+                    if (primero == 0)
+                    {
+                        <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' checked="checked" />
+                        <label class="control-label">@planta.nombre &nbsp;</label>
+                        primero++;
+                    }
+                    else
+                    {
+                        <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' />
+                        <label class="control-label">@planta.nombre &nbsp;</label>
+                    }
+
+                }
+            }
+            <br />
+            <br />
+            <div class="FormularioLlenar">
+                @Html.Label("Evaluaciones", htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownList("inspecciones", ViewData["inspecciones"] as SelectList, new { @class = "form-control" })
+                @Html.Label("Fecha", htmlAttributes: new { @class = "control-label" })
+                <input type="date" id="fecha" name="fecha" class="form-control">
+                <p id="spanFecha" class="text-danger"></p>
+            </div>
+            <div>
+                <div style="text-align: center;">
+                    <input value="Cargar" id="Cargar" name="Cargar" onclick="cargarHallazgos();" type="button" class="from-control">
+                </div>
+            </div>
+            <p id="mensaje" class="text-danger"></p>
+            <table id="tb_Criterios" class="table">
+                <thead>
+                    <tr>
+                        <th style="display:none;">
+                            @Html.DisplayName("ID")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Aspecto de mejora")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Referencia")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Solución")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Estado")
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="hallazgos"></tbody>
+            </table>
+        </div>
+    </div>
+}
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript">
+
+    function cargarHallazgos() {
+        var planta = $('input[name="planta"]:checked').val();
+        var evaluacion = $("#inspecciones").val();
+        var fecha = $("#fecha").val();
+        var combo = document.getElementById("inspecciones");
+        var selected = combo.options[combo.selectedIndex].text;
+
+        if (planta != "" && evaluacion != "" && fecha != "") {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("obtenerHallazgo")',
+                dataType: 'json',
+                data: { id_inspeccion: $("#inspecciones").val(), id_planta: $('input[name="planta"]:checked').val(), fecha: $("#fecha").val() },
+
+                success: function (hallazgos) {
+                    if (hallazgos != "") {
+                        var row = "";
+
+                        for (var i = 0; i < hallazgos.length; i++) {
+                            row += "<tr><td style='display:none;'>" + hallazgos[i].id_Hallazgo + "</td><td>" + hallazgos[i].HallazgoD + "</td><td>" + hallazgos[i].Referencia + "</td>";
+                            if (hallazgos[i].Estado == "A") {
+                                row += "<td><input type='text' id='solucion" + hallazgos[i].id_Hallazgo + "' name='solucion" + hallazgos[i].id_Hallazgo + "' class='form-control' /></td><td><label class='switch'><input type='checkbox' name='" + hallazgos[i].id_Hallazgo + "'><span class='slider round'></span></label></td><td><a href='#' onclick='actualizarHallazgo(\"" + hallazgos[i].id_Hallazgo + "\",\"" + hallazgos[i].HallazgoD + "\");'>Actualizar</a></td></tr>";
+                            } else {
+                                row += "<td><input type='text' id='solucion" + hallazgos[i].id_Hallazgo + "' name='solucion" + hallazgos[i].id_Hallazgo + "' class='form-control' /><td><label class='switch'><input type='checkbox' name='" + hallazgos[i].id_Hallazgo + "' checked><span class='slider round'></span></label></td></td><td><a href='#' onclick='actualizarHallazgo(\"" + hallazgos[i].id_Hallazgo + "\",\"" + hallazgos[i].HallazgoD + "\");'>Actualizar</a></td></tr>";
+                            }
+                        }
+                        $("#hallazgos").html(row);
+                        document.getElementById("spanFecha").innerHTML = "";
+                    } else {
+                        document.getElementById("mensaje").innerHTML = "No se encontráron aspectos de mejora pendientes";
+                    }
+                },
+                error: function (ex) {
+                    alert('Fallo al cargar los aspectos de mejora.' + ex);
+                }
+            });
+        } else {
+            document.getElementById("spanFecha").innerHTML = "Se requiere una fecha para cargar los aspectos de mejora";
+        }//if-else para validar los campos planta, inspeccion, fecha
+    }//cargarhallazgos
+
+    function actualizarHallazgo(id_Hallazgo, hallazgo) {
+        document.getElementById("mensajeActualizar").innerHTML = "";
+        var estado = $('input[name=' + id_Hallazgo + ']:checked').val();
+        var solucion = $('input[name=solucion' + id_Hallazgo + ']').val();
+        if (estado == "on" && solucion != "") {
+            document.getElementById("mensaje").innerHTML = "";
+            var dataToPost = JSON.stringify({ id_Hallazgo: id_Hallazgo, estado: "I", solucion: solucion });
+            $.ajax({
+                type: "POST",
+                url: "/Inspeccion/actualizarHallazgo",
+                contentType: "application/json; charset=utf-8", // specify the content type
+                dataType: 'JSON', // make sure you use the correct case for dataType
+                data: dataToPost,
+                traditional: true,
+
+                success: function (response) {
+                    document.getElementById("mensajeActualizar").innerHTML = "Aspecto de mejora actualizado";
+                },
+                error: function (ex) {
+                    document.getElementById("mensajeActualizar").innerHTML = "Error al actualiar el aspecto de mejora";
+                }
+            });
+        } else {
+            document.getElementById("mensaje").innerHTML = "Falta brindar la solucion para el aspecto de mejora: " + hallazgo;
+        }//if estado  y solucion
+    }//hallazgo
+
+</script>
+

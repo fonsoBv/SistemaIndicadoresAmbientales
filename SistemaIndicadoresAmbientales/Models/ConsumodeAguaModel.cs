@@ -95,17 +95,47 @@ namespace SistemaIndicadoresAmbientales.Models
             return consumosdeAgua;
         }//obtener un solo comsumo de agua específico
 
-        public bool actualizarConsumodeAgua(Entity.ConsumodeAgua consumo)
+
+
+        public List<Entity.ConsumoAguaActualizar> obtenerConsumosActualizarAgua(int mes, int planta)
         {
-            SqlCommand cmd = new SqlCommand("sp_actualizarConsumodeAgua", connection);
+            List<Entity.ConsumoAguaActualizar> consumosdeAgua = new List<Entity.ConsumoAguaActualizar>();
+
+            SqlCommand cmd = new SqlCommand("sp_ObtenerActualizar_ConsumoAgua", connection);
             cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Mes", mes);
+            cmd.Parameters.AddWithValue("@Id_Planta", planta);
 
-            cmd.Parameters.AddWithValue("@id_Consumo_Agua", consumo.Id_Consumo_Agua);
-            cmd.Parameters.AddWithValue("@Cantidad", consumo.Cantidad);
-            cmd.Parameters.AddWithValue("@fecha", consumo.Fecha);
-            cmd.Parameters.AddWithValue("@id_Hidrometro", consumo.Id_Hidrometro);
-            cmd.Parameters.AddWithValue("@Medida", consumo.Medida);
 
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                consumosdeAgua.Add(new Entity.ConsumoAguaActualizar
+                {
+                    Id_Consumo_Agua = Convert.ToInt32(dr["id_Consumo_Agua"]),
+                    Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                    Numero_Hidrometro = Convert.ToInt32(dr["Numero_Hidrometro"]),
+                });
+            }
+            return consumosdeAgua;
+        }//obtener un solo comsumo de agua específico
+
+
+
+
+
+        public bool actualizarConsumodeAgua(int Cantidad,int Id_Consumo_Agua)
+        {
+            SqlCommand cmd = new SqlCommand("sp_Actualizar_Consumo_Agua", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Id_Consumo_Agua", Id_Consumo_Agua);
+            cmd.Parameters.AddWithValue("@Cantidad", Cantidad);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();

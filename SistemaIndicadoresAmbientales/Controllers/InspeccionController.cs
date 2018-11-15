@@ -107,7 +107,7 @@ namespace SistemaIndicadoresAmbientales.Controllers
                     {
                         if (macroTema.Id == hallazgo.Id)
                         {
-                            inspeccionModel.guardarHallazgo(hallazgo.Descripcion, hallazgo.Diapositiva, macroTema.Id, Id_Evaluacion_MacroTema);
+                            inspeccionModel.guardarHallazgo(hallazgo.Descripcion, hallazgo.Referencia, macroTema.Id, Id_Evaluacion_MacroTema);
                         }
                     }//foreach hallagoz
                 }//if no cumple
@@ -129,7 +129,29 @@ namespace SistemaIndicadoresAmbientales.Controllers
         {
             InspeccionModel inspeccionModel = new InspeccionModel();
             return Json(inspeccionModel.obtenerEvaluacion(id_inspeccion, id_planta, fecha), JsonRequestBehavior.AllowGet);
-        }//obtenerCriterioInspeccion
+        }//obtenerEvaluacion
+
+        public ActionResult ActualizarHallazgoView()
+        {
+            InspeccionModel inspeccionModel = new InspeccionModel();
+            ViewData["inspecciones"] = new SelectList(inspeccionModel.obtenerInspeccion(), "id_Inspeccion", "Nombre");
+            PlantaModel plantaModel = new PlantaModel();
+            ViewData["plantas"] = plantaModel.obtenerPlantas();
+            return View();
+        }//actualizarhallazgoview
+
+        public JsonResult obtenerHallazgo(int id_inspeccion, int id_planta, string fecha)
+        {
+            InspeccionModel inspeccionModel = new InspeccionModel();
+            return Json(inspeccionModel.obtenerHallazgo(id_inspeccion, id_planta, fecha), JsonRequestBehavior.AllowGet);
+        }//obtenerHallazgo
+
+        public JsonResult actualizarHallazgo(int id_Hallazgo, string estado, string solucion)
+        {
+            InspeccionModel inspeccionModel = new InspeccionModel();
+            inspeccionModel.actualizarHallazgo(id_Hallazgo, estado, solucion);
+            return Json("true", JsonRequestBehavior.AllowGet);
+        }//guardarEvaluacion
 
     }//class
 
@@ -144,8 +166,7 @@ namespace SistemaIndicadoresAmbientales.Controllers
     {
         public int Id { get; set; }
         public string Descripcion { get; set; }
-
-        public string Diapositiva { get; set; }
+        public string Referencia { get; set; }
     }//class
 
 }//namespace
