@@ -236,6 +236,8 @@
     <Content Include="Public\js\responsiveslides.min.js" />
     <Content Include="Public\js\Script.js" />
     <Content Include="Public\js\simpleLightbox.js" />
+    <Content Include="Public\PDF\jspdf.debug.js" />
+    <Content Include="Public\PDF\jspdf.min.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />

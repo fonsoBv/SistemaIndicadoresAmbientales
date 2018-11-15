@@ -73,15 +73,23 @@
                 </thead>
                 <tbody id="criterios"></tbody>
             </table>
-            <table id="tb_Evaluacion" class="table" style="display: none;">
-                <thead id="titulos"></thead>
-                <tbody id="macrotemas"></tbody>
-            </table>
+            <div id="pdf" style="display: none;">
+                <div id="Encabezado">
+
+                </div>
+                <table id="tb_Evaluacion" name="tb_Evaluacion" class="table table-bordered">
+                    <thead id="titulos"></thead>
+                    <tbody id="macrotemas"></tbody>
+                </table>
+                <div id="HallazgoTextArea">
+
+                </div>
+            </div>
             <p id="spanEvaluacion" class="text-danger"></p>
             <p id="spanHallazgo" class="text-danger"></p>
             <div>
                 <div style="text-align: center;">
-                    <input value="Imprimir" id="Imprimir" name="Imprimir" onclick="imprimirEvaluacion();" type="button" class="from-control">
+                    <input value="Imprimir" id="Imprimir" name="Imprimir" onclick="javascript:exportarPDF();" type="button" class="from-control" style="display: none;">
                 </div>
             </div>
         </div>
@@ -99,6 +107,8 @@
         <div id="Formulario">
             <div style="text-align: center;">
                 <input type="hidden" id="idCriterio" name="idCriterio" class="form-control" />
+                @Html.Label("Diapositiva", htmlAttributes: new { @class = "control-label" })
+                <input type="text" id="diapositiva" name="diapositiva" class="form-control" disabled/>
                 @Html.Label("Descripción", htmlAttributes: new { @class = "control-label" })
                 <textarea id="descripcion" name="descripcion" rows="10" cols="50" class="form-control" style="resize: none;" disabled></textarea>
             </div>
@@ -110,18 +120,29 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript" src="~/Public/PDF/jspdf.min.js"></script>
 <script type="text/javascript">
     //variables
     var close = document.getElementsByClassName("close")[0];
     var hallazgos = new Array();
     var macroTemas = new Array();
+    var fecha = "";
+    var selected = "";
+    var plantaNombre = "";
 
     function cargarEvaluacion() {
+        hallazgos = new Array();
+        macroTemas = new Array();
+        fecha = "";
+        selected = "";
+        plantaNombre = "";
+        var HallazgosEval = "";
+
         var planta = $('input[name="planta"]:checked').val();
         var evaluacion = $("#inspecciones").val();
-        var fecha = $("#fecha").val();
+        fecha = $("#fecha").val();
         var combo = document.getElementById("inspecciones");
-        var selected = combo.options[combo.selectedIndex].text;
+        selected = combo.options[combo.selectedIndex].text;
 
         if (planta != "" && evaluacion != "" && fecha != "") {
             $.ajax({
@@ -132,27 +153,35 @@
 
                 success: function (evaluacion) {
                     var rowT = "";
-                    var rowM = "";
-                    rowT += "<tr><th>Fecha: " + fecha + "</th><th>Evaluación: " + selected + "</th><th>Planta: No se como recuperar la planta</th></tr>";
-                    rowT += "<tr></th><th>Macrotema</th><th>Si</th><th>No</th><th>Hallazgo</th></tr>";
+                    var rowM =
+                    plantaNombre = evaluacion[0].NombrePlanta;
+                    var encabezado = "<div><p>Fecha: " + fecha + " Evaluación: " + selected + " Planta: " + plantaNombre + "</p></div>";
+                    rowT += "<tr><th>Macrotema</th><th>Si</th><th>No</th><th>Hallazgo</th></tr>";
                     var row = "";
+                    
+                    var numHallazgo = 1;
                     for (var i = 0; i < evaluacion.length; i++) {
                         row += "<tr><td style='display:none;'>" + evaluacion[i].id_Macrotema + "</td><td>" + evaluacion[i].Macrotema + "</td>";
-                        rowM += "<tr><td style='display:none;'>" + evaluacion[i].id_Macrotema + "</td><td>" + evaluacion[i].Macrotema + "</td>";
+                        rowM += "<tr><td>" + evaluacion[i].Macrotema + "</td>";
                         if (evaluacion[i].Cumple == "S") {
                             row += "<td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' checked/></td><td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' /></td><td><a href='#' onclick='hallazgo(" + evaluacion[i].id_Macrotema + ");'>Hallazgo</a></td></tr>";
-                            rowM += "<td><input type='radio' id='radio" + evaluacion[i].id_Macrotema + "' name='radio" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' checked/></td><td><input type='radio' id='radio" + evaluacion[i].id_Macrotema + "' name='radio" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' /></td><td>No Aplica</td></tr>";
+                            rowM += "<td>X</td><td></td><td>-</td></tr>";
                         } else {
                             row += "<td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' /></td><td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' checked /></td><td><a href='#' onclick='hallazgo(" + evaluacion[i].id_Macrotema + ");'>Hallazgo</a></td></tr>";
-                            rowM += "<td><input type='radio' id='radio" + evaluacion[i].id_Macrotema + "' name='radio" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' /></td><td><input type='radio' id='radio" + evaluacion[i].id_Macrotema + "' name='radio" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' checked /></td><td>" + evaluacion[i].hallazgo + "</td></tr>";
-                            var hallazgo = { Id: evaluacion[i].id_Macrotema, Descripcion: evaluacion[i].hallazgo };
+                            rowM += "<td></td><td>X</td><td>Hallazgo " + numHallazgo + "</td></tr>";
+                            HallazgosEval += "<p>Hallazgo " + numHallazgo + " (Referencia - " + evaluacion[i].Diapositiva + "): " + evaluacion[i].Hallazgo + "</p>";
+                            var hallazgo = { Id: evaluacion[i].id_Macrotema, Descripcion: evaluacion[i].Hallazgo, Diapositiva: evaluacion[i].Diapositiva };
                             hallazgos.push(hallazgo);
+                            numHallazgo++;
                         }
                     }
                     $("#titulos").html(rowT);
                     $("#macrotemas").html(rowM);
                     $("#criterios").html(row);
+                    $("#Encabezado").html(encabezado);
+                    $('#HallazgoTextArea').html(HallazgosEval)
                     document.getElementById("spanFecha").innerHTML = "";
+                    document.getElementById('Imprimir').style.display = "";
                 },
                 error: function (ex) {
                     alert('Fallo al cargar la evaluacion.' + ex);
@@ -172,6 +201,7 @@
                 var criterioActual = hallazgos[j].Id;
                 if (criterioActual == criterio) {
                     document.getElementById('descripcion').value = hallazgos[j].Descripcion;
+                    $("#diapositiva").val(hallazgos[j].Diapositiva);
                 }
             }//for j
         }//if
@@ -180,5 +210,34 @@
     close.onclick = function () {
         document.getElementById('registrarHallazgo').style.display = "none";
     }//boton de cerrar modal
+
+    function exportarPDF() {
+        document.getElementById('pdf').style.display = "block";
+        var pdf = new jsPDF('p', 'pt', 'letter');
+        source = $('#pdf')[0];
+
+        specialElementHandlers = { 
+            '#bypassme': function (element, renderer) {
+                return true
+            }
+        };
+        margins = {
+            top: 50,
+            bottom: 50,
+            left: 72,
+            width: 500
+        };
+
+        pdf.fromHTML(
+          source,
+          margins.left, 
+          margins.top, {
+              'width': margins.width, 
+              'elementHandlers': specialElementHandlers
+          });
+            
+        pdf.save(fecha + ' - ' + plantaNombre + ' ' + selected + '.pdf');
+        document.getElementById('pdf').style.display = "none";
+    }//pdf
 
 </script>

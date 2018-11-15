@@ -90,8 +90,11 @@
         <div id="Formulario">
             <div style="text-align: center;">
                 <input type="hidden" id="idCriterio" name="idCriterio" class="form-control" />
+                @Html.Label("Diapositiva", htmlAttributes: new { @class = "control-label" })
+                <input type="text" id="diapositiva" name="diapositiva" class="form-control" />
                 @Html.Label("Descripción", htmlAttributes: new { @class = "control-label" })
                 <textarea id="descripcion" name="descripcion" rows="10" cols="50" class="form-control" style="resize: none;"></textarea>
+                <p id="spanDiapositiva" class="text-danger"></p>
                 <p id="spanDescripcion" class="text-danger"></p>
                 <input value="Registrar" id="Registrar" name="Registrar" onclick="guardarHallazgo();" type="button" class="from-control">
             </div>
@@ -163,6 +166,7 @@
                 var criterioActual = hallazgos[j].Id;
                 if (criterioActual == criterio) {
                     document.getElementById('descripcion').value = hallazgos[j].Descripcion;
+                    document.getElementById('diapositiva').value = hallazgos[j].Diapositiva;
                 }
             }//for j
         }//if
@@ -175,25 +179,29 @@
     function guardarHallazgo() {
         var criterio = document.getElementById('idCriterio').value;
         var descripcion = document.getElementById('descripcion').value;
-        if (descripcion != "") {
+        var diapositiva = document.getElementById('diapositiva').value;
+        if (descripcion != "" && diapositiva != "") {
             document.getElementById('registrarHallazgo').style.display = "none";
             document.getElementById('descripcion').value = "";
+            document.getElementById('diapositiva').value = "";
             var existe = 0;
             for (var j = 0; j < hallazgos.length; j++) {
                 var criterioActual = hallazgos[j].Id;
                 if (criterioActual == criterio) {
-                    var hallazgo = { Id: criterio, Descripcion: descripcion };
+                    var hallazgo = { Id: criterio, Descripcion: descripcion, Diapositiva: diapositiva };
                     hallazgos[j] = hallazgo;
                     existe = 1;
                 }
             }//for j
             if (existe == 0) {
-                var hallazgo = { Id: criterio, Descripcion: descripcion};
+                var hallazgo = { Id: criterio, Descripcion: descripcion, Diapositiva: diapositiva };
                 hallazgos.push(hallazgo);
             }//if si es nuevo
             document.getElementById("spanDescripcion").innerHTML = "";
+            document.getElementById("spanDiapositiva").innerHTML = "";
         } else {
             document.getElementById("spanDescripcion").innerHTML = "Se requiere una descripción para el hallazgo";
+            document.getElementById("spanDiapositiva").innerHTML = "Se requiere una diapositiva para el hallazgo";
         }//if-else
     }//guardarHallazgo
 
