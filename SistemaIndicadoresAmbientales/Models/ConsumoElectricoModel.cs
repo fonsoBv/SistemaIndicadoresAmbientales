@@ -68,6 +68,54 @@ namespace SistemaIndicadoresAmbientales.Models
         }//obtener todas los consunos de agua del sistemas.
 
 
+
+        public List<Entity.ConsumoElectricoActualizar> obtenerConsumosActualizarElectrico(int mes, int planta)
+        {
+            List<Entity.ConsumoElectricoActualizar> consumosElectrico = new List<Entity.ConsumoElectricoActualizar>();
+
+            SqlCommand cmd = new SqlCommand("sp_ObtenerActualizar_ConsumoElectrico", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Mes", mes);
+            cmd.Parameters.AddWithValue("@Id_Planta", planta);
+
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                consumosElectrico.Add(new Entity.ConsumoElectricoActualizar
+                {
+                    Id_Consumo_Electrico = Convert.ToInt32(dr["Id_Consumo_Electrico"]),
+                    Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                    Numero_Vatihorimetro = Convert.ToInt32(dr["Numero_Vatihorimetro"]),
+                });
+            }
+            return consumosElectrico;
+        }//obtener un solo comsumo de agua específico
+
+
+
+        public bool actualizarConsumoElectrico(int Cantidad, int Id_Consumo_Electrico)
+        {
+            SqlCommand cmd = new SqlCommand("sp_Actualizar_Consumo_Electrico", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Id_Consumo_Electrico", Id_Consumo_Electrico);
+            cmd.Parameters.AddWithValue("@Cantidad", Cantidad);
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if (i >= 1)
+                return true;
+            else
+                return false;
+        }//actualizar los datos
+
         public Entity.ConsumoElectrico obtenerConsumoElectrico(DateTime fecha, int mes)
         {
             Entity.ConsumoElectrico consumosElectrico = new Entity.ConsumoElectrico();
@@ -100,28 +148,6 @@ namespace SistemaIndicadoresAmbientales.Models
             return consumosElectrico;
         }//obtener un solo comsumo electrico específico
 
-        public bool actualizarConsumoElectrico(Entity.ConsumoElectrico consumo)
-        {
-            SqlCommand cmd = new SqlCommand("sp_actualizarConsumoElectrico", connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@Id_Consumo_Electrico", consumo.id_Consumo_Electrico);
-            cmd.Parameters.AddWithValue("@Cantidad", consumo.Cantidad);
-            cmd.Parameters.AddWithValue("@Fecha", consumo.fecha);
-            cmd.Parameters.AddWithValue("@Id_Vatihorimetro", consumo.id_Vatihorimetro);
-            cmd.Parameters.AddWithValue("@Medida", consumo.Medida);
-            cmd.Parameters.AddWithValue("@Mes", consumo.Mes);
-
-
-            connection.Open();
-            int i = cmd.ExecuteNonQuery();
-            connection.Close();
-
-            if (i >= 1)
-                return true;
-            else
-                return false;
-        }//actualizar los datos de un consumo electrico
 
         public bool EliminarConsumoElectrico(int id, DateTime fecha)
         {

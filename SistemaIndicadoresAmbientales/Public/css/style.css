@@ -111,13 +111,22 @@ label {
     width: 50%;
     margin: 0 auto;
 }
-
+#Consumos {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+}
 .Formulario {
     display: flex;
     width: 80%;
     text-align: center;
 }
 
+.Consumos {
+    display: flex;
+    width: 80%;
+    text-align: center;
+}
     .Formulario input {
         width: 40%;
     }
