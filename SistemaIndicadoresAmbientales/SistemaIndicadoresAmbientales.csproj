@@ -252,11 +252,8 @@
     <Content Include="Views\Hidrometro\RegistrarHidrometroView.cshtml" />
     <Content Include="Views\Hidrometro\EliminarHidrometroView.cshtml" />
     <Content Include="Views\CompostEntrada\RegistrarCompostEntradaView.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\CompostSalida\RegistrarCompostSalidaView.cshtml" />
-=======
     <Content Include="Views\Inspeccion\VerInspeccionView.cshtml" />
->>>>>>> 1868c0b918db653ed9163db80282fe7b2da1e08c
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
