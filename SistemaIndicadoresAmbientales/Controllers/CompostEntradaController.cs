@@ -25,5 +25,11 @@ namespace SistemaIndicadoresAmbientales.Controllers
                 return View();
             }
         }
+
+        public ActionResult ActualizarCompostEntradaView()
+        {
+
+            return View();
+        }
     }
 }

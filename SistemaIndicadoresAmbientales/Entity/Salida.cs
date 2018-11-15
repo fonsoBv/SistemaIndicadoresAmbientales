@@ -8,8 +8,8 @@ namespace SistemaIndicadoresAmbientales.Entity
 {
     public class Salida
     {
-        [Display(Name = "Id_Entrada")]
-        public int Id_Entrada { get; set; }
+        [Display(Name = "Id_Salida")]
+        public int Id_Salida { get; set; }
 
         [Required(ErrorMessage = "Requiere el nombre.")]
         [Display(Name = "Medida")]
