@@ -118,12 +118,13 @@ namespace SistemaIndicadoresAmbientales.Models
             return Id_Evaluacion_MacroTema;
         }//guardarEvaluacion
 
-        public bool guardarHallazgo(string Hallazgo, int IdMacroTema, int IdEvaluacionMacrotema)
+        public bool guardarHallazgo(string Hallazgo, string diapositiva, int IdMacroTema, int IdEvaluacionMacrotema)
         {
             SqlCommand cmd = new SqlCommand("sp_guardarHallazgo", connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@Hallazgo", Hallazgo);
+            cmd.Parameters.AddWithValue("@Diapositiva", diapositiva);
             cmd.Parameters.AddWithValue("@Id_MacroTema", IdMacroTema);
             cmd.Parameters.AddWithValue("@Id_Evaluacion_MacroTema", IdEvaluacionMacrotema);
 
@@ -160,10 +161,12 @@ namespace SistemaIndicadoresAmbientales.Models
                 evaluacionMacrotemas.Add(
                     new Entity.Evaluacion
                     {
+                        NombrePlanta = Convert.ToString(dr["NombrePlanta"]),
                         id_Macrotema = Convert.ToInt32(dr["Id_MacroTema"]),
                         Macrotema = Convert.ToString(dr["MacroTema"]),
                         Cumple = Convert.ToString(dr["Cumple"]),
-                        hallazgo = Convert.ToString(dr["Hallazgo"])
+                        Hallazgo = Convert.ToString(dr["Hallazgo"]),
+                        Diapositiva = Convert.ToString(dr["Diapositiva"])
                     });
             }
             return evaluacionMacrotemas;

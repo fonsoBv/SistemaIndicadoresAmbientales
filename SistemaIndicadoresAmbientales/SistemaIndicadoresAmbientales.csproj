@@ -236,6 +236,8 @@
     <Content Include="Public\js\responsiveslides.min.js" />
     <Content Include="Public\js\Script.js" />
     <Content Include="Public\js\simpleLightbox.js" />
+    <Content Include="Public\PDF\jspdf.debug.js" />
+    <Content Include="Public\PDF\jspdf.min.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
@@ -252,8 +254,11 @@
     <Content Include="Views\CompostEntrada\RegistrarCompostEntradaView.cshtml" />
     <Content Include="Views\CompostSalida\RegistrarCompostSalidaView.cshtml" />
     <Content Include="Views\Inspeccion\VerInspeccionView.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\ConsumoAgua\ActualizarConsumoAguaView.cshtml" />
     <Content Include="Views\ConsumoElectrico\ActualizarConsumoElectricoView.cshtml" />
+=======
+>>>>>>> f5e6f9136e7e07445e1265fa98bba6353c330edd
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

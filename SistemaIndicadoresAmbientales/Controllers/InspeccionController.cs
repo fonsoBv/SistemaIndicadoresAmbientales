@@ -105,7 +105,10 @@ namespace SistemaIndicadoresAmbientales.Controllers
                 {
                     foreach (Hallazgo hallazgo in Hallazgos)
                     {
-                        inspeccionModel.guardarHallazgo(hallazgo.Descripcion, macroTema.Id, Id_Evaluacion_MacroTema);
+                        if (macroTema.Id == hallazgo.Id)
+                        {
+                            inspeccionModel.guardarHallazgo(hallazgo.Descripcion, hallazgo.Diapositiva, macroTema.Id, Id_Evaluacion_MacroTema);
+                        }
                     }//foreach hallagoz
                 }//if no cumple
             }//foreach MacroTemas
@@ -141,6 +144,8 @@ namespace SistemaIndicadoresAmbientales.Controllers
     {
         public int Id { get; set; }
         public string Descripcion { get; set; }
+
+        public string Diapositiva { get; set; }
     }//class
 
 }//namespace
