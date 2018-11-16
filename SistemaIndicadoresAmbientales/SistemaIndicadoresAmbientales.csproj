@@ -210,6 +210,12 @@
     <Content Include="Public\images\faceMobile.png" />
     <Content Include="Public\images\Home.jpg" />
     <Content Include="Public\images\icon.ico" />
+    <Content Include="Public\images\img_planta_1.jpg" />
+    <Content Include="Public\images\img_planta_2.jpg" />
+    <Content Include="Public\images\img_planta_3.jpg" />
+    <Content Include="Public\images\img_planta_4.jpg" />
+    <Content Include="Public\images\img_planta_5.jpeg" />
+    <Content Include="Public\images\img_planta_6.jpeg" />
     <Content Include="Public\images\logo.png" />
     <Content Include="Public\images\menuMobileIcon.png" />
     <Content Include="Public\images\twitter.png" />
@@ -256,9 +262,17 @@
     <Content Include="Views\CompostEntrada\RegistrarCompostEntradaView.cshtml" />
     <Content Include="Views\CompostSalida\RegistrarCompostSalidaView.cshtml" />
     <Content Include="Views\Inspeccion\VerInspeccionView.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\ConsumoAgua\ActualizarConsumoAguaView.cshtml" />
     <Content Include="Views\ConsumoElectrico\ActualizarConsumoElectricoView.cshtml" />
     <Content Include="Views\ConsumoAgua\MostrarHistoricoAguaView.cshtml" />
+=======
+    <Content Include="Views\Inspeccion\ActualizarHallazgoView.cshtml" />
+    <Content Include="Views\ConsumoAgua\ActualizarConsumoAguaView.cshtml" />
+    <Content Include="Views\ConsumoElectrico\ActualizarConsumoElectricoView.cshtml" />
+    <Content Include="Views\ConsumoAgua\ActualizarConsumoAguaView.cshtml" />
+    <Content Include="Views\ConsumoElectrico\ActualizarConsumoElectricoView.cshtml" />
+>>>>>>> 06e9e9b113a80753235ef533e2a9bc2d69290c33
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -312,6 +326,7 @@
     <Compile Include="Entity\Criterio.cs" />
     <Compile Include="Entity\Entrada.cs" />
     <Compile Include="Entity\Evaluacion.cs" />
+    <Compile Include="Entity\Hallazgo.cs" />
     <Compile Include="Entity\Hidrometro.cs" />
     <Compile Include="Entity\HistoricoAgua.cs" />
     <Compile Include="Entity\Inspeccion.cs" />

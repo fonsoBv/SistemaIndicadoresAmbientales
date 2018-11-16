@@ -84,17 +84,17 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <div id="Etiqueta">
-            <h1 class="H1-Etiqueta">Hallazgo</h1>
+            <h1 class="H1-Etiqueta">Aspecto de mejora</h1>
         </div>
         <hr />
         <div id="Formulario">
             <div style="text-align: center;">
                 <input type="hidden" id="idCriterio" name="idCriterio" class="form-control" />
-                @Html.Label("Diapositiva", htmlAttributes: new { @class = "control-label" })
-                <input type="text" id="diapositiva" name="diapositiva" class="form-control" />
+                @Html.Label("Referencia", htmlAttributes: new { @class = "control-label" })
+                <input type="text" id="referencia" name="referencia" class="form-control" />
                 @Html.Label("Descripción", htmlAttributes: new { @class = "control-label" })
                 <textarea id="descripcion" name="descripcion" rows="10" cols="50" class="form-control" style="resize: none;"></textarea>
-                <p id="spanDiapositiva" class="text-danger"></p>
+                <p id="spanReferencia" class="text-danger"></p>
                 <p id="spanDescripcion" class="text-danger"></p>
                 <input value="Registrar" id="Registrar" name="Registrar" onclick="guardarHallazgo();" type="button" class="from-control">
             </div>
@@ -123,7 +123,7 @@
             success: function (criterios) {
                 var row = "";
                 $.each(criterios, function (i, criterio) {
-                    row += "<tr><td style='display:none;'>" + criterio.Value + "</td><td>" + criterio.Text + "</td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='S' class='my_chkBox' /></td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='N' class='my_chkBox' /></td><td><a href='#' onclick='hallazgo(" + criterio.Value + ");'>Hallazgo</a></td></tr>";
+                    row += "<tr><td style='display:none;'>" + criterio.Value + "</td><td>" + criterio.Text + "</td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='S' class='my_chkBox' /></td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='N' class='my_chkBox' /></td><td><a href='#' onclick='hallazgo(" + criterio.Value + ");'>Aspecto de mejora</a></td></tr>";
                 });
                 $("#criterios").html(row);
             },
@@ -145,7 +145,7 @@
                 success: function (criterios) {
                     var row = "";
                     $.each(criterios, function (i, criterio) {
-                        row += "<tr><td style='display:none;'>" + criterio.Value + "</td><td>" + criterio.Text + "</td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='S' class='my_chkBox' /></td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='N' class='my_chkBox' /></td><td><a href='#' onclick='hallazgo(" + criterio.Value + ");'>Hallazgo</a></td></tr>";
+                        row += "<tr><td style='display:none;'>" + criterio.Value + "</td><td>" + criterio.Text + "</td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='S' class='my_chkBox' /></td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='N' class='my_chkBox' /></td><td><a href='#' onclick='hallazgo(" + criterio.Value + ");'>Aspecto de mejora</a></td></tr>";
                     });
                     $("#criterios").html(row);
                 },
@@ -166,7 +166,7 @@
                 var criterioActual = hallazgos[j].Id;
                 if (criterioActual == criterio) {
                     document.getElementById('descripcion').value = hallazgos[j].Descripcion;
-                    document.getElementById('diapositiva').value = hallazgos[j].Diapositiva;
+                    $("#referencia").val(hallazgos[j].Referencia);
                 }
             }//for j
         }//if
@@ -179,29 +179,29 @@
     function guardarHallazgo() {
         var criterio = document.getElementById('idCriterio').value;
         var descripcion = document.getElementById('descripcion').value;
-        var diapositiva = document.getElementById('diapositiva').value;
-        if (descripcion != "" && diapositiva != "") {
+        var referencia = document.getElementById('referencia').value;
+        if (descripcion != "" && referencia != "") {
             document.getElementById('registrarHallazgo').style.display = "none";
             document.getElementById('descripcion').value = "";
-            document.getElementById('diapositiva').value = "";
+            document.getElementById('referencia').value = "";
             var existe = 0;
             for (var j = 0; j < hallazgos.length; j++) {
                 var criterioActual = hallazgos[j].Id;
                 if (criterioActual == criterio) {
-                    var hallazgo = { Id: criterio, Descripcion: descripcion, Diapositiva: diapositiva };
+                    var hallazgo = { Id: criterio, Descripcion: descripcion, Referencia: referencia };
                     hallazgos[j] = hallazgo;
                     existe = 1;
                 }
             }//for j
             if (existe == 0) {
-                var hallazgo = { Id: criterio, Descripcion: descripcion, Diapositiva: diapositiva };
+                var hallazgo = { Id: criterio, Descripcion: descripcion, Referencia: referencia };
                 hallazgos.push(hallazgo);
             }//if si es nuevo
             document.getElementById("spanDescripcion").innerHTML = "";
-            document.getElementById("spanDiapositiva").innerHTML = "";
+            document.getElementById("spanReferencia").innerHTML = "";
         } else {
             document.getElementById("spanDescripcion").innerHTML = "Se requiere una descripción para el hallazgo";
-            document.getElementById("spanDiapositiva").innerHTML = "Se requiere una diapositiva para el hallazgo";
+            document.getElementById("spanReferencia").innerHTML = "Se requiere una referencia para el hallazgo";
         }//if-else
     }//guardarHallazgo
 
@@ -219,7 +219,7 @@
                     guardar(planta, evaluacion, fecha);
                     macroTemas = new Array();
                 }else{
-                    document.getElementById("spanHallazgo").innerHTML = "Hay Macrotemas que no cumplen que no cuentan con un Hallazgo";
+                    document.getElementById("spanHallazgo").innerHTML = "Hay Macrotemas que no cumplen que no cuentan con un aspecto de mejora";
                     macroTemas = new Array();
                 }//if-else para validar que aquellos criterios que no cumplen tenga un hallazgo
             } else {

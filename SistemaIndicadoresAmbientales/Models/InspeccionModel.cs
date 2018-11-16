@@ -118,13 +118,13 @@ namespace SistemaIndicadoresAmbientales.Models
             return Id_Evaluacion_MacroTema;
         }//guardarEvaluacion
 
-        public bool guardarHallazgo(string Hallazgo, string diapositiva, int IdMacroTema, int IdEvaluacionMacrotema)
+        public bool guardarHallazgo(string Hallazgo, string referencia, int IdMacroTema, int IdEvaluacionMacrotema)
         {
             SqlCommand cmd = new SqlCommand("sp_guardarHallazgo", connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@Hallazgo", Hallazgo);
-            cmd.Parameters.AddWithValue("@Diapositiva", diapositiva);
+            cmd.Parameters.AddWithValue("@Referencia", referencia);
             cmd.Parameters.AddWithValue("@Id_MacroTema", IdMacroTema);
             cmd.Parameters.AddWithValue("@Id_Evaluacion_MacroTema", IdEvaluacionMacrotema);
 
@@ -166,11 +166,65 @@ namespace SistemaIndicadoresAmbientales.Models
                         Macrotema = Convert.ToString(dr["MacroTema"]),
                         Cumple = Convert.ToString(dr["Cumple"]),
                         Hallazgo = Convert.ToString(dr["Hallazgo"]),
-                        Diapositiva = Convert.ToString(dr["Diapositiva"])
+                        Referencia = Convert.ToString(dr["Referencia"]),
+                        Estado = Convert.ToString(dr["Estado"]),
+                        Solucion = Convert.ToString(dr["Solucion"])
                     });
             }
             return evaluacionMacrotemas;
         }//obtenerEvaluacion
+
+        public List<Entity.Hallazgo> obtenerHallazgo(int id_inspeccion, int id_planta, string fecha)
+        {
+            List<Entity.Hallazgo> hallazgos = new List<Entity.Hallazgo>();
+
+            SqlCommand cmd = new SqlCommand("sp_obtenerHallazgo", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@id_inspeccion", id_inspeccion);
+            cmd.Parameters.AddWithValue("@id_planta", id_planta);
+            cmd.Parameters.AddWithValue("@fecha", fecha);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                hallazgos.Add(
+                    new Entity.Hallazgo
+                    {
+                        id_Hallazgo = Convert.ToInt32(dr["Id_Hallazgo"]),
+                        HallazgoD = Convert.ToString(dr["Hallazgo"]),
+                        Referencia = Convert.ToString(dr["Referencia"]),
+                        Estado = Convert.ToString(dr["Estado"]),
+                        Solucion = Convert.ToString(dr["Solucion"])
+                    });
+            }
+            return hallazgos;
+        }//obtenerHallazgo
+
+        public bool actualizarHallazgo(int id_Hallazgo, string estado, string solucion)
+        {
+            SqlCommand cmd = new SqlCommand("sp_actualizarHallazgo", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@id_Hallazgo", id_Hallazgo);
+            cmd.Parameters.AddWithValue("@estado", estado);
+            cmd.Parameters.AddWithValue("@solucion", solucion);
+
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if (i >= 1)
+                return true;
+            else
+                return false;
+        }//guardarHallazgo
 
     }//class
 }//namespace
