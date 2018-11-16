@@ -209,6 +209,12 @@
     <Content Include="Public\images\faceMobile.png" />
     <Content Include="Public\images\Home.jpg" />
     <Content Include="Public\images\icon.ico" />
+    <Content Include="Public\images\img_planta_1.jpg" />
+    <Content Include="Public\images\img_planta_2.jpg" />
+    <Content Include="Public\images\img_planta_3.jpg" />
+    <Content Include="Public\images\img_planta_4.jpg" />
+    <Content Include="Public\images\img_planta_5.jpeg" />
+    <Content Include="Public\images\img_planta_6.jpeg" />
     <Content Include="Public\images\logo.png" />
     <Content Include="Public\images\menuMobileIcon.png" />
     <Content Include="Public\images\twitter.png" />
