@@ -1,0 +1,139 @@
+﻿@model SistemaIndicadoresAmbientales.Entity.ConsumodeAgua
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div id="Etiqueta">
+        <h1 class="H1-Etiqueta">Historico Consumo de Agua</h1>
+    </div>
+    <div id="Formulario">
+        <div class="Formulario">
+            @Html.Label("Mes del Consumo:", htmlAttributes: new { @class = "control-label" })
+            @{
+                <input type="hidden" value="" name="cantidadConsumos" id="cantidadConsumos" />
+                <input type="hidden" value="@ViewData["MesAnterior"]" id="MesAnterior" name="MesAnterior" />
+            }
+            <select name="Mes" id="Mes" class="form-control">
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+            <script>
+                    document.getElementById("Mes").value = document.getElementById("MesAnterior").value
+            </script>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div class="Formulario">
+            @Html.Label("Plantas", htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownList("plantas", ViewData["plantas"] as SelectList, new { @class = "form-control" })
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div class="Formulario">
+            @Html.Label("Año a Comparar: ", htmlAttributes: new { @class = "control-label" })
+            <input type="text" class="form-control" value = "@ViewData["AnioAnterior"]" id="AnioComparar" name="AnioComparar" />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div id="Historicos" name="Historicos">
+
+            <table id="myTable" class="table">
+                <tbody id="HistoricosBody">
+                <thead>
+                        <th>Id_ConsumoAgua</th>
+                        <th>Cantidad</th>
+                        <th>Fecha</th>
+                        <th>Mes</th>
+                </thead>
+                </tbody>
+            </table>
+
+        </div>
+        <div>
+            <br />
+            <div style="text-align: center;">
+                <input value="Exportar" id="Exportar" name="Exportar" onclick="actualizarConsumoAgua();" type="button" class="from-control">
+            </div>
+        </div>
+    </div>
+                }
+<link href="~/Public/css/DataTable.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="~/Public/js/jquery-1.9.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+  
+    $("#plantas").change(function () {
+
+        if (document.getElementById("AnioComparar").value > 0) {
+            var mes = document.getElementById("Mes").value;
+            var planta = document.getElementById("plantas").value;
+            var anio = document.getElementById("AnioComparar").value;
+            var datos = { "planta": planta, "mes": mes, "anio": anio };
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("obtenerHistoricoAgua")',
+                dataType: 'json',
+                data: datos,
+
+                success: function (consumo) {
+                    //var body = "";
+                    //var cont = 0;
+                    //for (var i = 0; i < consumo.length ; i++) {
+                    //    body += "<label class='control-label' name='Num_Hidrometro' id='Num_Hidrometro'>" + consumo[i].Numero_Hidrometro + ": <label/>\n"
+                    //    body += "<input type='number' value='" + consumo[i].Cantidad + "' name='Cantida' id='Cantidad' /> "
+                    //    body += "<input type='hidden' value='" + consumo[i].Id_Consumo_Agua + "' name='Id_Consumo_Agua' id='Id_Consumo_Agua' /> "
+                    //    body += "<br>";
+                    //    cont++;
+                    //}//
+                    //document.getElementById("cantidadConsumos").value = cont;
+
+                    //$("#Consumos").html(body);
+                }
+            });
+        }//end if
+
+    });
+
+
+    $("#Mes").change(function () {
+        var table = $("#tb_Historicos").DataTable({
+            destroy: true,
+            responsive: true,
+            ajax: {
+                method: "POST",
+                url: "@Url.Action("obtenerHistoricoAgua")",
+                contentType:"application/json; charset-utf-8",
+                dataType: "json",
+                data: function (d) {
+                    alert(JSON.stringify(d))
+                },
+                dataSrc : "d.data"
+            },
+            columns: [
+                {"data":"Id_ConsumoAgua"},
+                {"data":"Cantidad"},
+                {"data":"Fecha"},
+                {"data":"Mes"},
+            ]
+        });
+            
+    });
+</script>
+
+

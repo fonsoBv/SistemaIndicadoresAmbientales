@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -60,18 +60,39 @@ namespace SistemaIndicadoresAmbientales.Controllers
             }//foreach
             return Json("exitoso", JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult MostrarHistoricoAguaView()
+        {
+            ViewData["AnioAnterior"] = ((System.DateTime.Now.Year)-1);
+            Models.PlantaModel palnta = new Models.PlantaModel();
+            ViewData["plantas"] = new SelectList(palnta.obtenerPlantas(), "id", "nombre");
+            ViewData["MesAnterior"] = (System.DateTime.Now.Month) + 1;
+
+
+            return View();
+
+        }//MostrarHistoricoAgua
+
+        public JsonResult obtenerHistoricoAgua(int planta,int mes,int anio)
+       {
+            Models.ConsumodeAguaModel model = new Models.ConsumodeAguaModel();
+            List<Entity.HistoricoAgua> consumo = model.obtenerHistoricoAgua(planta,mes,anio);
+            ViewData["cantidadConsumos"] = consumo.Count;
+            return (Json(consumo,JsonRequestBehavior.AllowGet));
+        }//obtenerHistoricoAgua
+
         public class ActualizarConsumo
         {
             public int Id_Consumo_Agua { get; set; }
             public int Cantidad { get; set; }
 
-        }
+        }//end ActualizarConsumo
         public class ConsumoAgua
         {
             public int Id_Hidrometro { get; set; }
             public int Cantidad { get; set; }
             public int Mes { get; set; }
 
-        }
+        }//end ConsumoAgua
     }//end class
 }//end namespace

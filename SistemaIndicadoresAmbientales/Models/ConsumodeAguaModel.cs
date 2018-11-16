@@ -65,6 +65,38 @@ namespace SistemaIndicadoresAmbientales.Models
         }//obtener todas los consunos de agua del sistemas.
 
 
+        public List<Entity.HistoricoAgua> obtenerHistoricoAgua(int planta,int Mes,int Anio)
+        {
+            List<Entity.HistoricoAgua> consumoshistorico = new List<Entity.HistoricoAgua>();
+
+            SqlCommand cmd = new SqlCommand("sp_ObtenerHistoricoAguaPorPlanta", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Id_Planta", planta);
+            cmd.Parameters.AddWithValue("@MesIN", Mes);
+            cmd.Parameters.AddWithValue("@Anio", Anio);
+
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                consumoshistorico.Add(new Entity.HistoricoAgua
+                {
+                    Id_Consumo_Agua = Convert.ToInt32(dr["Id_ConsumoAgua"]),
+                    Cantidad = Convert.ToInt64(dr["Cantidad"]),
+                    Fecha = new DateTime(Convert.ToDateTime(dr["Fecha"]).Year, Convert.ToDateTime(dr["Fecha"]).Month, Convert.ToDateTime(dr["Fecha"]).Day).ToString(),
+                    Mes = Convert.ToInt32(dr["Mes"]),
+                });
+            }
+            return consumoshistorico;
+
+        }
+
         public Entity.ConsumodeAgua obtenerConsumodeAgua(DateTime fecha, int mes)
         {
             Entity.ConsumodeAgua consumosdeAgua = new Entity.ConsumodeAgua();
