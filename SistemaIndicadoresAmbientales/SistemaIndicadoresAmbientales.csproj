@@ -235,12 +235,14 @@
     <Content Include="Public\js\jquery-2.2.3.min.js" />
     <Content Include="Public\js\jquery-3.2.1.js" />
     <Content Include="Public\js\jquery-ui.js" />
+    <Content Include="Public\js\jquery.dataTables.min.js" />
     <Content Include="Public\js\jquery.mask.min.js" />
     <Content Include="Public\js\jquery.min.js" />
     <Content Include="Public\js\jquery.swipebox.min.js" />
     <Content Include="Public\js\main.js" />
     <Content Include="Public\js\move-top.js" />
     <Content Include="Public\js\owl.carousel.js" />
+    <Content Include="Public\js\responsive.bootstrap.min.js.css" />
     <Content Include="Public\js\responsiveslides.min.js" />
     <Content Include="Public\js\Script.js" />
     <Content Include="Public\js\simpleLightbox.js" />
@@ -262,17 +264,15 @@
     <Content Include="Views\CompostEntrada\RegistrarCompostEntradaView.cshtml" />
     <Content Include="Views\CompostSalida\RegistrarCompostSalidaView.cshtml" />
     <Content Include="Views\Inspeccion\VerInspeccionView.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\ConsumoAgua\ActualizarConsumoAguaView.cshtml" />
     <Content Include="Views\ConsumoElectrico\ActualizarConsumoElectricoView.cshtml" />
     <Content Include="Views\ConsumoAgua\MostrarHistoricoAguaView.cshtml" />
-=======
     <Content Include="Views\Inspeccion\ActualizarHallazgoView.cshtml" />
     <Content Include="Views\ConsumoAgua\ActualizarConsumoAguaView.cshtml" />
     <Content Include="Views\ConsumoElectrico\ActualizarConsumoElectricoView.cshtml" />
     <Content Include="Views\ConsumoAgua\ActualizarConsumoAguaView.cshtml" />
     <Content Include="Views\ConsumoElectrico\ActualizarConsumoElectricoView.cshtml" />
->>>>>>> 06e9e9b113a80753235ef533e2a9bc2d69290c33
+    <Content Include="Views\CompostEntrada\ActualizarCompostEntradaView.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

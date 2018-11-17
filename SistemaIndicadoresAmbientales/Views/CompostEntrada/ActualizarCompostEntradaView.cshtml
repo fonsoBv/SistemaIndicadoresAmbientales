@@ -1,0 +1,142 @@
+﻿@model SistemaIndicadoresAmbientales.Entity.ConsumodeAgua
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div id="Etiqueta">
+        <h1 class="H1-Etiqueta">Actualizar Entrada Material Órganico</h1>
+    </div>
+    <div id="Formulario">
+        <div class="Formulario">
+            @Html.Label("Mes del Consumo:", htmlAttributes: new { @class = "control-label" })
+            @{
+                <input type="hidden" value="" name="cantidadConsumos" id="cantidadConsumos" />
+                <input type="hidden" value="@ViewData["MesAnterior"]" id="MesAnterior" name="MesAnterior" />
+            }
+            <select name="Mes" id="Mes" class="form-control">
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+            <script>
+                    document.getElementById("Mes").value = document.getElementById("MesAnterior").value
+            </script>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div class="Formulario">
+            @Html.Label("Plantas", htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownList("plantas", ViewData["plantas"] as SelectList, new { @class = "form-control" })
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div id="Consumos" name="Consumos">
+        </div>
+        <div>
+            <br />
+            <div style="text-align: center;">
+                <input value="Ingresar" id="ingresar" name="Registrar" onclick="actualizarConsumoAgua();" type="button" class="from-control">
+            </div>
+        </div>
+    </div>
+                }
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript">
+    function actualizarConsumoAgua() {
+        var consumoss = new Array();
+        var cantidad = document.getElementById("cantidadConsumos").value;
+        for (var i = 0; i < cantidad ; i++) {
+            consumoss.push({
+                Id_Consumo_Agua: document.getElementById("Id_Consumo_Agua" + i).value,
+                Cantidad: document.getElementById("Cantidad" + i).value,
+            });
+        }//end for
+
+
+        var dataPost = JSON.stringify({ consumos: consumoss });
+        alert(dataPost);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'ActualizarConsumoAgua');
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+        xhr.send(dataPost);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                alert(xhr.responseText);
+            }//end if
+        }
+    }//end actualizar
+
+    $("#plantas").change(function () {
+
+            var mes = document.getElementById("Mes").value;
+            var planta = document.getElementById("plantas").value;
+            var datos = { "mes": mes, "planta": planta };
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("obtenerConsumoAguaActualizar")',
+                dataType: 'json',
+                data: datos,
+
+                success: function (consumo) {
+                    var body = "";
+                    var cont = 0;
+                    for (var i = 0; i < consumo.length ; i++) {
+                        body += "<label class='control-label' name='Num_Hidrometro' id='Num_Hidrometro'>" + consumo[i].Numero_Hidrometro + ": <label/>\n"
+                        body += "<input type='number' value='" + consumo[i].Cantidad + "' name='Cantida' id='Cantidad' /> "
+                        body += "<input type='hidden' value='" + consumo[i].Id_Consumo_Agua + "' name='Id_Consumo_Agua' id='Id_Consumo_Agua' /> "
+                        body += "<br>";
+                        cont++;
+                    }//
+                    document.getElementById("cantidadConsumos").value = cont;
+
+                    $("#Consumos").html(body);
+                }
+            });
+
+        });
+
+        $("#Mes").change(function () {
+            var mes = document.getElementById("Mes").value;
+            var planta = document.getElementById("plantas").value;
+            var datos = { "mes": mes, "planta": planta };
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("obtenerConsumoAguaActualizar")',
+                dataType: 'json',
+                data: datos,
+
+                success: function (consumo) {
+                    var body = "";
+                    var cont = 0;
+                    for (var i = 0; i < consumo.length ; i++) {
+                        body += "<br>\n";
+                        body += "<label class='control-label' name='Num_Hidrometro' id='Num_Hidrometro'>" + consumo[i].Numero_Hidrometro + ": <label/>\n"
+                        body += "<input type='number' value='" + consumo[i].Cantidad + "' name='Cantidad" + i + "' id='Cantidad" + i + "' /> "
+                        body += "<input type='hidden' value='" + consumo[i].Id_Consumo_Agua + "'name='Id_Consumo_Agua" + i + "' id='Id_Consumo_Agua" + i + "' /> "
+                        body += "<br>\n";
+                        cont++;
+                    }//
+                    document.getElementById("cantidadConsumos").value = cont;
+                    $("#Consumos").html(body);
+                }
+            });
+        });
+</script>
+
+

@@ -91,6 +91,7 @@ namespace SistemaIndicadoresAmbientales.Models
                     Cantidad = Convert.ToInt64(dr["Cantidad"]),
                     Fecha = new DateTime(Convert.ToDateTime(dr["Fecha"]).Year, Convert.ToDateTime(dr["Fecha"]).Month, Convert.ToDateTime(dr["Fecha"]).Day).ToString(),
                     Mes = Convert.ToInt32(dr["Mes"]),
+                    Numero_Hidrometro = Convert.ToInt32(dr["Numero_Hidrometro"])
                 });
             }
             return consumoshistorico;
