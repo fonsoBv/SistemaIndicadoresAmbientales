@@ -273,6 +273,12 @@
     <Content Include="Views\ConsumoAgua\ActualizarConsumoAguaView.cshtml" />
     <Content Include="Views\ConsumoElectrico\ActualizarConsumoElectricoView.cshtml" />
     <Content Include="Views\CompostEntrada\ActualizarCompostEntradaView.cshtml" />
+    <Content Include="Views\Equipo\ListarEqMenor.cshtml" />
+    <Content Include="Views\Equipo\ListarVehiculo.cshtml" />
+    <Content Include="Views\Equipo\RegistrarEquipoView.cshtml" />
+    <Content Include="Views\ConsumoCombustible\Index.cshtml" />
+    <Content Include="Views\ConsumoCombustible\ListarConsumoCombustibleVehiculos.cshtml" />
+    <Content Include="Views\ConsumoCombustible\RegistrarConsumo.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -310,8 +316,10 @@
     <Compile Include="Controllers\CompostEntradaController.cs" />
     <Compile Include="Controllers\CompostSalidaController.cs" />
     <Compile Include="Controllers\ConsumoAguaController.cs" />
+    <Compile Include="Controllers\ConsumoCombustibleController.cs" />
     <Compile Include="Controllers\ConsumoElectricoController.cs" />
     <Compile Include="Controllers\CriterioController.cs" />
+    <Compile Include="Controllers\EquipoController.cs" />
     <Compile Include="Controllers\HidrometroController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InspeccionController.cs" />
@@ -325,6 +333,7 @@
     <Compile Include="Entity\ConsumoElectricoActualizar.cs" />
     <Compile Include="Entity\Criterio.cs" />
     <Compile Include="Entity\Entrada.cs" />
+    <Compile Include="Entity\Equipo.cs" />
     <Compile Include="Entity\Evaluacion.cs" />
     <Compile Include="Entity\Hallazgo.cs" />
     <Compile Include="Entity\Hidrometro.cs" />
@@ -343,6 +352,7 @@
     <Compile Include="Models\ConsumodeAguaModel.cs" />
     <Compile Include="Models\ConsumoElectricoModel.cs" />
     <Compile Include="Models\CriterioModel.cs" />
+    <Compile Include="Models\EquipoModel.cs" />
     <Compile Include="Models\HidrometroModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InspeccionModel.cs" />

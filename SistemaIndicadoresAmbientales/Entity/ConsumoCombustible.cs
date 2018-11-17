@@ -1,22 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
 namespace SistemaIndicadoresAmbientales.Entity
 {
-    public class Consumo_Combustible
+    public class ConsumoCombustible
     {
-        public int Id_Consumo_Combustible { get; set; }
-        public float Cant_Aceite_Motor { get; set; }
-        public float Cant_Aceite_Caja { get; set; }
-        public float Cant_Aceite_Delantera { get; set; }
-        public float Cant_Aceite_Trasera { get; set; }
-        public float Cant_Aceite_Hidraulico { get; set; }
-        public float Cant_Combustible { get; set; }
-        public DateTime Fecha_Factura { get; set; }
-        public String Tipo { get; set; }
-        public int Id_Activo_Placa { get; set; }
-        
-    }//end class
-}// end namesapce
+
+        [Display(Name = "Id Consumo")]
+        public int id_consumo { get; set; }
+
+        [Required]
+        [Display(Name = "Cantidad (litros)")]
+        public float cant_combustible { get; set; }
+
+        [Required]
+        [Display(Name = "No. Factura")]
+        public string factura { get; set; }
+
+        [Required]
+        [Display(Name = "Fecha (factura)")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime fecha_factura { get; set; }
+
+        [Display(Name = "Fecha (registro)")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime fecha_registro { get; set; }
+
+        [Display(Name = "Tipo de Equipo")]
+        public string tipo { get; set; }
+
+        [Display(Name = "Equipo asociado")]
+        public string id_activo_placa { get; set; }
+
+    }//fin de clase
+}//namespace
