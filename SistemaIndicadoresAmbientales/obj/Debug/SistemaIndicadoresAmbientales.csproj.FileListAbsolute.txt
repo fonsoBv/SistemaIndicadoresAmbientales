@@ -140,7 +140,6 @@ C:\Users\bryan\Source\Repos\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbi
 C:\Users\bryan\Source\Repos\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\bin\System.Web.Mvc.xml
 C:\Users\bryan\Source\Repos\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.dll
 C:\Users\bryan\Source\Repos\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.pdb
-C:\Users\bryan\Source\Repos\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.csprojResolveAssemblyReference.cache
 C:\Users\Alfonso\Desktop\Nuevo\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\bin\ApplicationInsights.config
 C:\Users\Alfonso\Desktop\Nuevo\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\bin\roslyn\csc.exe
 C:\Users\Alfonso\Desktop\Nuevo\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -431,3 +430,4 @@ C:\Users\Alfonso\Desktop\ProyectoAnalisis\SistemaIndicadoresAmbientales\SistemaI
 C:\Users\Alfonso\Desktop\ProyectoAnalisis\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\bin\System.Web.Mvc.xml
 C:\Users\Alfonso\Desktop\ProyectoAnalisis\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.dll
 C:\Users\Alfonso\Desktop\ProyectoAnalisis\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.pdb
+C:\Users\bryan\Source\Repos\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.csprojResolveAssemblyReference.cache

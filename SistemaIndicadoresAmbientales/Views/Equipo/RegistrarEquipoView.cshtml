@@ -21,237 +21,183 @@
     </div>
 
 
-    <div class="form-horizontal col-md-7">
-
-        <div class="Formulario">
-            @Html.LabelFor(model => model.nombre, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            @Html.EditorFor(model => model.nombre, new { htmlAttributes = new { @class = "form-control" } })
-            @*@Html.ValidationMessageFor(model => model.nombre, "", new { @class = "text-danger" })*@
+    <div class="form-horizontal">
+        <div class="row">
+            <br />
+            <h4 class="text-info">Detalle del Equipo</h4>
         </div>
-
-        <div class="Formulario">
-            @Html.LabelFor(model => model.tipo, htmlAttributes: new { @class = "control-label col-md-2" })
-            @*<div class="col-md-10">*@
-            <select id="tipo" name="tipo" class="form-control">
-                <option value="Vehiculo">Vehiculo</option>
-                <option value="Equipo Menor">Equipo Menor</option>
-            </select>
-            @*</div>*@
-        </div>
-
-        <div class="Formulario">
-            @Html.LabelFor(model => model.id_activo_placa, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            @Html.EditorFor(model => model.id_activo_placa, new { htmlAttributes = new { @class = "form-control" } })
-            @*@Html.ValidationMessageFor(model => model.id_activo_placa, "", new { @class = "text-danger" })*@
-
-        </div>
-
-        <div class="Formulario">
-            @Html.LabelFor(model => model.id_planta, htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.DropDownList("plantas", ViewData["plantas"] as SelectList, new { @class = "form-control" })
-            @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
-        </div>
-
-        @*<div class="Formulario">
-                @Html.LabelFor(model => model.id_activo_placa, htmlAttributes: new { @class = "control-label col-md-2" })
-                <select class="form-control" id="id_activo_placa" name="id_activo_placa">
-                    <option>Placa</option>
-                    <option>Activo</option>
-                </select>
-            </div>*@
-
-
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.tipo_combustible, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.tipo_combustible, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.tipo_combustible, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.nombre, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.nombre, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @*@Html.ValidationMessageFor(model => model.nombre, "", new { @class = "text-danger" })*@
                 </div>
-            </div>*@
-        <div class="Formulario">
-            @Html.LabelFor(model => model.tipo_combustible, htmlAttributes: new { @class = "control-label col-md-2" })
-            <select id="tipo_combustible" name="tipo_combustible" class="form-control">
-                <option value="Diesel">Diesel</option>
-                <option value="Gasolina 2t">Gasolina 2 tiempos</option>
-                <option value="Gasolina 4t">Gasolina 4 tiempos</option>
-            </select>
-        </div>
 
-        <div class="Formulario">
-            @Html.LabelFor(model => model.medida_combustible, htmlAttributes: new { @class = "control-label col-md-2" })
-            <select id="medida_combustible" name="medida_combustible" class="form-control">
-                <option value="Litros">Litros</option>
-            </select>
-        </div>
-
-        <div class="Formulario">
-
-            @Html.LabelFor(model => model.combustible, htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.EditorFor(model => model.combustible, new { htmlAttributes = new { @class = "form-control" } })
-            @*@Html.ValidationMessageFor(model => model.combustible, "", new { @class = "text-danger" })*@
-
-        </div>
-
-        <div class="Formulario">
-            @Html.LabelFor(model => model.medida_aceite, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            @*@Html.EditorFor(model => model.medida_aceite, new { htmlAttributes = new { @class = "form-control" } })*@
-            <select id="medida_aceite" name="medida_aceite" class="form-control">
-                <option value="Litros">Litros</option>
-            </select>
-            @*@Html.ValidationMessageFor(model => model.medida_aceite, "", new { @class = "text-danger" })*@
-
-        </div>
-
-
-
-        <div class="Formulario">
-            @Html.LabelFor(model => model.aceite_motor, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            @Html.EditorFor(model => model.aceite_motor, new { htmlAttributes = new { @class = "form-control" } })
-
-
-        </div>
-
-        <div class="Formulario">
-            @Html.LabelFor(model => model.aceite_caja, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            @Html.EditorFor(model => model.aceite_caja, new { htmlAttributes = new { @class = "form-control" } })
-            @*@Html.ValidationMessageFor(model => model.aceite_caja, "", new { @class = "text-danger" })*@
-
-        </div>
-
-        <div class="Formulario">
-            @Html.LabelFor(model => model.aceite_delantera, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            @Html.EditorFor(model => model.aceite_delantera, new { htmlAttributes = new { @class = "form-control" } })
-            @*@Html.ValidationMessageFor(model => model.aceite_delantera, "", new { @class = "text-danger" })*@
-
-        </div>
-
-
-        <div class="Formulario">
-            @Html.LabelFor(model => model.aceite_trasera, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            @Html.EditorFor(model => model.aceite_trasera, new { htmlAttributes = new { @class = "form-control" } })
-            @*@Html.ValidationMessageFor(model => model.aceite_trasera, "", new { @class = "text-danger" })*@
-
-        </div>
-
-        <div class="Formulario">
-            @Html.LabelFor(model => model.aceite_hidraulico, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            @Html.EditorFor(model => model.aceite_hidraulico, new { htmlAttributes = new { @class = "form-control" } })
-            @*@Html.ValidationMessageFor(model => model.aceite_hidraulico, "", new { @class = "text-danger" })*@
-
-        </div>
-
-        <div class="Formulario">
-            @Html.LabelFor(model => model.catalizador, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            @Html.EditorFor(model => model.catalizador, new { htmlAttributes = new { @class = "form-control" } })
-            @*@Html.ValidationMessageFor(model => model.catalizador, "", new { @class = "text-danger" })*@
-
-        </div>
-
-
-
-
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.id_planta, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.id_planta, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.id_planta, "", new { @class = "text-danger" })
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.tipo, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        <select id="tipo" name="tipo" class="form-control">
+                            <option value="Vehiculo">Vehiculo</option>
+                            <option value="Equipo Menor">Equipo Menor</option>
+                            <option value="Maquinaria">Maquinaria</option>
+                        </select>
+                    </div>
                 </div>
-            </div>*@
 
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.id_activo_placa, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.id_activo_placa, new { htmlAttributes = new { @class = "form-control" } })
+                        @*@Html.ValidationMessageFor(model => model.id_activo_placa, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
 
-        @*<div class="Formulario">
-                @Html.LabelFor(model => model.estadoBL, htmlAttributes: new { @class = "control-label col-md-2" })
-                @Html.EditorFor(model => model.estadoBL, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.estadoBL, "", new { @class = "text-danger" })
-            </div>*@
-
-        <div>
-            @Html.ActionLink("Lista de Equipos Menores", "ListarEqMenor")
-        </div>
-        <div>
-            @Html.ActionLink("Lista de Vehiculos", "ListarVehiculo")
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Guardar" class="btn btn-accept" />
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.id_planta, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.DropDownList("plantas", ViewData["plantas"] as SelectList, new { @class = "form-control" })
+                    </div>
+                    @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+                </div>
             </div>
+        <div class="row">
+            <br />
+            <h4 class="text-info">Capacidad de combustible y catalizador</h4>
         </div>
-    </div>
+            <div class="row">
 
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.tipo_combustible, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        <select id="tipo_combustible" name="tipo_combustible" class="form-control">
+                            <option value="Diesel">Diesel</option>
+                            <option value="Gasolina 2t">Gasolina 2 tiempos</option>
+                            <option value="Gasolina 4t">Gasolina 4 tiempos</option>
+                        </select>
+                    </div>
+                </div>
 
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.medida_combustible, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        <select id="medida_combustible" name="medida_combustible" class="form-control">
+                            <option value="Litros">Litros</option>
+                        </select>
+                    </div>
+                </div>
 
-    <div class = "form-horizontal" col-md-3>
-        <div>
-            @Html.ValidationMessageFor(model => model.nombre, "", new { @class = "text-danger" })
+                <div class="form-group col-md-3">
+
+                    @Html.Label("Cantidad", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.combustible, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @*@Html.ValidationMessageFor(model => model.combustible, "", new { @class = "text-danger" })*@
+
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.catalizador, htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @*@Html.EditorFor(model => model.catalizador, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @*@Html.ValidationMessageFor(model => model.catalizador, "", new { @class = "text-danger" })*@
+                    <div class="col-md-6">
+                        <select id="catalizador" name="catalizador" class="form-control">
+                            <option value="S">Si</option>
+                            <option value="N">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        <div class="row">
+            <br />
+            <h4 class="text-info">Cantidades de aceite requeridas por componente</h4>
         </div>
+            <div class="row">
 
-        <div>
-            @Html.ValidationMessageFor(model => model.tipo, "", new { @class = "text-danger" })
+                <div class="form-group col-md-3">
+                    @Html.Label("Medida", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    @*@Html.EditorFor(model => model.medida_aceite, new { htmlAttributes = new { @class = "form-control" } })*@
+                    <div class="col-md-6">
+                        <select id="medida_aceite" name="medida_aceite" class="form-control">
+                            <option value="Litros">Litros</option>
+                        </select>
+                    </div>
+                    @*@Html.ValidationMessageFor(model => model.medida_aceite, "", new { @class = "text-danger" })*@
+
+                </div>
+
+
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.aceite_motor, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.aceite_motor, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.aceite_caja, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.aceite_caja, new { htmlAttributes = new { @class = "form-control" } })
+                        @*@Html.ValidationMessageFor(model => model.aceite_caja, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.aceite_delantera, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.aceite_delantera, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @*@Html.ValidationMessageFor(model => model.aceite_delantera, "", new { @class = "text-danger" })*@
+
+                </div>
+
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.aceite_trasera, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.aceite_trasera, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @*@Html.ValidationMessageFor(model => model.aceite_trasera, "", new { @class = "text-danger" })*@
+
+                </div>
+
+                <div class="form-group col-md-3">
+                    @Html.LabelFor(model => model.aceite_hidraulico, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.aceite_hidraulico, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @*@Html.ValidationMessageFor(model => model.aceite_hidraulico, "", new { @class = "text-danger" })*@
+
+                </div>
+
+                <div class="form-group col-md-3">
+                    <div class="col-md-offset-6 col-md-6">
+                        <input type="submit" value="Guardar" class="btn btn-accept" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="row col-md-offset-8 col-md-4">
+                <div class="col-md-6">
+                    @Html.ActionLink("Lista de Equipos Menores", "ListarEqMenor")
+                </div>
+                <div class="col-md-6">
+                    @Html.ActionLink("Lista de Vehiculos", "ListarVehiculo")
+                </div>
+            </div>
+
+            
+
+            
+
         </div>
-
-        <div>
-            @Html.ValidationMessageFor(model => model.id_activo_placa, "", new { @class = "text-danger" })
-        </div>
-
-        <div>
-            @*validacion planta*@
-        </div>
-
-        <div>
-            @*tipo combustible*@
-        </div>
-
-        <div>
-            @*medida combustible*@
-        </div>
-
-        <div>
-            @Html.ValidationMessageFor(model => model.combustible, "", new { @class = "text-danger" })
-        </div>
-
-        <div>
-            @*medida de aceite*@
-        </div>
-
-        <div>
-            @Html.ValidationMessageFor(model => model.aceite_motor, "", new { @class = "text-danger" })
-        </div>
-
-        <div>
-            @Html.ValidationMessageFor(model => model.aceite_caja, "", new { @class = "text-danger" })
-        </div>
-
-        <div>
-            @Html.ValidationMessageFor(model => model.aceite_delantera, "", new { @class = "text-danger" })
-        </div>
-
-        <div>
-            @Html.ValidationMessageFor(model => model.aceite_trasera, "", new { @class = "text-danger" })
-        </div>
-
-        <div>
-            @Html.ValidationMessageFor(model => model.aceite_hidraulico, "", new { @class = "text-danger" })
-        </div>
-
-        <div>
-            @Html.ValidationMessageFor(model => model.catalizador, "", new { @class = "text-danger" })
-        </div>
-
-    </div>
 }
-
-@*<div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>*@
