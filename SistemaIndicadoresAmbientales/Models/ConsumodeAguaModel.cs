@@ -89,14 +89,47 @@ namespace SistemaIndicadoresAmbientales.Models
                 {
                     Id_Consumo_Agua = Convert.ToInt32(dr["Id_ConsumoAgua"]),
                     Cantidad = Convert.ToInt64(dr["Cantidad"]),
-                    Fecha = new DateTime(Convert.ToDateTime(dr["Fecha"]).Year, Convert.ToDateTime(dr["Fecha"]).Month, Convert.ToDateTime(dr["Fecha"]).Day).ToString(),
+                    Anio = Convert.ToInt32(dr["Anio"]),
                     Mes = Convert.ToInt32(dr["Mes"]),
                     Numero_Hidrometro = Convert.ToInt32(dr["Numero_Hidrometro"])
                 });
             }
             return consumoshistorico;
 
-        }
+        }//end HistoricoAgua
+
+
+        public List<Entity.HistoricoAgua> obtenerHistoricoAguaAnual(int planta, int Anio)
+        {
+            List<Entity.HistoricoAgua> consumoshistorico = new List<Entity.HistoricoAgua>();
+
+            SqlCommand cmd = new SqlCommand("sp_ObtenerHistoricoAguaPorPlantaAnual", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Id_Planta", planta);
+            cmd.Parameters.AddWithValue("@Anio", Anio);
+
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                consumoshistorico.Add(new Entity.HistoricoAgua
+                {
+                    Id_Consumo_Agua = Convert.ToInt32(dr["Id_ConsumoAgua"]),
+                    Cantidad = Convert.ToInt64(dr["Cantidad"]),
+                    Anio = Convert.ToInt32(dr["Anio"]),
+                    Mes = Convert.ToInt32(dr["Mes"]),
+                    Numero_Hidrometro = Convert.ToInt32(dr["Numero_Hidrometro"])
+                });
+            }
+            return consumoshistorico;
+
+        }//end historico Agua Anual
 
         public Entity.ConsumodeAgua obtenerConsumodeAgua(DateTime fecha, int mes)
         {

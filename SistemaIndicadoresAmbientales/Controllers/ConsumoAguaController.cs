@@ -1,4 +1,6 @@
-﻿ using System;
+﻿using Microsoft.AspNet.Identity;
+using SistemaIndicadoresAmbientales.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,31 +14,44 @@ namespace SistemaIndicadoresAmbientales.Controllers
         public ActionResult RegistrarConsumoAguaView()
         {
             Models.HidrometroModel hidroModel = new Models.HidrometroModel();
-            ViewData["Hidros"] = hidroModel.obtenerHidrometrosPorPlanta(1);
+            PlantaModel planta = new PlantaModel();
+            string email = Session["email"].ToString();
+            int id_planta = planta.obtenerUsuarioPlanta(email);
+            ViewData["Hidros"] = hidroModel.obtenerHidrometrosPorPlanta(id_planta);
             return View();
         }//end mostrar vista
 
         public JsonResult ResgistrarConsumoAguaView(List<ConsumoAgua> consumo)
         {
             Models.ConsumodeAguaModel bdconsumo = new Models.ConsumodeAguaModel();
+            var flag = true;
             foreach (ConsumoAgua item in consumo)
             {
-                bdconsumo.crearConsumoAgua(new Entity.ConsumodeAgua
+                if (bdconsumo.crearConsumoAgua(new Entity.ConsumodeAgua
                 {
                     Id_Hidrometro = item.Id_Hidrometro,
                     Cantidad = item.Cantidad,
                     Medida = "m3",
                     Fecha = System.DateTime.Now,
                     Mes = item.Mes,
-                });
+                })){ }else{flag = false;}
             }//foreach
-            return Json("true", JsonRequestBehavior.AllowGet);
+            if (flag)
+            {
+                TempData["success"] = "true";
+                return Json("true", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                TempData["error"] = "false";
+                return Json("true", JsonRequestBehavior.AllowGet);
+            }
         }//end registrar
 
         public ActionResult ActualizarConsumoAguaView()
         {
-            Models.PlantaModel palnta = new Models.PlantaModel();
-            ViewData["plantas"] = new SelectList(palnta.obtenerPlantas(), "id", "nombre");
+            Models.PlantaModel planta = new Models.PlantaModel();
+            ViewData["plantas"] = new SelectList(planta.obtenerPlantas(), "id", "nombre");
             ViewData["MesAnterior"] = (System.DateTime.Now.Month)+1;
 
             return View();
@@ -53,13 +68,19 @@ namespace SistemaIndicadoresAmbientales.Controllers
         public JsonResult ActualizarConsumoAgua(List<ActualizarConsumo> consumos)
         {
             Models.ConsumodeAguaModel bdconsumo = new Models.ConsumodeAguaModel();
-
+            bool flag = true;
             foreach (ActualizarConsumo item in consumos)
             {
-                bdconsumo.actualizarConsumodeAgua(item.Cantidad,item.Id_Consumo_Agua);
+                if (bdconsumo.actualizarConsumodeAgua(item.Cantidad, item.Id_Consumo_Agua)){ }else{ flag = false; }
             }//foreach
-            return Json("exitoso", JsonRequestBehavior.AllowGet);
-        }
+            if(flag){
+                TempData["success"] = "true";
+                return Json("true", JsonRequestBehavior.AllowGet);
+            }else{
+                TempData["error"] = "false";
+                return Json("false", JsonRequestBehavior.AllowGet);
+            }//end validation
+        }//end actualizarConsumo
 
         public ActionResult MostrarHistoricoAguaView()
         {
@@ -80,6 +101,15 @@ namespace SistemaIndicadoresAmbientales.Controllers
             ViewData["cantidadConsumos"] = consumo.Count;
             return (Json(consumo,JsonRequestBehavior.AllowGet));
         }//obtenerHistoricoAgua
+
+        public JsonResult obtenerHistoricoAguaAnual(int planta, int anio)
+        {
+            Models.ConsumodeAguaModel model = new Models.ConsumodeAguaModel();
+            List<Entity.HistoricoAgua> consumo = model.obtenerHistoricoAguaAnual(planta,anio);
+            ViewData["cantidadConsumos"] = consumo.Count;
+            return (Json(consumo, JsonRequestBehavior.AllowGet));
+        }//obtenerHistoricoAgua
+
 
         public class ActualizarConsumo
         {

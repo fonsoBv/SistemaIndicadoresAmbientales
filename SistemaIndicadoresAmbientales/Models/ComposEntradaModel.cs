@@ -66,13 +66,15 @@ namespace SistemaIndicadoresAmbientales.Models
         }//obtener todas los consunos de agua del sistemas.
 
 
-        public Entity.Entrada obtenerCompostEntrada(DateTime fecha)
+        public List<Entity.ConsumoEntradaActualizar> obtenerConsumosActualizarEntrada(int mes, int planta)
         {
-            Entity.Entrada consumosEntradas = new Entity.Entrada();
+            List<Entity.ConsumoEntradaActualizar> consumosEntrada = new List<Entity.ConsumoEntradaActualizar>();
 
-            SqlCommand cmd = new SqlCommand("sp_obtenerCompostEntrada", connection);
+            SqlCommand cmd = new SqlCommand("sp_ObtenerActualizar_ConsumoEntrada", connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@Fecha", fecha);
+            cmd.Parameters.AddWithValue("@Mes", mes);
+            cmd.Parameters.AddWithValue("@Id_Planta", planta);
+
 
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -80,33 +82,54 @@ namespace SistemaIndicadoresAmbientales.Models
             connection.Open();
             sd.Fill(dt);
             connection.Close();
+            DateTime dateTemp = new DateTime();
+            foreach (DataRow dr in dt.Rows){
 
-            foreach (DataRow dr in dt.Rows)
-            {
-                consumosEntradas = new Entity.Entrada
-                {
-                    Id_Entrada = Convert.ToInt32(dr["Id_Consumo_Compost_Entrada"]),
-                    Cantidad = Convert.ToInt64(dr["Cantidad"]),
-                    Fecha = Convert.ToDateTime(dr["Fecha"]),
-                    Medida = Convert.ToString(dr["Medida"]),
-                    Id_Planta = Convert.ToInt32(dr["Id_Planta"]),
-                };
-            }
-            return consumosEntradas;
-        }//obtener un solo comsumo electrico específico
+                dateTemp = Convert.ToDateTime(dr["Fecha"]).Date;
+                if (dateTemp.Day < 10 && dateTemp.Month < 10){
 
-        public bool actualizarCompostEntrada(Entity.Entrada consumo)
+                    consumosEntrada.Add(new Entity.ConsumoEntradaActualizar{
+                        Id_Consumo_Compost_Entrada = Convert.ToInt32(dr["Id_Consumo_Compost"]),
+                        Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                        Fecha = dateTemp.Year + "-0" + dateTemp.Month + "-0" + dateTemp.Day,
+                    });
+                    
+                }else if(dateTemp.Month < 10){
+
+                    consumosEntrada.Add(new Entity.ConsumoEntradaActualizar{
+                        Id_Consumo_Compost_Entrada = Convert.ToInt32(dr["Id_Consumo_Compost"]),
+                        Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                        Fecha = dateTemp.Year + "-0" + dateTemp.Month + "-" + dateTemp.Day,
+                    });
+
+                }else if (dateTemp.Day < 10){
+                    consumosEntrada.Add(new Entity.ConsumoEntradaActualizar
+                    {
+                        Id_Consumo_Compost_Entrada = Convert.ToInt32(dr["Id_Consumo_Compost"]),
+                        Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                        Fecha = dateTemp.Year + "-" + dateTemp.Month + "-0" + dateTemp.Day,
+                    });
+
+                }else {
+                    consumosEntrada.Add(new Entity.ConsumoEntradaActualizar
+                    {
+                        Id_Consumo_Compost_Entrada = Convert.ToInt32(dr["Id_Consumo_Compost"]),
+                        Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                        Fecha = dateTemp.Year + "-" + dateTemp.Month + "-" + dateTemp.Day,
+                    });
+
+                }//end if-else
+            }//end foreach
+
+            return consumosEntrada;
+        }//obtener un solo comsumo de agua específico
+
+        public bool actualizarConsumoCompostEntrada(int Cantidad, int Id_Consumo_Agua)
         {
-            SqlCommand cmd = new SqlCommand("sp_actualizarCompostEntrada", connection);
+            SqlCommand cmd = new SqlCommand("sp_Actualizar_Compost_Entrada", connection);
             cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@Id_Consumo_Compost_Entrada", consumo.Id_Entrada);
-            cmd.Parameters.AddWithValue("@Cantidad", consumo.Cantidad);
-            cmd.Parameters.AddWithValue("@Fecha", consumo.Fecha);
-            cmd.Parameters.AddWithValue("@Medida", consumo.Medida);
-            cmd.Parameters.AddWithValue("@Id_Planta", consumo.Id_Planta);
-
-
+            cmd.Parameters.AddWithValue("@Id_Consumo_Compost_Entrada", Id_Consumo_Agua);
+            cmd.Parameters.AddWithValue("@Cantidad", Cantidad);
             connection.Open();
             int i = cmd.ExecuteNonQuery();
             connection.Close();
@@ -115,8 +138,7 @@ namespace SistemaIndicadoresAmbientales.Models
                 return true;
             else
                 return false;
-        }//actualizar los datos de un consumo electrico
-
+        }//actualizar los datos de un consumo de agua
 
     }//end class
 }//end namespace
