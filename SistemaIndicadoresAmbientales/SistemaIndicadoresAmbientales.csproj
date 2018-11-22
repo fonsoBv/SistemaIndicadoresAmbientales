@@ -281,6 +281,7 @@
     <Content Include="Views\ConsumoCombustible\RegistrarConsumo.cshtml" />
     <Content Include="Views\ConsumoCombustible\RegistrarConsumoEqMenor.cshtml" />
     <Content Include="Views\ConsumoCombustible\ListarConsumoCombustibleEqMenor.cshtml" />
+    <Content Include="Views\ConsumoAceite\RegistrarConsumoVehiculo.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -427,7 +428,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\ConsumoAceite\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
