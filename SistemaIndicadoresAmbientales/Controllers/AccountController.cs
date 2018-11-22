@@ -165,7 +165,7 @@ namespace SistemaIndicadoresAmbientales.Controllers
             ViewData["plantas"] = plantaModel.obtenerPlantas();
             if (ModelState.IsValid)
                 {
-                    var user = new ApplicationUser { UserName = model.Name, Email = model.Email};
+                    var user = new ApplicationUser { UserName = model.Name, Email = model.Email };
                     var result = await UserManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {

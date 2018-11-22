@@ -1,5 +1,6 @@
 ﻿@model SistemaIndicadoresAmbientales.Entity.ConsumoElectrico
-@using Microsoft.AspNet.Identity
+
+
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
@@ -20,7 +21,7 @@
                     <td>
                         <input type="hidden" name="tamanio" id="tamanio" value="sizeof(@item)" />
                         <input type="hidden" value="@item.Id_Vatihorimetro" />
-                        <input type="number" min="0" name="kilowatt" id="kilowatt" />
+                        <input type="number" name="kilowatt" id="kilowatt" />
                     </td>
                 </tr>
             }
@@ -48,7 +49,7 @@
             cache: false,
             type: 'POST',
             success: function (data) {
-                window.location.href = 'RegistrarConsumoElectricoView';;
+                alert(data);
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 showError(xhr.status, xhr.responseText);

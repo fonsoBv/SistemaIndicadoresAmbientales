@@ -30,7 +30,7 @@
                 <option value="12">Diciembre</option>
             </select>
             <script>
-                document.getElementById("Mes").value = document.getElementById("MesAnterior").value;
+                    document.getElementById("Mes").value = document.getElementById("MesAnterior").value
             </script>
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -41,35 +41,24 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
         <div class="Formulario">
-           <label>Año Anterior:</label>
-            <input type="number" class="form-control" value = "@ViewData["AnioAnterior"]" id="AnioComparar" name="AnioComparar" />
+            @Html.Label("Año a Comparar: ", htmlAttributes: new { @class = "control-label" })
+            <input type="text" class="form-control" value = "@ViewData["AnioAnterior"]" id="AnioComparar" name="AnioComparar" />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
-        <div class="Formulario">
-            <label>Anual:</label><input type="radio" id="tipo" name="tipo" value="Anual" class='my_chkBox' checked="checked" />
-            <label>Mensual:</label><input type="radio" id="tipo" name="tipo" value="Mensual" class='my_chkBox' checked="checked" />
-        </div>
-        <br />
-        <br />
         <div id="pdf" name="pdf">
-            <table id="Encabezado" class="table">
-                <tbody id="EncabezadoBody">
-                <thead id="EncabezaodHead">
-                <th>Nombre de Planta</th>
-                <th>Fecha</th>
+
+            <table id="Historicos" class="table">
+                <tbody id="HistoricosBody">
+                <thead>
+                        <th>Id_ConsumoAgua</th>
+                        <th>Numero Hidrometro</th>
+                        <th>Cantidad</th>
+                        <th>Fecha</th>
+                        <th>Mes</th>
                 </thead>
                 </tbody>
             </table>
-            <table id="Historicos" class="table">
-                <tbody id="HistoricosBody">
-                    <thead id="HistoricosHead">
-                        <th>N° Hidrometro</th>
-                        <th>Metros Cúbicos</th>
-                        <th>Mes</th>
-                        <th>Año</th>
-                    </thead>
-                </tbody>
-            </table>
+
         </div>
         <div>
             <br />
@@ -78,7 +67,7 @@
             </div>
         </div>
     </div>
-   }
+                }
 <link href="~/Public/css/DataTable.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
 <script src="~/Public/js/jquery-1.9.1.min.js"></script>
@@ -86,203 +75,68 @@
 <script type="text/javascript" src="~/Public/PDF/jspdf.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script type="text/javascript">
-
-  
-
     $("#plantas").change(function () {
 
-       
-        var planta = document.getElementById("plantas").value;
-        var anio = document.getElementById("AnioComparar").value;
-        var tipo = document.getElementById("tipo").value;
-        if (tipo == "Anual") {
-            var datos = { "planta": planta, "anio": anio };
-
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerHistoricoAguaAnual")',
-                dataType: 'json',
-                data: datos,
-
-                success: function (consumo) {
-                    var json = JSON.stringify(consumo);
-                    alert(json);
-                    var body = "";
-                    var cont = 0;
-                    var CantidadTotal = 0;
-                    var CantidadMes = 0;
-                    for (var i = 0; i < consumo.length; i++) {
-                        body += "<tr><td>" + consumo[i].Numero_Hidrometro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td>" + consumo[i].Anio + "</td>" +
-                            "<td>" + retornarMES(consumo[i].Mes) + "</td></tr>";
-                        cont = (i + 1);
-                        if (cont == consumo.length) {
-                            CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th>Total " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
-                            CantidadTotal = 0;
-                        } else {
-                            if (consumo[i].Anio != consumo[cont].Anio) {
-                                CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th>Total " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
-                                CantidadTotal = 0;
-                            } else {
-                                if (consumo[i].Mes != consumo[cont].Mes) {
-                                    CantidadMes += consumo[i].Cantidad;
-                                    body += "<tr><td></td<td>" + retornarMES(consumo[i].Mes) + ": </td><td>" + CantidadMes + "</td><td></td><td></td></tr>";
-                                    CantidadMes = 0;
-                                } else {
-                                    CantidadMes += consumo[i].Cantidad;
-                                }//else - if
-                                CantidadTotal += consumo[i].Cantidad;
-                            }//end if-else
-                        }//end else-if
-                    }//end for
-                  
-                    $("#HistoricosBody").html(body);
-
-                }//sucess
-            });
-
-        } else {
-            var datos = { "planta": planta, "mes": mes, "anio": anio };
-
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerHistoricoAgua")',
-                dataType: 'json',
-                data: datos,
-
-                success: function (consumo) {
-                    var json = JSON.stringify(consumo);
-                    alert(json);
-                    var body = "";
-                    var CantidadTotal = 0;
-                    var bandera = true;
-                    for (var j = 0; j < 1; j++) {
-                        for (var i = 0; i < consumo.length; i++) {
-                            body += "<tr><td>" + consumo[i].Numero_Hidrometro +
-                                "</td><td>" + consumo[i].Cantidad + "</td><td>" + consumo[i].Anio + "</td>" +
-                                "<td>" + retornarMES(consumo[i].Mes) + "</td></tr>";
-                            CantidadTotal += consumo[i].Cantidad;
-                        }//end for
-                    }
-                    body += "<thead><td>Cantidad Total: </td><td>" + CantidadTotal + "</td><td></td><td></td></tr></thead>";
-
-                    $("#HistoricosBody").html(body);
-                }
-            });
-        }//end if-else
-    });
-
-    $("#Mes").change(function () {
-        var PlamNOm = $("plantas").selectedI;
-        alert(PlamNOm);
         var mes = document.getElementById("Mes").value;
         var planta = document.getElementById("plantas").value;
         var anio = document.getElementById("AnioComparar").value;
-        var combo = document.getElementById("plantas");
-        var selected = combo.options[combo.selectedIndex].text
-        var anioAnterior = (anio-1);
-        var tipo = $('input[name="tipo"]:checked').val();
-        var tehad = "<th>Id Consumo Agua</th><th>Número Hidrómetro</th><th>Cantidad</th><th>Fecha</th><th>Mes</th>";
-        if (tipo == "Anual") {
-        var datos = { "planta": planta, "anio": anio };
+        var datos = { "planta": planta, "mes": mes, "anio": anio };
 
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerHistoricoAguaAnual")',
-                dataType: 'json',
-                data: datos,
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("obtenerHistoricoAgua")',
+            dataType: 'json',
+            data: datos,
 
-                success: function (consumo) {
-                    var json = JSON.stringify(consumo);
-                    alert(json);
-                    var body = "";
-                    var cont = 0;
-                    var CantidadTotal = 0;
-                    var CantidadMes = 0;
-                    for (var i = 0; i < consumo.length; i++) {
-                        body += "<tr><td>" + consumo[i].Numero_Hidrometro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td>" + consumo[i].Anio + "</td>" +
-                            "<td>" + retornarMES(consumo[i].Mes) + "</td></tr>";
-                        cont = (i + 1);
-                        if (cont == consumo.length) {
-                            CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th>Total " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
-                            CantidadTotal = 0;
-                        } else {
-                            if (consumo[i].Anio != consumo[cont].Anio) {
-                                CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th>Total "+consumo[i].Anio+": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
-                                CantidadTotal = 0;
-                            } else {
-                                if (consumo[i].Mes != consumo[cont].Mes) {
-                                    CantidadMes += consumo[i].Cantidad;
-                                    body += "<tr><td>" + retornarMES(consumo[i].Mes) + ": </td><td>" + CantidadMes + "</td><td></td><td></td></tr>";
-                                    CantidadMes = 0;
-                                } else {
-                                    CantidadMes += consumo[i].Cantidad;
-                                }//else - if
-                                CantidadTotal += consumo[i].Cantidad;
-                            }//end if-else
-                        }//end else-if
-                    }//end for
-                    var f = new Date();
-                    var head = "<tr><td>" + selected + "</td><td>" + f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear() + "</td></tr>";
-                    $("#HistoricosBody").html(body);
-                    $("#EncabezadoBody").html(head);
+            success: function (consumo) {
+                var json = JSON.stringify(consumo);
+                alert(json);
+                var body = "";
+                var CantidadTotal = 0;
 
+                for (var i = 0; i < consumo.length; i++) {
+                    body += "<tr><td>" + consumo[i].Id_Consumo_Agua + "</td><td>" + consumo[i].Numero_Hidrometro +
+                        "</td><td>" + consumo[i].Cantidad + " m3</td><td>" + consumo[i].Fecha + "</td>" +
+                        "<td>" + retornarMES(consumo[i].Mes) + "</td></tr>";
+                    CantidadTotal += consumo[i].Cantidad;
+                }//end for
+                body += "<tr><td></td><td>Cantidad Total: </td><td>" + CantidadTotal + "</td><td></td><td></td></tr>";
 
-                }//sucess
-            });
-        } else { //sino es anual es mensual
-            var datos = { "planta": planta,"mes":mes ,"anio": anio };
+                $("#HistoricosBody").html(body);
+            }
+        });
+    });
 
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerHistoricoAgua")',
-                dataType: 'json',
-                data: datos,
+    $("#Mes").change(function () {
 
-                success: function (consumo) {
-                    var json = JSON.stringify(consumo);
-                    alert(json);
-                    var body = "";
-                    var cont = 0;
-                    var CantidadTotal = 0;
-                    for (var i = 0; i < consumo.length; i++) {
-                        body += "<tr><td>" + consumo[i].Numero_Hidrometro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td></td>" +
-                            "<td></td></tr>";
-                        cont = (i + 1);
-                        if (cont == consumo.length) {
-                            CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th>Cantidad Total: : </th><th>" + CantidadTotal +
-                                "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio +
-                                "</th></tr>";
-                            CantidadTotal = 0;
-                        } else {
-                            if (consumo[i].Mes != consumo[cont].Mes || consumo[i].Anio != consumo[cont].Anio) {
-                                CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th>Cantidad Total: : </th><th>" + CantidadTotal +
-                               "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio +
-                               "</th></tr>";
-                                CantidadTotal = 0;
-                            } else {
-                                CantidadTotal += consumo[i].Cantidad;
+        var mes = document.getElementById("Mes").value;
+        var planta = document.getElementById("plantas").value;
+        var anio = document.getElementById("AnioComparar").value;
+        var datos = { "planta": planta, "mes": mes, "anio": anio };
 
-                            }
-                        }
-                    }//end for
-                    var f = new Date();
-                    var head = "<tr><td>" + selected + "</td><td>" + f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear() + "</td></tr>";
-                    $("#HistoricosBody").html(body);
-                    $("#EncabezadoBody").html(head);
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("obtenerHistoricoAgua")',
+            dataType: 'json',
+            data: datos,
 
+            success: function (consumo) {
+                var json = JSON.stringify(consumo);
+                alert(json);
+                var body = "";
+                var CantidadTotal = 0;
+                for (var i = 0; i < consumo.length; i++) {
+                    body += "<tr><td>" + consumo[i].Id_Consumo_Agua + "</td><td>" + consumo[i].Numero_Hidrometro +
+                        "</td><td>" + consumo[i].Cantidad + " m3</td><td>" + consumo[i].Fecha + "</td>" +
+                        "<td>" + retornarMES(consumo[i].Mes) + "</td></tr>";
+                    CantidadTotal += consumo[i].Cantidad;
+                }//end for
+                body += "<tr><td></td><td>Cantidad Total: </td><td>"+CantidadTotal+"</td><td></td><td></td></tr>";
 
-                }//sucess
-            });
-        }//end if-else
+                $("#HistoricosBody").html(body);
+
+            }//sucess
+        });
     });
     var Mes;
     function retornarMES(mes){
@@ -315,38 +169,6 @@
                 return "Enero";
         }//end switc
     }//end funcuion
-    function sumarCantidad(mes, cantidadM3) {
-        switch (mes) {
-            case 1:
-                return "Enero";
-            case 2:
-                return "Febrero";
-            case 3:
-                return "Marzo";
-            case 4:
-                return "Abril";
-            case 5:
-                return "Mayo";
-            case 6:
-                return "Junio";
-            case 7:
-                return "Julio";
-            case 8:
-                return "Agosto";
-            case 9:
-                return "Setiembre";
-            case 10:
-                return "Octubre";
-            case 11:
-                return "Noviembre";
-            case 12:
-                return "Diciembre";
-            default:
-                return "Enero";
-        }//end switc
-    }//end funcuion
-
-
 
     function exportarPDF() {
         document.getElementById('pdf').style.display = "block";
@@ -362,7 +184,7 @@
             top: 50,
             bottom: 50,
             left: 72,
-            width: 600
+            width: 500
         };
 
         pdf.fromHTML(
