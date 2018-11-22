@@ -36,7 +36,7 @@ namespace SistemaIndicadoresAmbientales.Models
                 return true;
             else
                 return false;
-        }//Añadir un consumo de combustible al sistema
+        }//Añadir un consumo de combustible al sistema (vehiculos)
 
         public List<Entity.ConsumoCombustible> obtenerConsumoCombustibleVehiculos()
         {
@@ -66,7 +66,59 @@ namespace SistemaIndicadoresAmbientales.Models
                     });
             }
             return consumos;
-        }//obtener todas los consunos de agua del sistemas.
+        }//obtener todas los consunos de combustible (vehiculos).
+
+
+        public bool crearConsumoCombustibleEqMenor(Entity.ConsumoCombustible consumo, string eq_menor)
+        {
+            SqlCommand cmd = new SqlCommand("sp_crear_consumo_combustible_eq_menor", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@cant_combustible", consumo.cant_combustible);
+            cmd.Parameters.AddWithValue("@factura", consumo.factura);
+            cmd.Parameters.AddWithValue("@fecha_factura", consumo.fecha_factura);
+            cmd.Parameters.AddWithValue("@fecha_registro", consumo.fecha_registro);
+            cmd.Parameters.AddWithValue("@id_activo_placa", eq_menor);
+
+
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+            if (i >= 1)
+                return true;
+            else
+                return false;
+        }//Añadir un consumo de combustible al sistema (eqMenor)
+
+
+        public List<Entity.ConsumoCombustible> obtenerConsumoCombustibleEqMenor()
+        {
+            List<Entity.ConsumoCombustible> consumos = new List<Entity.ConsumoCombustible>();
+
+            SqlCommand cmd = new SqlCommand("sp_listar_consumo_combustible_eq_menor", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                consumos.Add(
+                    new Entity.ConsumoCombustible
+                    {
+                        id_consumo = Convert.ToInt32(dr["id_consumo"]),
+                        cant_combustible = Convert.ToInt32(dr["cant_combustible"]),
+                        factura = Convert.ToString(dr["factura"]),
+                        fecha_factura = Convert.ToDateTime(dr["fecha_factura"]),
+                        fecha_registro = Convert.ToDateTime(dr["fecha_registro"]),
+                        tipo = Convert.ToString(dr["tipo"]),
+                        id_activo_placa = Convert.ToString(dr["id_activo_placa"])
+                    });
+            }
+            return consumos;
+        }//obtener todas los consunos de combustible (Equipo menor).
 
     }//class
 }//namespacee

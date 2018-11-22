@@ -106,6 +106,32 @@ namespace SistemaIndicadoresAmbientales.Models
             return vehiculos;
         }//obtener todas los vehiculos del sistemas.
 
+        public List<Entity.Equipo> obtenerEqMenores()
+        {
+            List<Entity.Equipo> equiposM = new List<Entity.Equipo>();
+
+            SqlCommand cmd = new SqlCommand("sp_obtener_eq_menores", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                equiposM.Add(
+                    new Entity.Equipo
+                    {
+                        nombre = Convert.ToString(dr["nombre"]),
+                        id_activo_placa = Convert.ToString(dr["id_activo_placa"]),
+                        id_planta = Convert.ToInt32(dr["id_planta"])
+                    });
+            }
+            return equiposM;
+        }//obtener todas los equipos menores del sistemas.
+
 
 
         //public Entity.Consumo_Combustible obtenerConsumoCombustible(DateTime fecha, int mes)

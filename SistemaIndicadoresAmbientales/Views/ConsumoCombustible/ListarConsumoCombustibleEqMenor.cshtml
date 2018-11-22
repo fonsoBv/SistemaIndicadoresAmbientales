@@ -1,0 +1,53 @@
+﻿@model IEnumerable<SistemaIndicadoresAmbientales.Entity.ConsumoCombustible>
+
+<p>
+    @Html.ActionLink("Agregar nuevo consumo", "RegistrarConsumo")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.id_activo_placa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cant_combustible)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.factura)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha_factura)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha_registro)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.id_activo_placa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cant_combustible)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.factura)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fecha_factura)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fecha_registro)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }
+
+</table>
