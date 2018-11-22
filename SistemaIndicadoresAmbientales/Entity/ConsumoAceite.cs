@@ -6,15 +6,25 @@ using System.Web;
 
 namespace SistemaIndicadoresAmbientales.Entity
 {
-    public class ConsumoCombustible
+    public class ConsumoAceite
     {
-
         [Display(Name = "Id Consumo")]
         public int id_consumo { get; set; }
 
-        [Required]
-        [Display(Name = "Cantidad (litros)")]
-        public float cant_combustible { get; set; }
+        [Display(Name = "Motor")]
+        public float cant_motor { get; set; }
+
+        [Display(Name = "Transmision")]
+        public float cant_caja { get; set; }
+
+        [Display(Name = "Traccion Delantera")]
+        public float cant_delantera { get; set; }
+
+        [Display(Name = "Traccion Trasera")]
+        public float cant_trasera { get; set; }
+
+        [Display(Name = "Componentes Hidraulicos")]
+        public float cant_hidraulico { get; set; }
 
         [Required]
         [Display(Name = "No. Factura")]
@@ -36,6 +46,5 @@ namespace SistemaIndicadoresAmbientales.Entity
 
         [Display(Name = "Equipo asociado")]
         public string id_activo_placa { get; set; }
-
-    }//fin de clase
-}//namespace
+    }
+}
