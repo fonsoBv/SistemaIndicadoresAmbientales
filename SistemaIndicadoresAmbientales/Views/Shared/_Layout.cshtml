@@ -24,8 +24,9 @@
     <link href="~/Public/css/simpleLightbox.css" rel="stylesheet" type="text/css" />
     <link href="~/Public/css/owl.carousel.css" rel="stylesheet">
     <link href="~/Public/css/style.css" rel="stylesheet" type="text/css" media="all" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="~/Public/js/jquery.min.js"></script>
+    <script src="~/Public/js/bootstrap.min.js"></script>
+    <script src="~/Public/js/Chart.min.js"></script>
     <!--Online-fonts-->
     <link href="//fonts.googleapis.com/css?family=Oswald:300,400,500,600,700" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
@@ -75,6 +76,74 @@
             </nav>
             <nav id="menu1">
                 <ul>
+                    @using Microsoft.AspNet.Identity
+                    @if (Request.IsAuthenticated)
+                    {
+                        @Html.AntiForgeryToken()
+                        <li>
+                            <a href="#">Indicadores</a>
+                            <section class="sect">
+                                <div>
+                                    <label>
+                                        <a href="#">Agua</a>
+                                    </label>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/ConsumoAgua/RegistrarConsumoAguaView">Insertar</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/ConsumoAgua/ActualizarConsumoAguaView">Actualizar</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/ConsumoAgua/MostrarHistoricoAguaView">Ver Historico</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <label>
+                                        <a href="#">Combustible</a>
+                                    </label>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Insertar Combustible Vehiculo</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Insertar Aceite Vehiculo</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Insertar Combustible Equipo Menor</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Insertar Combustible Equipo Menor</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Insertar Aceite</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Insertar Combustible</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Ver Historico</a>
+                                        </li>
+                                    </ul>
+                                </div>
                     <li>
                         <a href="#">Indicadores</a>
                         <section class="sect">
@@ -101,62 +170,49 @@
 
                             <div>
                                 <label>
-                                    <a href="#">Combustible</a>
+                                    <a href="#">Aceite</a>
                                 </label>
                                 <ul class="children">
                                     <li>
-                                        <a href="#">Insertar Combustible Vehiculo</a>
+                                        <a href="~/ConsumoAceite/RegistrarConsumoVehiculo">Insertar Aceite Vehiculo</a>
                                     </li>
                                 </ul>
                                 <ul class="children">
                                     <li>
-                                        <a href="#">Insertar Aceite Vehiculo</a>
+                                        <a href="#">Insertar Aceite Equipo Menor</a>
                                     </li>
                                 </ul>
                                 <ul class="children">
                                     <li>
-                                        <a href="#">Insertar Combustible Equipo Menor</a>
+                                        <a href="#">Insertar Aceite Maquinaria</a>
                                     </li>
                                 </ul>
                                 <ul class="children">
                                     <li>
-                                        <a href="#">Insertar Combustible Equipo Menor</a>
-                                    </li>
-                                </ul>
-                                <ul class="children">
-                                    <li>
-                                        <a href="#">Insertar Aceite</a>
-                                    </li>
-                                </ul>
-                                <ul class="children">
-                                    <li>
-                                        <a href="#">Insertar Combustible</a>
-                                    </li>
-                                </ul>
-                                <ul class="children">
-                                    <li>
-                                        <a href="#">Ver Historico</a>
+                                        <a href="#">Consumos de Aceite</a>
                                     </li>
                                 </ul>
                             </div>
 
                             <div>
                                 <label>
-                                    <a href="#">Compost</a>
+                                    <a href="#">Combustible</a>
                                 </label>
                                 <ul class="children">
                                     <li>
-                                        <a href="~/CompostEntrada/RegistrarCompostEntradaView">Insertar Material Organico</a>
+                                        <a href="~/ConsumoCombustible/RegistrarConsumo">Insertar Combustible Vehiculo</a>
                                     </li>
                                 </ul>
                                 <ul class="children">
                                     <li>
                                         <a href="~/CompostEntrada/ActualizarCompostEntradaView">Actualizar Material Organico</a>
+                                        <a href="~/ConsumoCombustible/RegistrarConsumoEqMenor">Insertar Combustible Equipo Menor</a>
                                     </li>
                                 </ul>
                                 <ul class="children">
                                     <li>
                                         <a href="~/CompostSalida/RegistrarCompostEntradaView">Insertar Abono</a>
+                                        <a href="#">Insertar Combustible Maquinaria</a>
                                     </li>
                                 </ul>
                                 <ul class="children">
@@ -167,6 +223,7 @@
                                 <ul class="children">
                                     <li>
                                         <a href="~/CompostSalida/MostrarHistoricoCompostView">Ver Historico</a>
+                                        <a href="#">Consumos de Combustible</a>
                                     </li>
                                 </ul>
                             </div>
@@ -191,134 +248,224 @@
                                     </li>
                                 </ul>
                             </div>
+                                <div>
+                                    <label>
+                                        <a href="#">Compost</a>
+                                    </label>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/CompostEntrada/RegistrarCompostEntradaView">Insertar Material Organico</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Actualizar Material Organico</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Insertar Abono</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Actualizar Abono</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Ver Historico</a>
+                                        </li>
+                                    </ul>
+                                </div>
 
-                            <div>
-                                <label>
-                                    <a href="#">Vatihorimetro</a>
-                                </label>
-                                <ul class="children">
-                                    <li>
-                                        <a href="~/Vatihorimetro/RegistrarVatihorimetroView">Insertar</a>
-                                    </li>
-                                </ul>
-                                <ul class="children">
-                                    <li>
-                                        <a href="~/Vatihorimetro/EliminarVatihorimetroView">Eliminar</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <label>
-                                    <a href="#">Hidrometro</a>
-                                </label>
-                                <ul class="children">
-                                    <li>
-                                        <a href="~/Hidrometro/RegistrarHidrometroView">Insertar</a>
-                                    </li>
-                                </ul>
-                                <ul class="children">
-                                    <li>
-                                        <a href="~/Hidrometro/EliminarHidrometroView">Eliminar</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <label>
-                                    <a href="#">Planta</a>
-                                </label>
-                                <ul class="children">
-                                    <li>
-                                        <a href="~/Planta/RegistrarPlantaView">Registrar</a>
-                                    </li>
-                                </ul>
-                                <ul class="children">
-                                    <li>
-                                        <a href="#">Consultar</a>
-                                    </li>
-                                </ul>
-                                <ul class="children">
-                                    <li>
-                                        <a href="~/Planta/EliminarPlantaView">Eliminar</a>
-                                    </li>
-                                </ul>
-                            </div>
+                                <div>
+                                    <label>
+                                        <a href="#">Electricidad</a>
+                                    </label>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/ConsumoElectrico/RegistrarConsumoElectricoView">Insertar</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/ConsumoElectrico/ActualizarConsumoElectricoView">Actualizar</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Ver Historico</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <label>
+                                        <a href="#">Vatihorimetro</a>
+                                    </label>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Vatihorimetro/RegistrarVatihorimetroView">Insertar</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Vatihorimetro/EliminarVatihorimetroView">Eliminar</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <label>
+                                        <a href="#">Hidrometro</a>
+                                    </label>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Hidrometro/RegistrarHidrometroView">Insertar</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Hidrometro/EliminarHidrometroView">Eliminar</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <label>
+                                        <a href="#">Planta</a>
+                                    </label>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Planta/RegistrarPlantaView">Registrar</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Consultar</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Planta/EliminarPlantaView">Eliminar</a>
+                                        </li>
+                                    </ul>
+                                </div>
 
 
-                        </section>
-                    </li>
+                            </section>
+                        </li>
 
-                    <li>
-                        <a href="#">Evaluaciones</a>
-                        <section class="sect">
-                            <div>
-                                <label>
-                                    <a href="~/Inspeccion/LlenarInspeccionView">Llenar Evaluación</a>
-                                </label>
-                            </div>
+                        <li>
+                            <a href="#">Evaluaciones</a>
+                            <section class="sect">
+                                <div>
+                                    <label>
+                                        <a href="~/Inspeccion/LlenarInspeccionView">Llenar Evaluación</a>
+                                    </label>
+                                </div>
 
-                            <div>
-                                <label>
-                                    <a href="~/Inspeccion/VerInspeccionView">Ver Evaluación</a>
-                                </label>
-                            </div>
+                                <div>
+                                    <label>
+                                        <a href="~/Inspeccion/VerInspeccionView">Ver Evaluación</a>
+                                    </label>
+                                </div>
 
-                            <div>
-                                <label>
-                                    <a href="#">Administrar</a>
-                                </label>
-                                <ul class="children">
-                                    <li>
-                                        <a href="~/Inspeccion/RegistrarInspeccionView">Insertar Evaluación</a>
-                                    </li>
-                                </ul>
-                                <ul class="children">
-                                    <li>
-                                        <a href="~/Inspeccion/EliminarInspeccionView">Eliminar Evaluación</a>
-                                    </li>
-                                </ul>
-                                <ul class="children">
-                                    <li>
-                                        <a href="~/Criterio/RegistrarCriterioView">Insertar Macrotema</a>
-                                    </li>
-                                </ul>
-                                <ul class="children">
-                                    <li>
-                                        <a href="~/Criterio/EliminarCriterioView">Eliminar Macrotema</a>
-                                    </li>
-                                </ul>
-                                <ul class="children">
-                                    <li>
-                                        <a href="~/Inspeccion/ActualizarHallazgoView">Actualizar Aspecto de mejora</a>
-                                    </li>
-                                </ul>
-                            </div>
+                                <div>
+                                    <label>
+                                        <a href="#">Administrar</a>
+                                    </label>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Inspeccion/RegistrarInspeccionView">Insertar Evaluación</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Inspeccion/EliminarInspeccionView">Eliminar Evaluación</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Criterio/RegistrarCriterioView">Insertar Macrotema</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Criterio/EliminarCriterioView">Eliminar Macrotema</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Inspeccion/ActualizarHallazgoView">Actualizar Aspecto de mejora</a>
+                                        </li>
+                                    </ul>
+                                </div>
 
-                        </section>
-                    </li>
-                    <li>
-                        <a href="#">Configurar</a>
-                        <section class="sect">
-                            <div>
-                                <label>
-                                    <a href="#">Usuarios</a>
-                                </label>
-                                <ul class="children">
-                                    <li style="float: right;">
-                                        @Html.ActionLink("Insertar Usuario", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
-                                    </li>
-                                </ul>
-                                <ul class="children">
-                                    <li>
-                                        <a href="#">Eliminar Usuario</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </section>
-                    </li>
-                    @using Microsoft.AspNet.Identity
-                    @if (Request.IsAuthenticated)
-                    {
-                        @Html.AntiForgeryToken()
+                            </section>
+                        </li>
+                        <li>
+                            <a href="#">Configurar</a>
+                            <section class="sect">
+                                <div>
+                                    <label>
+                                        <a href="#">Usuarios</a>
+                                    </label>
+                                    <ul class="children">
+                                        <li style="float: right;">
+                                            @Html.ActionLink("Insertar Usuario", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Eliminar Usuario</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <label>
+                                        <a href="#">Usuarios</a>
+                                    </label>
+                                    <ul class="children">
+                                        <li style="float: right;">
+                                            @Html.ActionLink("Insertar Usuario", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="#">Eliminar Usuario</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <label>
+                                        <a href="#">Equipos</a>
+                                    </label>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Equipo/ListarVehiculo">Lista de Vehiculos</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Equipo/ListarEqMenor">Lista de Equipos Menores</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Equipo/ListarMaquinaria">Lista de Maquinarias</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="children">
+                                        <li>
+                                            <a href="~/Equipo/RegistrarEquipoView">Agregar Equipo Nuevo</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </section>
+                        </li>
+
                         <li style="float: right;">
                             @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
                         </li>

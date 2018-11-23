@@ -176,17 +176,13 @@ input:checked + .slider:before {
     width: 50%;
     margin: 0 auto;
 }
+
 .Formulario {
     display: flex;
     width: 80%;
     text-align: center;
 }
 
-.Consumos {
-    display: flex;
-    width: 80%;
-    text-align: center;
-}
     .Formulario input {
         width: 40%;
     }
@@ -198,6 +194,12 @@ input:checked + .slider:before {
     .Formulario select {
         width: 40%;
     }
+
+.Consumos {
+    display: flex;
+    width: 80%;
+    text-align: center;
+}
 
 .FormularioLlenar {
     display: flex;

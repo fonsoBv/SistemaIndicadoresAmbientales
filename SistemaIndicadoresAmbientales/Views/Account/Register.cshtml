@@ -30,6 +30,10 @@
             }
             <br />
             <br />
+            <div class="Formulario">
+                @Html.Label("Roles", htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownList("roles", ViewData["roles"] as SelectList, new { @class = "form-control" })
+            </div>
             @Html.ValidationSummary("", new { @class = "text-danger" })
             <div class="Formulario">
                 @Html.LabelFor(m => m.Name, new { @class = "control-label" })

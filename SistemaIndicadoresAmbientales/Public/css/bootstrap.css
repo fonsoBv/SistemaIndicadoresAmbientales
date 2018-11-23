@@ -6118,6 +6118,8 @@ button.close {
 }
 .carousel {
   position: relative;
+  margin: auto;
+  width: 50%;
 }
 .carousel-inner {
   position: relative;

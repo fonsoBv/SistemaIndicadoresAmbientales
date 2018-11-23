@@ -96,13 +96,14 @@ namespace SistemaIndicadoresAmbientales.Models
                 return false;
         }//EliminarPlanta
 
-        public bool UsuarioPlanta(string correo, int planta)
+        public bool UsuarioPlanta(string correo, int planta, int rol)
         {
             SqlCommand cmd = new SqlCommand("sp_usuarioPlanta", connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@Correo", correo);
             cmd.Parameters.AddWithValue("@Id_Planta", planta);
+            cmd.Parameters.AddWithValue("@Id_Rol", rol);
 
             connection.Open();
             int i = cmd.ExecuteNonQuery();

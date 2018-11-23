@@ -151,6 +151,10 @@ namespace SistemaIndicadoresAmbientales.Controllers
             {
             PlantaModel plantaModel = new PlantaModel();
             ViewData["plantas"] = plantaModel.obtenerPlantas();
+
+            RolModel rolModel = new RolModel();
+            ViewData["roles"] = new SelectList(rolModel.obtenerRol(), "Id_Rol", "Nombre");
+
             return View();
             }
 
@@ -159,10 +163,14 @@ namespace SistemaIndicadoresAmbientales.Controllers
             [HttpPost]
             [AllowAnonymous]
             [ValidateAntiForgeryToken]
-            public async Task<ActionResult> Register(RegisterViewModel model, int planta)
+            public async Task<ActionResult> Register(RegisterViewModel model, int planta, int roles)
             {
             PlantaModel plantaModel = new PlantaModel();
             ViewData["plantas"] = plantaModel.obtenerPlantas();
+
+            RolModel rolModel = new RolModel();
+            ViewData["roles"] = new SelectList(rolModel.obtenerRol(), "Id_Rol", "Nombre");
+
             if (ModelState.IsValid)
                 {
                     var user = new ApplicationUser { UserName = model.Name, Email = model.Email};
@@ -176,7 +184,7 @@ namespace SistemaIndicadoresAmbientales.Controllers
                         // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                         // await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", "Para confirmar la cuenta, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
-                        plantaModel.UsuarioPlanta(model.Email, planta);
+                        plantaModel.UsuarioPlanta(model.Email, planta, roles);
                         return RedirectToAction("Index", "Home");
                     }
                     AddErrors(result);
