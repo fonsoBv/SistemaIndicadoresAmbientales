@@ -18,7 +18,7 @@ namespace SistemaIndicadoresAmbientales.Models
             connection = new SqlConnection(constring);
         }//constructor
 
-        public bool crearConsumoAceiteVehiculo(Entity.ConsumoAceite consumo, string vehiculo)
+        public bool crearConsumoAceiteVehiculo(Entity.ConsumoAceite consumo)
         {
             SqlCommand cmd = new SqlCommand("sp_crear_consumo_aceite_vehiculos", connection);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -30,7 +30,7 @@ namespace SistemaIndicadoresAmbientales.Models
             cmd.Parameters.AddWithValue("@factura", consumo.factura);
             cmd.Parameters.AddWithValue("@fecha_factura", consumo.fecha_factura);
             cmd.Parameters.AddWithValue("@fecha_registro", consumo.fecha_registro);
-            cmd.Parameters.AddWithValue("@id_activo_placa", vehiculo);
+            cmd.Parameters.AddWithValue("@id_activo_placa", consumo.id_activo_placa);
 
 
             connection.Open();
@@ -42,11 +42,11 @@ namespace SistemaIndicadoresAmbientales.Models
                 return false;
         }//Añadir un consumo de aceite al sistema
 
-        public List<Entity.ConsumoAceite> obtenerConsumoCombustibleVehiculos()
+        public List<Entity.ConsumoAceite> obtenerConsumoAceiteVehiculos()
         {
             List<Entity.ConsumoAceite> consumos = new List<Entity.ConsumoAceite>();
 
-            SqlCommand cmd = new SqlCommand("sp_listar_consumo_combustible_vehiculos", connection);
+            SqlCommand cmd = new SqlCommand("sp_listar_consumo_aceite_vehiculos", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
