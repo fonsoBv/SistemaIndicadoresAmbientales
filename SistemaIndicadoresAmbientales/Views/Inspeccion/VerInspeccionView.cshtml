@@ -59,11 +59,19 @@
                         <th>
                             @Html.DisplayName("No")
                         </th>
-                        <th></th>
+                        <th>Aspecto de mejora</th>
                     </tr>
                 </thead>
                 <tbody id="criterios"></tbody>
             </table>
+            <div id="Graficos" style="width= 100%; display: none;">
+                <div style="width: 50%;">
+                    <canvas id="doughnut-evaluacion" width="600" height="350"></canvas>
+                </div>
+                <div style="width: 50%;">
+                    <canvas id="doughnut-hallazgos" width="600" height="350"></canvas>
+                </div>
+            </div>
             <div id="pdf" style="display: none;">
                 <div id="Encabezado">
 
@@ -80,7 +88,7 @@
             <p id="spanHallazgo" class="text-danger"></p>
             <div>
                 <div style="text-align: center;">
-                    <input value="Imprimir" id="Imprimir" name="Imprimir" onclick="javascript:exportarPDF();" type="button" class="from-control" style="display: none;">
+                    <input value="Exportar" id="Imprimir" name="Imprimir" onclick="javascript:exportarPDF();" type="button" class="from-control" style="display: none;">
                 </div>
             </div>
         </div>
@@ -120,6 +128,10 @@
     var fecha = "";
     var selected = "";
     var plantaNombre = "";
+    var siCumple = 0;
+    var noCumple = 0;
+    var hallazgosResuelto = 0;
+    var hallazgosPendientes = 0;
 
     function cargarEvaluacion() {
         document.getElementById("mensaje").innerHTML = "";
@@ -148,7 +160,7 @@
                     var rowT = "";
                     var rowM = "";
                     plantaNombre = evaluacion[0].NombrePlanta;
-                    var encabezado = "<div><p>Fecha: " + fecha + " Evaluación: " + selected + " Planta: " + plantaNombre + "</p></div>";
+                    var encabezado = "<tr><th>Fecha: " + fecha + "</th><th>Evaluación: " + selected + "</th><th>Planta: " + plantaNombre + "</th></tr>";
                     rowT += "<tr><th>Macrotema</th><th>Si</th><th>No</th><th>Aspecto de mejora</th></tr>";
                     var row = "";
                     
@@ -159,17 +171,21 @@
                         if (evaluacion[i].Cumple == "S") {
                             row += "<td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' checked/></td><td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' /></td><td><a href='#' onclick='hallazgo(" + evaluacion[i].id_Macrotema + ");'>Aspecto de mejora</a></td></tr>";
                             rowM += "<td>X</td><td></td><td>-</td></tr>";
+                            siCumple++;
                         } else {
                             row += "<td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' /></td><td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' checked /></td><td><a href='#' onclick='hallazgo(" + evaluacion[i].id_Macrotema + ");'>Aspecto de mejora</a></td></tr>";
                             rowM += "<td></td><td>X</td><td>Aspecto de mejora " + numHallazgo + "</td></tr>";
                             if (evaluacion[i].Estado == "A") {
                                 HallazgosEval += "<p class='text-danger'>Aspecto de mejora " + numHallazgo + " (" + evaluacion[i].Referencia + "): " + evaluacion[i].Hallazgo + "</p>";
-                            }else{
+                                hallazgosPendientes++;
+                            } else {
                                 HallazgosEval += "<p class='text-success'>Aspecto de mejora " + numHallazgo + " (" + evaluacion[i].Referencia + "): " + evaluacion[i].Hallazgo + "</p>";
+                                hallazgosResuelto++;
                             }
                             var hallazgo = { Id: evaluacion[i].id_Macrotema, Descripcion: evaluacion[i].Hallazgo, Referencia: evaluacion[i].Referencia };
                             hallazgos.push(hallazgo);
                             numHallazgo++;
+                            noCumple++;
                         }
                     }
                     $("#titulos").html(rowT);
@@ -179,15 +195,60 @@
                     $('#HallazgoTextArea').html(HallazgosEval)
                     document.getElementById("spanFecha").innerHTML = "";
                     document.getElementById('Imprimir').style.display = "";
+
+                    graficoEvaluacion();
                 },
                 error: function (ex) {
                     alert('Fallo al cargar la evaluacion.' + ex);
                 }
             });
+
         } else {
             document.getElementById("spanFecha").innerHTML = "Se requiere una fecha para cargar la evaluación";
         }//if-else para validar los campos planta, inspeccion, fecha
     }//cargarEvaluacion
+
+    function graficoEvaluacion() {
+        document.getElementById('Graficos').style.display = "flex";
+        new Chart(document.getElementById("doughnut-evaluacion"), {
+            type: 'doughnut',
+            data: {
+                labels: ["Si cumplen", "No cumplen"],
+                datasets: [
+                  {
+                      label: "Cumplimiento (porcentaje)",
+                      backgroundColor: ["#0174DF", "#DF0101"],
+                      data: [siCumple, noCumple]
+                  }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Evaluación'
+                }
+            }
+        });
+        new Chart(document.getElementById("doughnut-hallazgos"), {
+            type: 'doughnut',
+            data: {
+                labels: ["Resueltos", "Pendientes"],
+                datasets: [
+                  {
+                      label: "Cumplimiento (porcentaje)",
+                      backgroundColor: ["#0174DF", "#DF0101"],
+                      data: [hallazgosResuelto, hallazgosPendientes]
+                  }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Hallazgos'
+                }
+            }
+        });
+    }//graficoEvaluacion
 
     function hallazgo(criterio) {
         var seleccion = $('input[name=' + criterio + ']:checked').val();
