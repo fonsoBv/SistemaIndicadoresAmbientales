@@ -20,6 +20,11 @@
                     TempData.Remove("error");
                     <spam class="text-danger">Error al registrar</spam>
                 }
+                @if (TempData["errU"] != null)
+                {
+                    TempData.Remove("error");
+                    <spam class="text-danger">Error de acceso</spam>
+                }
             </div>
         </div>
     <div class="Formulario">

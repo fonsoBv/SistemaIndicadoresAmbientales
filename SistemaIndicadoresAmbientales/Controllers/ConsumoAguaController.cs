@@ -17,8 +17,14 @@ namespace SistemaIndicadoresAmbientales.Controllers
             PlantaModel planta = new PlantaModel();
             string email = Session["email"].ToString();
             int id_planta = planta.obtenerUsuarioPlanta(email);
+            if (id_planta != -1) { 
             ViewData["Hidros"] = hidroModel.obtenerHidrometrosPorPlanta(id_planta);
             return View();
+            }else
+            {
+                TempData["success"] = "errU";
+                return View();
+            }
         }//end mostrar vista
 
         public JsonResult ResgistrarConsumoAguaView(List<ConsumoAgua> consumo)

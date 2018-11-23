@@ -21,62 +21,62 @@
                 <spam class="text-danger">Error al actualizar</spam>
             }
         </div>
-      </div>
-      <div id="Formulario">
-            <div class="Formulario">
-                @Html.Label("Mes del Consumo:", htmlAttributes: new { @class = "control-label" })
-                @{
-                    <input type="hidden" value="" name="cantidadConsumos" id="cantidadConsumos" />
+    </div>
+    <div id="Formulario">
+        <div class="Formulario">
+            @Html.Label("Mes del Consumo:", htmlAttributes: new { @class = "control-label" })
+            @{
+                <input type="hidden" value="" name="cantidadConsumos" id="cantidadConsumos" />
                     <input type="hidden" value="@ViewData["MesAnterior"]" id="MesAnterior" name="MesAnterior" />
-                }
-                <select name="Mes" id="Mes" class="form-control">
-                    <option value="01">Enero</option>
-                    <option value="02">Febrero</option>
-                    <option value="03">Marzo</option>
-                    <option value="04">Abril</option>
-                    <option value="05">Mayo</option>
-                    <option value="06">Junio</option>
-                    <option value="07">Julio</option>
-                    <option value="08">Agosto</option>
-                    <option value="09">Setiembre</option>
-                    <option value="10">Octubre</option>
-                    <option value="11">Noviembre</option>
-                    <option value="12">Diciembre</option>
-                </select>
-                <script>
+            }
+            <select name="Mes" id="Mes" class="form-control">
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+            <script>
                     document.getElementById("Mes").value = document.getElementById("MesAnterior").value
-                </script>
+            </script>
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            </div>
-            <div class="Formulario">
-                @Html.Label("Plantas", htmlAttributes: new { @class = "control-label" })
-                @Html.DropDownList("plantas", ViewData["plantas"] as SelectList, new { @class = "form-control" })
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            </div>
-          <div id="Consumos" name="Consumos">
-              <table id="tbConsusmo" class="table">
-                  <tbody id="bodyConsumos">
-                  <thead>
-                  <th>Fecha</th>
-                  <th>Gramos orgánicos</th>
-                  </thead>
-                  </tbody>
-              </table>
-          </div>
-            <div>
-                <br />
-                <div style="text-align: center;">
-                    <input value="Actualizar" id="Actualizar" name="Actualizar" onclick="actualizarConsumoEntrada();" type="button" class="from-control">
-                </div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div class="Formulario">
+            @Html.Label("Plantas", htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownList("plantas", ViewData["plantas"] as SelectList, new { @class = "form-control" })
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div id="Consumos" name="Consumos">
+            <table id="tbConsusmo" class="table">
+                <tbody id="bodyConsumos">
+                <thead>
+                <th>Fecha</th>
+                <th>Gramos orgánicos</th>
+                </thead>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <br />
+            <div style="text-align: center;">
+                <input value="Actualizar" id="Actualizar" name="Actualizar" onclick="actualizarConsumoEntrada();" type="button" class="from-control">
             </div>
         </div>
-        }
+    </div>
+                }
 
-        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-        <script src="~/Scripts/jquery.validate.min.js"></script>
-        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-        <script type="text/javascript">
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript">
             function actualizarConsumoEntrada() {
                 var consumoss = new Array();
                 var cantidad = document.getElementById("cantidadConsumos").value;
@@ -157,6 +157,7 @@
                     }
                 });
             });
-        </script>
+</script>
+
 
 

@@ -15,10 +15,17 @@ namespace SistemaIndicadoresAmbientales.Controllers
         {
             VatihorimetroModel vatiModel = new VatihorimetroModel();
             PlantaModel planta = new PlantaModel();
+
             String email = Session["email"].ToString();
-            int id_planta = planta.obtenerUsuarioPlanta(email);
-            ViewData["Vatis"] = vatiModel.obtenerVatihorimetroPorPlanta(id_planta);
-            return View();
+            if (email != null)
+            {
+                int id_planta = planta.obtenerUsuarioPlanta(email);
+                ViewData["Vatis"] = vatiModel.obtenerVatihorimetroPorPlanta(id_planta);
+                return View();
+            }else
+            {
+                return View();
+            }
         }//
 
         public JsonResult ResgistrarConsumoElectricoView(List<ConsumoElectrico> consumo)

@@ -83,26 +83,34 @@ namespace SistemaIndicadoresAmbientales.Models
             sd.Fill(dt);
             connection.Close();
             DateTime dateTemp = new DateTime();
-            foreach (DataRow dr in dt.Rows){
+            foreach (DataRow dr in dt.Rows)
+            {
 
                 dateTemp = Convert.ToDateTime(dr["Fecha"]).Date;
-                if (dateTemp.Day < 10 && dateTemp.Month < 10){
+                if (dateTemp.Day < 10 && dateTemp.Month < 10)
+                {
 
-                    consumosEntrada.Add(new Entity.ConsumoEntradaActualizar{
+                    consumosEntrada.Add(new Entity.ConsumoEntradaActualizar
+                    {
                         Id_Consumo_Compost_Entrada = Convert.ToInt32(dr["Id_Consumo_Compost"]),
                         Cantidad = Convert.ToInt32(dr["Cantidad"]),
                         Fecha = dateTemp.Year + "-0" + dateTemp.Month + "-0" + dateTemp.Day,
                     });
-                    
-                }else if(dateTemp.Month < 10){
 
-                    consumosEntrada.Add(new Entity.ConsumoEntradaActualizar{
+                }
+                else if (dateTemp.Month < 10)
+                {
+
+                    consumosEntrada.Add(new Entity.ConsumoEntradaActualizar
+                    {
                         Id_Consumo_Compost_Entrada = Convert.ToInt32(dr["Id_Consumo_Compost"]),
                         Cantidad = Convert.ToInt32(dr["Cantidad"]),
                         Fecha = dateTemp.Year + "-0" + dateTemp.Month + "-" + dateTemp.Day,
                     });
 
-                }else if (dateTemp.Day < 10){
+                }
+                else if (dateTemp.Day < 10)
+                {
                     consumosEntrada.Add(new Entity.ConsumoEntradaActualizar
                     {
                         Id_Consumo_Compost_Entrada = Convert.ToInt32(dr["Id_Consumo_Compost"]),
@@ -110,7 +118,9 @@ namespace SistemaIndicadoresAmbientales.Models
                         Fecha = dateTemp.Year + "-" + dateTemp.Month + "-0" + dateTemp.Day,
                     });
 
-                }else {
+                }
+                else
+                {
                     consumosEntrada.Add(new Entity.ConsumoEntradaActualizar
                     {
                         Id_Consumo_Compost_Entrada = Convert.ToInt32(dr["Id_Consumo_Compost"]),

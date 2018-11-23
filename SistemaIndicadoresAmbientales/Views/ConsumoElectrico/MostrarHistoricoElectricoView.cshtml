@@ -58,8 +58,8 @@
                 <th>N° Consumo</th>
                 <th>N° Vatihorimetro</th>
                 <th>Kilowatts</th>
-                <th>Año</th>
                 <th>Mes</th>
+                <th>Año</th>
                 </thead>
                 </tbody>
             </table>
@@ -83,7 +83,7 @@
 
 
     $("#plantas").change(function () {
-    var mes = document.getElementById("Mes").value;
+       var mes = document.getElementById("Mes").value;
         var planta = document.getElementById("plantas").value;
         var anio = document.getElementById("AnioComparar").value;
 
@@ -132,7 +132,6 @@
                             }//end if-else
                         }//end else-if
                     }//end for
-                    body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + ": </th><th>" + CantidadMes + "</th><th></th><th></th></tr>";
 
                     $("#HistoricosBody").html(body);
 
@@ -160,12 +159,12 @@
                         cont = (i + 1);
                         if (cont == consumo.length) {
                             CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th></th><th>"+retornarMES(consumo[i].Mes)+" "+ consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
+                            body += "<tr><th></th><th></th><th>" + CantidadTotal + "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio + "</th></tr>";
                             CantidadTotal = 0;
                         } else {
                             if (consumo[i].Mes != consumo[cont].Mes || consumo[i].Anio != consumo[cont].Anio) {
                                 CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + " " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
+                                body += "<tr><th></th><th></th><th>" + CantidadTotal + "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio + "</th></tr>";
                                 CantidadTotal = 0;
                             } else {
                                 CantidadTotal += consumo[i].Cantidad;
@@ -173,7 +172,6 @@
                             }
                         }
                     }//end for
-                    body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + " " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
 
                     $("#HistoricosBody").html(body);
 
@@ -233,7 +231,6 @@
                             }//end if-else
                         }//end else-if
                     }//end for
-                    body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + ": </th><th>" + CantidadMes + "</th><th></th><th></th></tr>";
 
                     $("#HistoricosBody").html(body);
 
@@ -261,12 +258,12 @@
                         cont = (i + 1);
                         if (cont == consumo.length) {
                             CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th></th><th>"+retornarMES(consumo[i].Mes)+" "+ consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
+                            body += "<tr><th></th><th></th><th>" + CantidadTotal + "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio + "</th></tr>";
                             CantidadTotal = 0;
                         } else {
                             if (consumo[i].Mes != consumo[cont].Mes || consumo[i].Anio != consumo[cont].Anio) {
                                 CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + " " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
+                                body += "<tr><th></th><th></th><th>" + CantidadTotal + "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio + "</th></tr>";
                                 CantidadTotal = 0;
                             } else {
                                 CantidadTotal += consumo[i].Cantidad;
@@ -274,7 +271,6 @@
                             }
                         }
                     }//end for
-                    body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + " " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
 
                     $("#HistoricosBody").html(body);
 
