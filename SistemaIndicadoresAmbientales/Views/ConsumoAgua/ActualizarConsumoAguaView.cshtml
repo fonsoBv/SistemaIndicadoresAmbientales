@@ -9,10 +9,24 @@
         <h1 class="H1-Etiqueta">Actualizar Consumo de Agua</h1>
     </div>
     <div id="Formulario">
+        <div style="margin: 0 auto; width: 25%;">
+            @if (TempData["success"] != null)
+                {
+                    TempData.Remove("success");
+                <spam class="text-success">Consumo actualizado</spam>
+            }
+            @if (TempData["error"] != null)
+                {
+                    TempData.Remove("error");
+                <spam class="text-danger">Error al registrar</spam>
+            }
+        </div>
+    </div>
+    <div id="Formulario">
         <div class="Formulario">
             @Html.Label("Mes del Consumo:", htmlAttributes: new { @class = "control-label" })
             @{
-                <input type="hidden" value="" name="cantidadConsumos" id="cantidadConsumos"/>
+                <input type="hidden" value="" name="cantidadConsumos" id="cantidadConsumos" />
                 <input type="hidden" value="@ViewData["MesAnterior"]" id="MesAnterior" name="MesAnterior" />
             }
             <select name="Mes" id="Mes" class="form-control">
@@ -41,6 +55,14 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
         <div id="Consumos" name="Consumos">
+            <table id="tbConsusmo" class="table">
+                <tbody id="bodyConsumos">
+                <thead>
+                <th>N° Hidrómetro</th>
+                <th>Metros cúbicos</th>
+                </thead>
+                </tbody>
+            </table>
         </div>
         <div>
             <br />
@@ -75,7 +97,7 @@
         xhr.send(dataPost);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                alert(xhr.responseText);
+                window.location.href = 'ActualizarConsumoAguaView';;
             }//end if
         }
     }//end actualizar
@@ -96,22 +118,21 @@
                     var body = "";
                     var cont = 0;
                     for (var i = 0; i < consumo.length ; i++) {
-                        body += "<label class='control-label' name='Num_Hidrometro' id='Num_Hidrometro'>" + consumo[i].Numero_Hidrometro + ": <label/>\n"
-                        body += "<input type='number' value='" + consumo[i].Cantidad + "' name='Cantida' id='Cantidad' /> "
-                        body += "<input type='hidden' value='" + consumo[i].Id_Consumo_Agua + "' name='Id_Consumo_Agua' id='Id_Consumo_Agua' /> "
-                        body += "<br>";
+                        body += "<tr><td><label class='control-label' name='Num_Hidrometro' id='Num_Hidrometro'>" + consumo[i].Numero_Hidrometro + ": <label/></td>"
+                        body += "<td><input type='number' value='" + consumo[i].Cantidad + "' name='Cantidad" + i + "' id='Cantidad" + i + "' /></td></tr> "
+                        body += "<input type='hidden' value='" + consumo[i].Id_Consumo_Agua + "' name='Id_Consumo_Agua" + i + "' id='Id_Consumo_Agua" + i + "'/> "
                         cont++;
                     }//
                     document.getElementById("cantidadConsumos").value = cont;
 
-                    $("#Consumos").html(body);
+                    $("#bodyConsumos").html(body);
                 }
             });
 
         });
 
         $("#Mes").change(function () {
-            var mes = document.getElementById("Mes").value;
+               var mes = document.getElementById("Mes").value;
             var planta = document.getElementById("plantas").value;
             var datos = { "mes": mes, "planta": planta };
 
@@ -125,15 +146,14 @@
                     var body = "";
                     var cont = 0;
                     for (var i = 0; i < consumo.length ; i++) {
-                        body += "<br>\n";
-                        body += "<label class='control-label' name='Num_Hidrometro' id='Num_Hidrometro'>" + consumo[i].Numero_Hidrometro + ": <label/>\n"
-                        body += "<input type='number' value='" + consumo[i].Cantidad + "' name='Cantidad" + i + "' id='Cantidad" + i + "' /> "
-                        body += "<input type='hidden' value='" + consumo[i].Id_Consumo_Agua + "'name='Id_Consumo_Agua" + i + "' id='Id_Consumo_Agua" + i + "' /> "
-                        body += "<br>\n";
+                        body += "<tr><td><label class='control-label' name='Num_Hidrometro' id='Num_Hidrometro'>"+consumo[i].Numero_Hidrometro+": <label/></td>"
+                        body += "<td><input type='number' value='" + consumo[i].Cantidad + "' name='Cantidad"+i+"' id='Cantidad"+i+"' /></td></tr> "
+                        body += "<input type='hidden' value='" + consumo[i].Id_Consumo_Agua + "' name='Id_Consumo_Agua"+i+"' id='Id_Consumo_Agua"+i+"'/> "
                         cont++;
                     }//
                     document.getElementById("cantidadConsumos").value = cont;
-                    $("#Consumos").html(body);
+
+                    $("#bodyConsumos").html(body);
                 }
             });
         });

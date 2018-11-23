@@ -27,10 +27,16 @@ namespace SistemaIndicadoresAmbientales.Controllers
                 {
                     VatihorimetroModel sdb = new VatihorimetroModel();
                     if (sdb.crearVatihorimetro(vatihorimetro, plantas))
-                    {
-                        ModelState.Clear();
-                    }
-                }
+                        {
+                            TempData["success"] = "true";
+                            return View();
+                        }
+                        else
+                        {
+                            TempData["error"] = "false";
+                            return View();
+                        }
+                }//end if
             }catch { };
 
                 return View();
@@ -46,23 +52,19 @@ namespace SistemaIndicadoresAmbientales.Controllers
 
         public ActionResult EliminarVatihorimetro(int id)
         {
-            try
-            {
+            
                 if (ModelState.IsValid)
                 {
                    VatihorimetroModel sdb = new VatihorimetroModel();
-                    if (sdb.EliminarVatihorimetro(id))
-                    {
-                        ViewBag.AlertMsg = "Eliminada";
-                    }
-                }
-                return RedirectToAction("EliminarVatihorimetroView");
-            }//end try
-            catch
-            {
-                return RedirectToAction("EliminarVatihorimetroView");
-            }//catch
-
+                    if (sdb.EliminarVatihorimetro(id)){
+                        TempData["success"] = "true";
+                        return RedirectToAction("EliminarVatihorimetroView");
+                    }else{
+                        TempData["error"] = "false";
+                        return View();
+                    }//end if-else
+                }//end if
+            return View();
         }//end eliminar varihorimetro
 
     }//end class

@@ -1,4 +1,4 @@
-﻿@model SistemaIndicadoresAmbientales.Entity.ConsumoElectrico
+﻿@model SistemaIndicadoresAmbientales.Entity.ConsumodeAgua
 
 
 @using (Html.BeginForm())
@@ -6,7 +6,21 @@
     @Html.AntiForgeryToken()
 
     <div id="Etiqueta">
-        <h1 class="H1-Etiqueta">Actualizar Consumo Eléctrico</h1>
+        <h1 class="H1-Etiqueta">Actualizar Consumo de Agua</h1>
+    </div>
+    <div id="Formulario">
+        <div style="margin: 0 auto; width: 25%;">
+            @if (TempData["success"] != null)
+                {
+                    TempData.Remove("success");
+                <spam class="text-success">Consumo actualizado</spam>
+            }
+            @if (TempData["error"] != null)
+                {
+                    TempData.Remove("error");
+                <spam class="text-danger">Error al actualizar</spam>
+            }
+        </div>
     </div>
     <div id="Formulario">
         <div class="Formulario">
@@ -41,11 +55,19 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
         <div id="Consumos" name="Consumos">
+            <table id="tbConsusmo" class="table">
+                <tbody id="bodyConsumos">
+                    <thead>
+                        <th>N° Vatihorimetro</th>
+                        <th>Kilowatts</th>
+                    </thead>
+                </tbody>
+            </table>
         </div>
         <div>
             <br />
             <div style="text-align: center;">
-                <input value="Ingresar" id="Actualizar" name="Actualizar" onclick="actualizarConsumoElectrico();" type="button" class="from-control">
+                <input value="Actualizar" id="Actualizar" name="Actualizar" onclick="actualizarConsumoElectrico();" type="button" class="from-control">
             </div>
         </div>
     </div>
@@ -75,14 +97,14 @@
         xhr.send(dataPost);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                alert(xhr.responseText);
+                window.location.href = 'ActualizarConsumoElectricoView';;
+
             }//end if
         }
     }//end actualizar
 
     $("#plantas").change(function () {
-
-            var mes = document.getElementById("Mes").value;
+           var mes = document.getElementById("Mes").value;
             var planta = document.getElementById("plantas").value;
             var datos = { "mes": mes, "planta": planta };
 
@@ -96,22 +118,19 @@
                     var body = "";
                     var cont = 0;
                     for (var i = 0; i < consumo.length ; i++) {
-                        body += "<label class='control-label' name='Num_Vatihorimetro' id='Num_Vatihorimetro'>" + consumo[i].Numero_Vatihorimetro + ": <label/>\n"
-                        body += "<input type='number' value='" + consumo[i].Cantidad + "' name='Cantida" + i + "' id='Cantidad" + i + "' /> "
-                        body += "<input type='hidden' value='" + consumo[i].Id_Consumo_Electrico + "' name='Id_Consumo_Electrico" + i + "' id='Id_Consumo_Electrico" + i + "' /> "
-                        body += "<br>";
+                        body += "<tr><td><label class='control-label' name='Num_Vatihorimetro' id='Num_Vatihorimetro'>" + consumo[i].Numero_Vatihorimetro + ": <label/></td>";
+                        body += "<td><input type='number' value='" + consumo[i].Cantidad + "' name='Cantidad" + i + "' id='Cantidad" + i + "' /></td></tr>\n";
+                        body += "<td><input type='hidden' value='" + consumo[i].Id_Consumo_Electrico + "'name='Id_Consumo_Electrico" + i + "' id='Id_Consumo_Electrico" + i + "' />\n";
                         cont++;
                     }//
                     document.getElementById("cantidadConsumos").value = cont;
-
-                    $("#Consumos").html(body);
+                    $("#bodyConsumos").html(body);
                 }
             });
-
         });
 
         $("#Mes").change(function () {
-             var mes = document.getElementById("Mes").value;
+              var mes = document.getElementById("Mes").value;
             var planta = document.getElementById("plantas").value;
             var datos = { "mes": mes, "planta": planta };
 
@@ -125,15 +144,13 @@
                     var body = "";
                     var cont = 0;
                     for (var i = 0; i < consumo.length ; i++) {
-                        body += "<label class='control-label' name='Num_Vatihorimetro' id='Num_Vatihorimetro'>" + consumo[i].Numero_Vatihorimetro + ": <label/>\n"
-                        body += "<input type='number' value='" + consumo[i].Cantidad + "' name='Cantida" + i + "' id='Cantidad" + i + "' /> "
-                        body += "<input type='hidden' value='" + consumo[i].Id_Consumo_Electrico + "' name='Id_Consumo_Electrico" + i + "' id='Id_Consumo_Electrico" + i + "' /> "
-                        body += "<br>";
+                        body += "<tr><td><label class='control-label' name='Num_Vatihorimetro' id='Num_Vatihorimetro'>" + consumo[i].Numero_Vatihorimetro + ": <label/></td>";
+                        body += "<td><input type='number' value='" + consumo[i].Cantidad + "' name='Cantidad" + i + "' id='Cantidad" + i + "' /></td></tr>\n";
+                        body += "<input type='hidden' value='" + consumo[i].Id_Consumo_Electrico + "' name='Id_Consumo_Electrico" + i + "' id='Id_Consumo_Electrico" + i + "' />";
                         cont++;
                     }//
                     document.getElementById("cantidadConsumos").value = cont;
-
-                    $("#Consumos").html(body); 
+                    $("#bodyConsumos").html(body);
                 }
             });
         });

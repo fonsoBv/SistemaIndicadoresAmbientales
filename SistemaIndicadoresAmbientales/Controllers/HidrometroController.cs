@@ -19,23 +19,22 @@ namespace SistemaIndicadoresAmbientales.Controllers
         [HttpPost]
         public ActionResult RegistrarHidrometroView(Entity.Hidrometro hidrometro, int plantas)
         {
-            try
-            {
-                Models.PlantaModel plantaModel = new Models.PlantaModel();
+                PlantaModel plantaModel = new PlantaModel();
                 ViewData["plantas"] = new SelectList(plantaModel.obtenerPlantas(), "id", "nombre");
                 if (ModelState.IsValid)
                 {
-                    Models.HidrometroModel sdb = new Models.HidrometroModel();
+                HidrometroModel sdb = new HidrometroModel();
                     if (sdb.crearHidrometro(hidrometro, plantas))
                     {
-                        ModelState.Clear();
+                        TempData["success"] = "true";
+                        return RedirectToAction("RegistrarHidrometroView");
+                    }else
+                    {
+                        TempData["success"] = "true";
+                        return View();
                     }
-                }
-            }
-            catch { };
-
-            return View();
-
+                }//end if
+                return View();
         }//insertar
 
         public ActionResult EliminarHidrometroView()

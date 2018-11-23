@@ -24,23 +24,20 @@ namespace SistemaIndicadoresAmbientales.Controllers
         [HttpPost]
         public ActionResult RegistrarPlantaView(Entity.Planta planta)
         {
-            try
-            {
                 if (ModelState.IsValid)
                 {
                     PlantaModel sdb = new PlantaModel();
                     if (sdb.crearPlanta(planta))
                     {
-                        ViewBag.Message = "Planta R";
-                        ModelState.Clear();
+                        TempData["success"] = "true";
+                        return RedirectToAction("RegistrarPlantaView");
+                    }
+                    else
+                    {
+                        TempData["error"] = "false";
                     }
                 }
                 return View();
-            }
-            catch
-            {
-                return View();
-            }
         }//Registrar Planta
 
         public ActionResult EliminarPlanta(int id)
