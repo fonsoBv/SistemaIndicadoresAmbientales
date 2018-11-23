@@ -83,13 +83,15 @@
 
 
     $("#plantas").change(function () {
-
-        var mes = document.getElementById("Mes").value;
+    var mes = document.getElementById("Mes").value;
         var planta = document.getElementById("plantas").value;
         var anio = document.getElementById("AnioComparar").value;
-        var tipo = document.getElementById("tipo").value;
+
+        var anioAnterior = (anio-1);
+        var tipo = $('input[name="tipo"]:checked').val();
+        var tehad = "<th>Id Consumo Electrico</th><th>Número Vathorimetro</th><th>Cantidad</th><th>Fecha</th><th>Mes</th>";
         if (tipo == "Anual") {
-            var datos = { "planta": planta, "anio": anio };
+        var datos = { "planta": planta, "anio": anio };
 
             $.ajax({
                 type: 'POST',
@@ -116,12 +118,12 @@
                         } else {
                             if (consumo[i].Anio != consumo[cont].Anio) {
                                 CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th></th><th>Total " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
+                                body += "<tr><th></th><th>Total "+consumo[i].Anio+": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
                                 CantidadTotal = 0;
                             } else {
                                 if (consumo[i].Mes != consumo[cont].Mes) {
                                     CantidadMes += consumo[i].Cantidad;
-                                    body += "<tr><td></td><td>" + retornarMES(consumo[i].Mes) + ": </td><td>" + CantidadMes + "</td><td></td><td></td></tr>";
+                                    body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + ": </th><th>" + CantidadMes + "</th><th></th><th></th></tr>";
                                     CantidadMes = 0;
                                 } else {
                                     CantidadMes += consumo[i].Cantidad;
@@ -130,13 +132,14 @@
                             }//end if-else
                         }//end else-if
                     }//end for
+                    body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + ": </th><th>" + CantidadMes + "</th><th></th><th></th></tr>";
+
                     $("#HistoricosBody").html(body);
 
                 }//sucess
             });
-
         } else {
-            var datos = { "planta": planta, "mes": mes, "anio": anio };
+            var datos = { "planta": planta,"mes":mes ,"anio": anio };
 
             $.ajax({
                 type: 'POST',
@@ -148,20 +151,33 @@
                     var json = JSON.stringify(consumo);
                     alert(json);
                     var body = "";
+                    var cont = 0;
                     var CantidadTotal = 0;
-                    var bandera = true;
-                    for (var j = 0; j < 1; j++) {
-                        for (var i = 0; i < consumo.length; i++) {
-                            body += "<tr><td>" + consumo[i].Id_Consumo_Electrico + "</td><td>" + consumo[i].Numero_Vatihorimetro +
-                                "</td><td>" + consumo[i].Cantidad + "</td><td>" + consumo[i].Anio + "</td>" +
-                                "<td>" + retornarMES(consumo[i].Mes) + "</td></tr>";
+                    for (var i = 0; i < consumo.length; i++) {
+                        body += "<tr><td>" + consumo[i].Id_Consumo_Electrico + "</td><td>" + consumo[i].Numero_Vatihorimetro +
+                            "</td><td>" + consumo[i].Cantidad + " </td><td></td>" +
+                            "<td></td></tr>";
+                        cont = (i + 1);
+                        if (cont == consumo.length) {
                             CantidadTotal += consumo[i].Cantidad;
-                        }//end for
-                    }
-                    body += "<thead><td></td><td>Cantidad Total: </td><td>" + CantidadTotal + "</td><td></td><td></td></tr></thead>";
+                            body += "<tr><th></th><th>"+retornarMES(consumo[i].Mes)+" "+ consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
+                            CantidadTotal = 0;
+                        } else {
+                            if (consumo[i].Mes != consumo[cont].Mes || consumo[i].Anio != consumo[cont].Anio) {
+                                CantidadTotal += consumo[i].Cantidad;
+                                body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + " " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
+                                CantidadTotal = 0;
+                            } else {
+                                CantidadTotal += consumo[i].Cantidad;
+
+                            }
+                        }
+                    }//end for
+                    body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + " " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
 
                     $("#HistoricosBody").html(body);
-                }
+
+                }//sucess
             });
         }//end if-else
     });
@@ -208,7 +224,7 @@
                             } else {
                                 if (consumo[i].Mes != consumo[cont].Mes) {
                                     CantidadMes += consumo[i].Cantidad;
-                                    body += "<tr><td></td><td>" + retornarMES(consumo[i].Mes) + ": </td><td>" + CantidadMes + "</td><td></td><td></td></tr>";
+                                    body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + ": </th><th>" + CantidadMes + "</th><th></th><th></th></tr>";
                                     CantidadMes = 0;
                                 } else {
                                     CantidadMes += consumo[i].Cantidad;
@@ -217,6 +233,8 @@
                             }//end if-else
                         }//end else-if
                     }//end for
+                    body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + ": </th><th>" + CantidadMes + "</th><th></th><th></th></tr>";
+
                     $("#HistoricosBody").html(body);
 
                 }//sucess
@@ -238,8 +256,8 @@
                     var CantidadTotal = 0;
                     for (var i = 0; i < consumo.length; i++) {
                         body += "<tr><td>" + consumo[i].Id_Consumo_Electrico + "</td><td>" + consumo[i].Numero_Vatihorimetro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td>" + consumo[i].Anio + "</td>" +
-                            "<td>" + retornarMES(consumo[i].Mes) + "</td></tr>";
+                            "</td><td>" + consumo[i].Cantidad + " </td><td></td>" +
+                            "<td></td></tr>";
                         cont = (i + 1);
                         if (cont == consumo.length) {
                             CantidadTotal += consumo[i].Cantidad;
@@ -256,6 +274,8 @@
                             }
                         }
                     }//end for
+                    body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + " " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
+
                     $("#HistoricosBody").html(body);
 
                 }//sucess
