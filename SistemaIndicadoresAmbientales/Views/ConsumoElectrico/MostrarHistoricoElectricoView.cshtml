@@ -108,8 +108,8 @@
                     var CantidadMes = 0;
                     for (var i = 0; i < consumo.length; i++) {
                         body += "<tr><td>" + consumo[i].Id_Consumo_Electrico + "</td><td>" + consumo[i].Numero_Vatihorimetro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td>" + consumo[i].Anio + "</td>" +
-                            "<td>" + retornarMES(consumo[i].Mes) + "</td></tr>";
+                            "</td><td>" + consumo[i].Cantidad + " </td><td></td>" +
+                            "<td></td></tr>";
                         cont = (i + 1);
                         if (cont == consumo.length) {
                             CantidadTotal += consumo[i].Cantidad;
@@ -209,8 +209,8 @@
                     var CantidadMes = 0;
                     for (var i = 0; i < consumo.length; i++) {
                         body += "<tr><td>" + consumo[i].Id_Consumo_Electrico + "</td><td>" + consumo[i].Numero_Vatihorimetro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td>" + consumo[i].Anio + "</td>" +
-                            "<td>" + retornarMES(consumo[i].Mes) + "</td></tr>";
+                            "</td><td>" + consumo[i].Cantidad + " </td><td></td>" +
+                            "<td></td></tr>";
                         cont = (i + 1);
                         if (cont == consumo.length) {
                             CantidadTotal += consumo[i].Cantidad;
