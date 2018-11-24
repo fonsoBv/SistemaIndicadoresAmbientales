@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<SistemaIndicadoresAmbientales.Entity.ConsumoCombustible>
 
+<div id="Etiqueta">
+    <h1 class="H1-Etiqueta">Consumos de Combustible (Equipo Menor)</h1>
+</div>
+
 <p>
-    @Html.ActionLink("Agregar nuevo consumo", "RegistrarConsumo")
+    @Html.ActionLink("Vehiculos", "ListarConsumoCombustibleVehiculos")
 </p>
 <table class="table">
     <tr>
@@ -43,9 +47,9 @@
                 @Html.DisplayFor(modelItem => item.fecha_registro)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @*@Html.ActionLink("Editar", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                @*@Html.ActionLink("Detalles", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Eliminar", "Delete", new { /* id=item.PrimaryKey */ })*@
             </td>
         </tr>
     }
