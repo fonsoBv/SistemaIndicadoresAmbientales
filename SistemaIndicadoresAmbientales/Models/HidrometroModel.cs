@@ -85,7 +85,6 @@ namespace SistemaIndicadoresAmbientales.Models
                      {
                          Id_Hidrometro = Convert.ToInt32(dr["Id_Hidrometro"]),
                          Numero_Hidrometro = Convert.ToInt32(dr["Numero_Hidrometro"]),
-                         NISE = Convert.ToInt32(dr["NISE"]),
                          Id_Planta = Convert.ToInt32(dr["Id_Planta"])
                      });
             }//end foreach
