@@ -15,14 +15,13 @@ namespace SistemaIndicadoresAmbientales.Controllers
         {
             Models.HidrometroModel hidroModel = new Models.HidrometroModel();
             PlantaModel planta = new PlantaModel();
-            string email = Session["email"].ToString();
-            int id_planta = planta.obtenerUsuarioPlanta(email);
-            if (id_planta != -1) { 
-            ViewData["Hidros"] = hidroModel.obtenerHidrometrosPorPlanta(id_planta);
-            return View();
-            }else
+            String email = Session["email"].ToString();
+            if (email != null)
             {
-                TempData["success"] = "errU";
+                int id_planta = planta.obtenerUsuarioPlanta(email);
+                ViewData["Hidros"] = hidroModel.obtenerHidrometrosPorPlanta(id_planta);
+                return View();
+            }else{
                 return View();
             }
         }//end mostrar vista

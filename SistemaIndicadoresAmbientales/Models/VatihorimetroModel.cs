@@ -27,6 +27,8 @@ namespace SistemaIndicadoresAmbientales.Models
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Numero_Vatihorimetro", vatihorimetro.Numero_Vatihorimetro);
             cmd.Parameters.AddWithValue("@Id_Planta", planta);
+            cmd.Parameters.AddWithValue("@EstadoBl", "A");
+
 
             connection.Open();
             int i = cmd.ExecuteNonQuery();

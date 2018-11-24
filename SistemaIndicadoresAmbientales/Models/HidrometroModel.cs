@@ -25,6 +25,8 @@ namespace SistemaIndicadoresAmbientales.Models
             cmd.Parameters.AddWithValue("@Numero_Hidrometro", hidrometro.Numero_Hidrometro);
             cmd.Parameters.AddWithValue("@NISE", hidrometro.NISE);
             cmd.Parameters.AddWithValue("@Id_Planta", planta);
+            cmd.Parameters.AddWithValue("@EstadoBl", "A");
+
 
             connection.Open();
             int i = cmd.ExecuteNonQuery();

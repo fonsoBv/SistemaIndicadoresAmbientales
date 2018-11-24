@@ -23,6 +23,7 @@ namespace SistemaIndicadoresAmbientales.Controllers
             {
                 Models.PlantaModel plantaModel = new Models.PlantaModel();
                 ViewData["plantas"] = new SelectList(plantaModel.obtenerPlantas(), "id", "nombre");
+                
                 if (ModelState.IsValid)
                 {
                     VatihorimetroModel sdb = new VatihorimetroModel();
