@@ -1,58 +1,108 @@
 ﻿@model SistemaIndicadoresAmbientales.Entity.ConsumoElectrico
-@using Microsoft.AspNet.Identity
-@using (Html.BeginForm()) 
+
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
     <div id="Formulario">
         <div id="Etiqueta">
             <h1 class="H1-Etiqueta">Registrar Consumo Electrico</h1>
         </div>
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-      
-        <table class="table">
-            @foreach (var item in (ViewData["Vatis"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Vatihorimetro>))
-            {
-                <tr>
-                    <td>
-                        @Html.Label(item.Numero_Vatihorimetro + ":")
-                    </td>
-                    <td>
-                        <input type="hidden" name="tamanio" id="tamanio" value="sizeof(@item)" />
-                        <input type="hidden" value="@item.Id_Vatihorimetro" />
-                        <input type="number" min="0" name="kilowatt" id="kilowatt" />
-                    </td>
-                </tr>
-            }
+        <div id="Formulario">
+            <div style="margin: 0 auto; width: 25%;">
+                @if (TempData["success"] != null)
+                {
+                    TempData.Remove("success");
+                    <spam class="text-success">Consumo registrado</spam>
+                }
+                @if (TempData["error"] != null)
+                {
+                    TempData.Remove("error");
+                    <spam class="text-danger">Error al registrar</spam>
+                }
+                @if (TempData["errU"] != null)
+                {
+                    TempData.Remove("error");
+                    <spam class="text-danger">Error de acceso</spam>
+                }
+            </div>
+        </div>
+        <div class="Formulario">
+            @Html.Label("Mes del Consumo:", htmlAttributes: new { @class = "control-label" })
+            <select name="Mes" id="Mes">
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div class="Formulario">
+            <table class="table">
+                @{
+                    int cont = 0;
+                    foreach (var item in (ViewData["Vatis"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Vatihorimetro>))
+                    {
+                        <tr>
+                            <td>
+                                @Html.Label(item.Numero_Vatihorimetro + ":")
+                            </td>
+                            <td>
+                                <input type="hidden" value="@item.Id_Vatihorimetro" name="id+@cont" id="id+@cont" />
+                                <input type="number" name="k+@cont" id="k+@cont" />
+                            </td>
+                        </tr>
+                        cont++;
+                    }//end for
+                }
             </table>
+            <input type="hidden" value="@cont" id="tamanio" />
+
+        </div>
         <div>
             <div style="text-align: center;">
-                <input value="Ingresar" id="ingresar" name="Registrar" type="submit" class="from-control">
+                <input value="Ingresar" id="ingresar" name="Registrar" type="button" onclick="insertarConsumo();" class="from-control">
             </div>
         </div>
     </div>
-}
-
+                    }
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script>
-    
-   
-   function insertarCOnsumo() {
-        var datos = ViewData["Vatis"];
-        $.ajax({
-            url: 'RegistrarConsumoElectrico/GetRegionesDePaises/',
-            datatType: 'json',
-            data: JSON.stringify(datos),
-            cache: false,
-            type: 'POST',
-            success: function (data) {
+    function insertarConsumo() {
+        var cantidad = document.getElementById("tamanio").value;
+        var json = new Array();
+        consumos = new Array();
+        for (var i = 0; i < cantidad ; i++) {
+            var id = document.getElementById("id+" + i).value;
+            var cant = document.getElementById("k+" + i).value;
+            consumos.push({
+                Id_Vatihorimetro: document.getElementById("id+" + i).value,
+                Cantidad: document.getElementById("k+" + i).value,
+                Mes: document.getElementById("Mes").value,
+
+            });
+        }//
+        var dataPost = JSON.stringify({ consumo: consumos });
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'ResgistrarConsumoElectricoView');
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+        xhr.send(dataPost);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
                 window.location.href = 'RegistrarConsumoElectricoView';;
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                showError(xhr.status, xhr.responseText);
-            }
-        });
-    }//insertar
+
+            }//end if
+        }//end function
+    }
+
 </script>

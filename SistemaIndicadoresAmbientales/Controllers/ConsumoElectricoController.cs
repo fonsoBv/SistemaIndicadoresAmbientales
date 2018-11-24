@@ -63,14 +63,9 @@ namespace SistemaIndicadoresAmbientales.Controllers
             PlantaModel planta = new PlantaModel();
             String email = Session["email"].ToString();
             int id_planta = planta.obtenerUsuarioPlanta(email);
-            if (id_planta != -1){
-                TempData["acces"] = "false";
-                return RedirectToAction("");
-            }else{
-                ViewData["plantas"] = new SelectList(palnta.obtenerPlantas(), "id", "nombre");
-                ViewData["MesAnterior"] = (System.DateTime.Now.Month) - 1;
-                return View();
-            }
+            ViewData["plantas"] = new SelectList(palnta.obtenerPlantas(), "id", "nombre");
+            ViewData["MesAnterior"] = (System.DateTime.Now.Month) - 1;
+            return View();
         }//end registrar
 
         public JsonResult obtenerConsumoElectricoActualizar(int mes, int planta)
