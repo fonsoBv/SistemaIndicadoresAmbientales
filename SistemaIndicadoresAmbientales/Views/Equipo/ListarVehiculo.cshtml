@@ -8,9 +8,19 @@
     <h1 class="H1-Etiqueta">Lista de Vehiculos</h1>
 </div>
 
-<p>
-    @Html.ActionLink("Agregar un Equipo o Vehiculo", "RegistrarEquipoView")
-</p>
+
+<div class="col-md-5 bg-info">
+    @Html.Label("Filtrar: ", htmlAttributes: new { @class = "col-md-3" })
+    <p class="col-md-3">
+        @Html.ActionLink("Equipo Menor", "ListarEqMenor")
+    </p>
+    <p class="col-md-3">
+        @Html.ActionLink("Maquinaria", "ListarMaquinaria")
+    </p>
+    <p class="col-md-3">
+        @Html.ActionLink("Volver", "ListarEquipos")
+    </p>
+</div>
 
 <div style="margin: 0 auto; width: 25%;">
     @if (TempData["success"] != null)
@@ -28,7 +38,7 @@
 
 
 <table class="table">
-    
+
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.nombre)
@@ -38,8 +48,8 @@
             @*@Html.DisplayNameFor(model => model.id_activo_placa)*@
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.id_planta)
-        </th>*@
+                @Html.DisplayNameFor(model => model.id_planta)
+            </th>*@
         @*<th>
                 @Html.DisplayNameFor(model => model.)
             </th>*@
@@ -58,8 +68,8 @@
             </td>
 
             @*<td>
-                @Html.DisplayFor(modelItem => item.id_planta)
-            </td>*@
+                    @Html.DisplayFor(modelItem => item.id_planta)
+                </td>*@
 
             <td>
                 @Html.ActionLink("Eliminar", "EliminarVehiculo", new { id = item.id_activo_placa }, new { onclick = "return confirm('Seguro que desea eliminar esta planta: " + item.id_activo_placa + "');" })
@@ -74,3 +84,7 @@
     </tr>
 
 </table>
+
+<p>
+    @Html.ActionLink("Agregar nuevo Elemento", "RegistrarEquipoView")
+</p>

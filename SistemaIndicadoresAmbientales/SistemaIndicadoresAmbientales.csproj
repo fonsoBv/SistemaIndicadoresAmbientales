@@ -275,7 +275,6 @@
     <Content Include="Views\Equipo\ListarEqMenor.cshtml" />
     <Content Include="Views\Equipo\ListarVehiculo.cshtml" />
     <Content Include="Views\Equipo\RegistrarEquipoView.cshtml" />
-    <Content Include="Views\ConsumoCombustible\Index.cshtml" />
     <Content Include="Views\ConsumoCombustible\ListarConsumoCombustibleVehiculos.cshtml" />
     <Content Include="Views\ConsumoCombustible\RegistrarConsumo.cshtml" />
     <Content Include="Views\ConsumoCombustible\RegistrarConsumoEqMenor.cshtml" />
@@ -284,6 +283,12 @@
     <Content Include="Views\ConsumoAgua\ActualizarConsumoAguaView.cshtml" />
     <Content Include="Views\CompostEntrada\ActualizarCompostEntradaView.cshtml" />
     <Content Include="Views\ConsumoElectrico\ActualizarConsumoElectricoView.cshtml" />
+    <Content Include="Views\Equipo\ListarMaquinaria.cshtml" />
+    <Content Include="Views\Equipo\ListarEquipos.cshtml" />
+    <Content Include="Views\ConsumoCombustible\RegistrarConsumoMaquinaria.cshtml" />
+    <Content Include="Views\ConsumoCombustible\ListarConsumoCombustibleMaquinaria.cshtml" />
+    <Content Include="Views\ConsumoCombustible\ListarConsumoCombustible.cshtml" />
+    <Content Include="Views\ConsumoAceite\Index.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

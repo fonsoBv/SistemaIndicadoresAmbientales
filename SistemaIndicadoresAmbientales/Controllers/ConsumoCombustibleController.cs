@@ -10,15 +10,14 @@ namespace SistemaIndicadoresAmbientales.Controllers
 {
     public class ConsumoCombustibleController : Controller
     {
-        // GET: ConsumoCombustible
-        //public ActionResult Index()
-        //{
-        //    ConsumoCombustibleModel inspeccionModel = new ConsumoCombustibleModel();
-        //    ModelState.Clear();
-        //    return View(inspeccionModel.obtenerInspeccion());
-        //}
+        public ActionResult ListarConsumoCombustible()
+        {
+            ConsumoCombustibleModel consumoModel = new ConsumoCombustibleModel();
+            ModelState.Clear();
+            return View(consumoModel.obtenerConsumoCombustible());
+        }//Lista de consumos (TODOS LOS EQUIPOS)
 
-        public ActionResult RegistrarConsumo()
+        public ActionResult RegistrarConsumo()//este registrar es solo para vehiculos
         {
             Models.EquipoModel equipoModel = new Models.EquipoModel();
             ViewData["vehiculos"] = new SelectList(equipoModel.obtenerVehiculos(), "id_activo_placa", "nombre");
@@ -105,6 +104,51 @@ namespace SistemaIndicadoresAmbientales.Controllers
             ModelState.Clear();
             return View(consumoModel.obtenerConsumoCombustibleEqMenor());
         }//Lista de consumos (solo equipo menor)
+
+        
+        public ActionResult RegistrarConsumoMaquinaria()
+        {
+            Models.EquipoModel equipoModel = new Models.EquipoModel();
+            ViewData["maquinarias"] = new SelectList(equipoModel.obtenerMaquinaria(), "id_activo_placa", "nombre");
+            return View();
+        }//end Regisrar un consumo (Maquinaria)
+
+        [HttpPost]
+        public ActionResult RegistrarConsumoMaquinaria(Entity.ConsumoCombustible consumo, string maquinarias)
+        {
+            try
+            {
+                Models.EquipoModel equipoModel = new Models.EquipoModel();
+                ViewData["maquinarias"] = new SelectList(equipoModel.obtenerMaquinaria(), "id_activo_placa", "nombre");
+
+                consumo.fecha_registro = System.DateTime.Now;
+
+                if (ModelState.IsValid)
+                {
+                    Models.ConsumoCombustibleModel sdb = new Models.ConsumoCombustibleModel();
+                    if (sdb.crearConsumoCombustibleMaquinaria(consumo, maquinarias))
+                    {
+                        TempData["success"] = "true";
+                        ModelState.Clear();
+                    }
+                    else
+                    {
+                        TempData["error"] = "false";
+                    }
+                }
+            }
+            catch { };
+
+            return View();
+
+        }//registrar un consumo de combustible para maquinaria
+
+        public ActionResult ListarConsumoCombustibleMaquinaria()
+        {
+            ConsumoCombustibleModel consumoModel = new ConsumoCombustibleModel();
+            ModelState.Clear();
+            return View(consumoModel.obtenerConsumoCombustibleMaquinaria());
+        }//Lista de consumos (solo maquinaria)
 
     }//fin de clase
 }

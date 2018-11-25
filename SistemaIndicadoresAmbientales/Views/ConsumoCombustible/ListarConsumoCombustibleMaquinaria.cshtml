@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<SistemaIndicadoresAmbientales.Entity.ConsumoCombustible>
 
 <div id="Etiqueta">
-    <h1 class="H1-Etiqueta">Consumos de Combustible (Equipo Menor)</h1>
+    <h1 class="H1-Etiqueta">Consumos de Combustible (Maquinaria)</h1>
 </div>
 
 <div class="col-md-5 bg-info">
     @Html.Label("Filtrar: ", htmlAttributes: new { @class = "control-label col-md-3" })
     <p class="col-md-3">
-        @Html.ActionLink("Volver", "ListarConsumoCombustible")
+        @Html.ActionLink("Equipo Menor", "ListarConsumoCombustibleEqMenor")
     </p>
     <p class="col-md-3">
-        @Html.ActionLink("Maquinaria", "ListarConsumoCombustibleMaquinaria")
+        @Html.ActionLink("Volver", "ListarConsumoCombustible")
     </p>
     <p class="col-md-3">
         @Html.ActionLink("Vehiculos", "ListarConsumoCombustibleVehiculos")
@@ -59,9 +59,10 @@
             <td>
                 @*@Html.ActionLink("Editar", "Edit", new { /* id=item.PrimaryKey */ }) |*@
                 @*@Html.ActionLink("Detalles", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Eliminar", "Delete", new { /* id=item.PrimaryKey */ })*@
+                    @Html.ActionLink("Eliminar", "Delete", new { /* id=item.PrimaryKey */ })*@
             </td>
         </tr>
     }
 
 </table>
+
