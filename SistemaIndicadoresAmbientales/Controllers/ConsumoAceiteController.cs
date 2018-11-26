@@ -62,9 +62,9 @@ namespace SistemaIndicadoresAmbientales.Controllers
 
         public ActionResult ListarConsumoAceiteVehiculos()
         {
-            ConsumoCombustibleModel consumoModel = new ConsumoCombustibleModel();
+            ConsumoAceiteModel consumoModel = new ConsumoAceiteModel();
             ModelState.Clear();
-            return View(consumoModel.obtenerConsumoCombustibleVehiculos());
+            return View(consumoModel.obtenerConsumoAceiteVehiculos());
         }//ListarConsumoAceiteVehiculos
 
 
