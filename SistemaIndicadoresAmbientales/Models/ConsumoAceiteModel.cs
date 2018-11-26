@@ -65,7 +65,7 @@ namespace SistemaIndicadoresAmbientales.Models
                         cant_caja = Convert.ToInt32(dr["cant_caja"]),
                         cant_delantera = Convert.ToInt32(dr["cant_delantera"]),
                         cant_trasera = Convert.ToInt32(dr["cant_trasera"]),
-                        @cant_hidraulico = Convert.ToInt32(dr["@cant_hidraulico"]),
+                        cant_hidraulico = Convert.ToInt32(dr["cant_hidraulico"]),
                         factura = Convert.ToString(dr["factura"]),
                         fecha_factura = Convert.ToDateTime(dr["fecha_factura"]),
                         fecha_registro = Convert.ToDateTime(dr["fecha_registro"]),
