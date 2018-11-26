@@ -188,7 +188,7 @@ namespace SistemaIndicadoresAmbientales.Controllers
                         // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                         // await UserManager.SendEmailAsync(user.Id, "Confirmar cuenta", "Para confirmar la cuenta, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
-                        plantaModel.UsuarioPlanta(model.Email, planta, roles);
+                        plantaModel.UsuarioPlanta(model.Email, planta, roles, model.Password);
                         return RedirectToAction("Index", "Home");
                     }
                     AddErrors(result);
@@ -284,6 +284,8 @@ namespace SistemaIndicadoresAmbientales.Controllers
                 var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
                 if (result.Succeeded)
                 {
+                    UsuarioModel usuarioModel = new UsuarioModel();
+                    usuarioModel.actualziarUsuario(model.Email, model.Password);
                     return RedirectToAction("ResetPasswordConfirmation", "Account");
                 }
                 AddErrors(result);

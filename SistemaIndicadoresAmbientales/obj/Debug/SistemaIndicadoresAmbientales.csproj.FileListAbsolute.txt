@@ -429,6 +429,5 @@ C:\Users\ajoha\Documents\Visual Studio 2015\Projects\SistemaIndicadoresAmbiental
 C:\Users\ajoha\Documents\Visual Studio 2015\Projects\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\bin\System.Web.Webpages.Razor.xml
 C:\Users\ajoha\Documents\Visual Studio 2015\Projects\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\bin\System.Web.Helpers.xml
 C:\Users\ajoha\Documents\Visual Studio 2015\Projects\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\bin\System.Web.Mvc.xml
-C:\Users\ajoha\Documents\Visual Studio 2015\Projects\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.csprojResolveAssemblyReference.cache
 C:\Users\ajoha\Documents\Visual Studio 2015\Projects\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.dll
 C:\Users\ajoha\Documents\Visual Studio 2015\Projects\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.pdb
