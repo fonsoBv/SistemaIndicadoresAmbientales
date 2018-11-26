@@ -4,9 +4,19 @@
     <h1 class="H1-Etiqueta">Consumos de Combustible (Vehiculos)</h1>
 </div>
 
-<p>
-    @Html.ActionLink("Equipos Menores", "ListarConsumoCombustibleEqMenor")
-</p>
+<div class="col-md-5 bg-info">
+    @Html.Label("Filtrar: ", htmlAttributes: new { @class = "control-label col-md-3" })
+    <p class="col-md-3">
+        @Html.ActionLink("Equipo Menor", "ListarConsumoCombustibleEqMenor")
+    </p>
+    <p class="col-md-3">
+        @Html.ActionLink("Maquinaria", "ListarConsumoCombustibleMaquinaria")
+    </p>
+    <p class="col-md-3">
+        @Html.ActionLink("Volver", "ListarConsumoCombustible")
+    </p>
+</div>
+
 <table class="table">
     <tr>
         <th>

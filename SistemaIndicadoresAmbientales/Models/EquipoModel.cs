@@ -132,6 +132,32 @@ namespace SistemaIndicadoresAmbientales.Models
             return equiposM;
         }//obtener todas los equipos menores del sistemas.
 
+        public List<Entity.Equipo> obtenerMaquinaria()
+        {
+            List<Entity.Equipo> maquinarias = new List<Entity.Equipo>();
+
+            SqlCommand cmd = new SqlCommand("sp_obtener_maquinarias", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                maquinarias.Add(
+                    new Entity.Equipo
+                    {
+                        nombre = Convert.ToString(dr["nombre"]),
+                        id_activo_placa = Convert.ToString(dr["id_activo_placa"]),
+                        id_planta = Convert.ToInt32(dr["id_planta"])
+                    });
+            }
+            return maquinarias;
+        }//obtener todas la maquinaria del sistema.
+
 
 
         //public Entity.Consumo_Combustible obtenerConsumoCombustible(DateTime fecha, int mes)
@@ -227,6 +253,25 @@ namespace SistemaIndicadoresAmbientales.Models
             else
                 return false;
         }//eliminar equipos menores de la tabla Equipo
+
+        public bool EliminarMaquinaria(string id)
+        {
+            SqlCommand cmd = new SqlCommand("sp_eliminar_maquinaria", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@id_activo_placa", id);
+
+            connection.Open();
+            int i = cmd.ExecuteNonQuery();
+            connection.Close();
+
+            if (i >= 1)
+                return true;
+            else
+                return false;
+        }//eliminar maquinarias de la tabla Equipo
+
+
 
     }
 }

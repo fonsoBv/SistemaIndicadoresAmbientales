@@ -17,9 +17,12 @@ namespace SistemaIndicadoresAmbientales.Controllers
     public class EquipoController : Controller
     {
         // GET: Equipo
-        public ActionResult Index()
+        public ActionResult ListarEquipos()
         {
-            return View();
+            EquipoModel variModel = new EquipoModel();
+            ModelState.Clear();
+
+            return View(variModel.obtenerEquipos());
         }
 
         public ActionResult ListarVehiculo()
@@ -35,7 +38,15 @@ namespace SistemaIndicadoresAmbientales.Controllers
             EquipoModel variModel = new EquipoModel();
             ModelState.Clear();
 
-            return View(variModel.obtenerEquipos());
+            return View(variModel.obtenerEqMenores());
+        }
+
+        public ActionResult ListarMaquinaria()
+        {
+            EquipoModel variModel = new EquipoModel();
+            ModelState.Clear();
+
+            return View(variModel.obtenerMaquinaria());
         }
 
         public ActionResult RegistrarEquipoView()
@@ -114,7 +125,28 @@ namespace SistemaIndicadoresAmbientales.Controllers
                 return RedirectToAction("ListarEqMenor");
             }//catch
 
-        }//end eliminar vehiculo
+        }//end eliminar equipo menor
+
+        public ActionResult EliminarMaquinaria(string id)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    EquipoModel sdb = new EquipoModel();
+                    if (sdb.EliminarMaquinaria(id))
+                    {
+                        ViewBag.AlertMsg = "Equipo Eliminado";
+                    }
+                }
+                return RedirectToAction("ListarMaquinaria");
+            }//end try
+            catch
+            {
+                return RedirectToAction("ListarMaquinaria");
+            }//catch
+
+        }//end eliminar maquinaria
 
     }//fin de clase
 }//fin del namespace

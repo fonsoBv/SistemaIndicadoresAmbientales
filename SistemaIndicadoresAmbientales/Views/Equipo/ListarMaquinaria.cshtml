@@ -1,38 +1,34 @@
 ﻿@model IEnumerable<SistemaIndicadoresAmbientales.Entity.Equipo>
 
-@{
-    ViewBag.Title = "Index";
-}
 
 <div id="Etiqueta">
-    <h1 class="H1-Etiqueta">Equipos Menores</h1>
+    <h1 class="H1-Etiqueta">Lista de Maquinaria</h1>
+</div>
+
+<div class="col-md-5 bg-info">
+    @Html.Label("Filtrar: ", htmlAttributes: new { @class = "control-label col-md-3" })
+    <p class="col-md-3">
+        @Html.ActionLink("Equipo Menor", "ListarEqMenor")
+    </p>
+    <p class="col-md-3">
+        @Html.ActionLink("Volver", "ListarEquipos")
+    </p>
+    <p class="col-md-3">
+        @Html.ActionLink("Vehiculos", "ListarVehiculo")
+    </p>
 </div>
 
 <div style="margin: 0 auto; width: 25%;">
     @if (TempData["success"] != null)
     {
         TempData.Remove("success");
-        <spam class="text-success">Equipo Menor Eliminado satisfactoriamente.</spam>
+        <spam class="text-success">Vehiculo Eliminado satisfactoriamente.</spam>
     }
     @if (TempData["error"] != null)
     {
         TempData.Remove("error");
-        <spam class="text-danger">Error! No se pudo eliminar el Equipo Menor</spam>
+        <spam class="text-danger">Error! No se pudo eliminar el vehiculo</spam>
     }
-</div>
-
-
-<div class="col-md-5 bg-info">
-    @Html.Label("Filtrar: ", htmlAttributes: new { @class = "control-label col-md-3" })
-    <p class="col-md-3">
-        @Html.ActionLink("Volver", "ListarEquipos")
-    </p>
-    <p class="col-md-3">
-        @Html.ActionLink("Maquinaria", "ListarMaquinaria")
-    </p>
-    <p class="col-md-3">
-        @Html.ActionLink("Vehiculos", "ListarVehiculo")
-    </p>
 </div>
 
 <table class="table">
@@ -41,12 +37,12 @@
             @Html.DisplayNameFor(model => model.nombre)
         </th>
         <th>
-            <label for="id_activo_placa">No. Activo</label>
+            <label for="id_activo_placa">No. Placa</label>
             @*@Html.DisplayNameFor(model => model.id_activo_placa)*@
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.id_planta)
-        </th>*@
+                @Html.DisplayNameFor(model => model.id_planta)
+            </th>*@
         @*<th>
                 @Html.DisplayNameFor(model => model.)
             </th>*@
@@ -65,11 +61,11 @@
             </td>
 
             @*<td>
-                @Html.DisplayFor(modelItem => item.id_planta)
-            </td>*@
+                    @Html.DisplayFor(modelItem => item.id_planta)
+                </td>*@
 
             <td>
-                @Html.ActionLink("Eliminar", "EliminarEqMenor", new { id = item.id_activo_placa }, new { onclick = "return confirm('Seguro que desea eliminar esta planta: " + item.id_activo_placa + "');" })
+                @Html.ActionLink("Eliminar", "EliminarMaquinaria", new { id = item.id_activo_placa }, new { onclick = "return confirm('Seguro que desea eliminar esta planta: " + item.id_activo_placa + "');" })
             </td>
         </tr>
     }
@@ -81,8 +77,6 @@
     </tr>
 
 </table>
-
-
 <p>
     @Html.ActionLink("Agregar nuevo Elemento", "RegistrarEquipoView")
 </p>

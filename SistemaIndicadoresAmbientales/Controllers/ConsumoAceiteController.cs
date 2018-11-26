@@ -11,10 +11,10 @@ namespace SistemaIndicadoresAmbientales.Controllers
     public class ConsumoAceiteController : Controller
     {
         //// GET: ConsumoAceite
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
+        public ActionResult Index()
+        {
+            return View();
+        }
 
         public ActionResult RegistrarConsumoVehiculo()
         {
