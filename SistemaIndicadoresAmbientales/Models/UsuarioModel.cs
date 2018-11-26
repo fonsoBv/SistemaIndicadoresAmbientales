@@ -56,7 +56,7 @@ namespace SistemaIndicadoresAmbientales.Models
                 usuarios.Add(
                    new Entity.Usuario
                    {
-                       Nombre = Convert.ToString(dr["Nombre"]),
+                       Nombre = Convert.ToString(dr["UserName"]),
                        Correo = Convert.ToString(dr["Correo"]),
                        Contrasena = Convert.ToString(dr["Contrasena"])
                    });

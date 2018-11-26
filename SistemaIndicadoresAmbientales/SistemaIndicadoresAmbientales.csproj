@@ -213,6 +213,10 @@
     <Content Include="Public\images\img_planta_1.jpg" />
     <Content Include="Public\images\img_planta_10.JPG" />
     <Content Include="Public\images\img_planta_11.JPG" />
+    <Content Include="Public\images\img_planta_12.jpg" />
+    <Content Include="Public\images\img_planta_13.jpg" />
+    <Content Include="Public\images\img_planta_14.jpg" />
+    <Content Include="Public\images\img_planta_15.jpg" />
     <Content Include="Public\images\img_planta_2.jpg" />
     <Content Include="Public\images\img_planta_3.jpg" />
     <Content Include="Public\images\img_planta_4.jpg" />
