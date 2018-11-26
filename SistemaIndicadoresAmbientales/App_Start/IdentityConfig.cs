@@ -16,6 +16,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using SistemaIndicadoresAmbientales.Models;
+using System.Net.Mail;
 
 namespace SistemaIndicadoresAmbientales
 {
@@ -24,7 +25,26 @@ namespace SistemaIndicadoresAmbientales
         public Task SendAsync(IdentityMessage message)
         {
             // Conecte su servicio de correo electrónico aquí para enviar correo electrónico.
-            return Task.FromResult(0);
+            var envia = "sistemaindicadoresambientales@gmail.com";
+            var user = "sistemaindicadoresambientales@gmail.com";
+            var pass = "SIA_2018";
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(user, pass);
+            SmtpClient client = new SmtpClient()
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = credentials
+            };
+            var email = new MailMessage(envia, message.Destination);
+
+            email.Subject = message.Subject;
+            email.Body = message.Body;
+            email.IsBodyHtml = true;
+
+            return client.SendMailAsync(email);
         }
     }
 
