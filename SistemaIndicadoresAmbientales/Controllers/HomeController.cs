@@ -12,6 +12,18 @@ namespace SistemaIndicadoresAmbientales.Controllers
         public ActionResult Index()
         {
             return View();
-        }
-    }
-}
+        }//Index
+
+        // GET: AcercaDe
+        public ActionResult AcercaDe()
+        {
+            return View();
+        }//AcercaDe
+
+        // GET: Error
+        public ActionResult Error()
+        {
+            return View();
+        }//Error
+    }//class
+}//namespace
