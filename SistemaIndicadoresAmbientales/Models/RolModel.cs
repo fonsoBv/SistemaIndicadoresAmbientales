@@ -43,7 +43,30 @@ namespace SistemaIndicadoresAmbientales.Models
                     });
             }
             return roles;
-        }//obtener todas las plantas del sistemas.
+        }//obtenerRol.
+
+        public string obtenerRolUsuario(string email)
+        {
+            SqlCommand cmd = new SqlCommand("sp_obtenerRolUsuario", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@Email", email);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            string rol = "";
+            foreach (DataRow dr in dt.Rows)
+            {
+                rol = Convert.ToString(dr["Nombre"]);
+            }//foreach
+
+            return rol;
+        }//obtenerRolUsuario.
 
     }//class
 }//namespace

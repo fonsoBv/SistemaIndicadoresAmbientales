@@ -57,304 +57,338 @@
                 <a href="https://www.youtube.com/user/ICEPrensa" class="bt-menu"><img src="~/Public/images/youTubeMobile.png"></a>
 
             </div>
-
-            <nav class="mb">
-                <ul>
-                    <li class="submenu">
-                        <a href="#">Titulo1</a>
-                        <ul class="children">
-                            <li><a href="#">SubTitulo1.1</a></li>
-                        </ul>
-                    </li>
-                    <li class="submenu">
-                        <a href="#">Titulo2</a>
-                        <ul class="children">
-                            <li><a href="#">Subtitulo2.2</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
             <nav id="menu1">
                 <ul>
                     @using Microsoft.AspNet.Identity
-                    @if (Request.IsAuthenticated)
+                    @if (Request.IsAuthenticated && Session["rol"] != null)
                     {
                         @Html.AntiForgeryToken()
                         <li>
                             <a href="#">Indicadores</a>
                             <section class="sect">
-                                <div>
-                                    <label>
-                                        <a href="#">Agua</a>
-                                    </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/ConsumoAgua/RegistrarConsumoAguaView">Insertar</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/ConsumoAgua/ActualizarConsumoAguaView">Actualizar</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/ConsumoAgua/MostrarHistoricoAguaView">Ver Historico</a>
-                                        </li>
-                                    </ul>
-                                </div>
-
+                                @if (!Session["rol"].ToString().Equals("Encargado Fondo de Trabajo"))
+                                {
+                                    <div>
+                                        <label>
+                                            <a href="#">Agua</a>
+                                        </label>
+                                        @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación"))
+                                        {
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/ConsumoAgua/RegistrarConsumoAguaView">Insertar</a>
+                                                </li>
+                                            </ul>
+                                        }
+                                        @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta"))
+                                        {
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/ConsumoAgua/ActualizarConsumoAguaView">Actualizar</a>
+                                                </li>
+                                            </ul>
+                                        }
+                                        @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Gestor Ambiental") || Session["rol"].ToString().Equals("Coordinador de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación"))
+                                        {
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/ConsumoAgua/MostrarHistoricoAguaView">Ver Historico</a>
+                                                </li>
+                                            </ul>
+                                        }
+                                    </div>
+                                }
                                 <div>
                                     <label>
                                         <a href="#">Combustible</a>
                                     </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/ConsumoCombustible/RegistrarConsumo">Nuevo consumo en Vehiculo</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/ConsumoCombustible/RegistrarConsumoEqMenor">Nuevo consumo en Equipo Menor</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/ConsumoCombustible/RegistrarConsumoMaquinaria">Nuevo consumo en Maquinaria</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/ConsumoCombustible/ListarConsumoCombustible">Ver Historico</a>
-                                        </li>
-                                    </ul>
+                                    @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación") || Session["rol"].ToString().Equals("Encargado Fondo de Trabajo"))
+                                    {
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/ConsumoCombustible/RegistrarConsumo">Nuevo consumo en Vehiculo</a>
+                                            </li>
+                                        </ul>
+                                    }
+                                    @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación") || Session["rol"].ToString().Equals("Encargado Fondo de Trabajo"))
+                                    {
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/ConsumoCombustible/RegistrarConsumoEqMenor">Nuevo consumo en Equipo Menor</a>
+                                            </li>
+                                        </ul>
+                                    }
+                                    @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación") || Session["rol"].ToString().Equals("Encargado Fondo de Trabajo"))
+                                    {
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/ConsumoCombustible/RegistrarConsumoMaquinaria">Nuevo consumo en Maquinaria</a>
+                                            </li>
+                                        </ul>
+                                    }
+                                    @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Gestor Ambiental") || Session["rol"].ToString().Equals("Coordinador de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación"))
+                                    {
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/ConsumoCombustible/ListarConsumoCombustible">Ver Historico</a>
+                                            </li>
+                                        </ul>
+                                    }
                                 </div>
 
                                 <div>
                                     <label>
                                         <a href="#">Aceite</a>
                                     </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/ConsumoAceite/Index">Registrar Consumo Nuevo</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="#">Ver Historico</a>
-                                        </li>
-                                    </ul>
+                                    @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación") || Session["rol"].ToString().Equals("Encargado Fondo de Trabajo"))
+                                    {
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/ConsumoAceite/Index">Registrar Consumo Nuevo</a>
+                                            </li>
+                                        </ul>
+                                    }
+                                    @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Gestor Ambiental") || Session["rol"].ToString().Equals("Coordinador de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación"))
+                                    {
+                                        <ul class="children">
+                                            <li>
+                                                <a href="#">Ver Historico</a>
+                                            </li>
+                                        </ul>
+                                    }
                                 </div>
+                                @if (!Session["rol"].ToString().Equals("Encargado Fondo de Trabajo"))
+                                {
+                                    <div>
+                                        <label>
+                                            <a href="#">Compost</a>
+                                        </label>
+                                        @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación"))
+                                        {
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/CompostEntrada/RegistrarCompostEntradaView">Insertar Material Organico</a>
+                                                </li>
+                                            </ul>
+                                        }
+                                        @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta"))
+                                        {
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/CompostEntrada/ActualizarCompostEntradaView">Actualizar Material Organico</a>
+                                                </li>
+                                            </ul>
+                                        }
+                                        @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación"))
+                                        {
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/CompostSalida/RegistrarCompostSalidaView">Insertar Abono</a>
+                                                </li>
+                                            </ul>
+                                        }
+                                        @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta"))
+                                        {
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/CompostSalida/ActualizarCompostSalidaView">Actualizar Abono</a>
+                                                </li>
+                                            </ul>
+                                        }
+                                        @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Gestor Ambiental") || Session["rol"].ToString().Equals("Coordinador de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación"))
+                                        {
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="#">Ver Historico</a>
+                                                </li>
+                                            </ul>
+                                        }
+                                    </div>
 
-                                <div>
-                                    <label>
-                                        <a href="#">Compost</a>
-                                    </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/CompostEntrada/RegistrarCompostEntradaView">Insertar Material Organico</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/CompostEntrada/ActualizarCompostEntradaView">Actualizar Material Organico</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                           <a href="~/CompostSalida/RegistrarCompostSalidaView">Insertar Abono</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/CompostSalida/ActualizarCompostSalidaView">Actualizar Abono</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="#">Ver Historico</a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <label>
-                                        <a href="#">Electricidad</a>
-                                    </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/ConsumoElectrico/RegistrarConsumoElectricoView">Insertar</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/ConsumoElectrico/ActualizarConsumoElectricoView">Actualizar</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/ConsumoElectrico/MostrarHistoricoElectricoView">Ver Historico</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <div>
+                                        <label>
+                                            <a href="#">Electricidad</a>
+                                        </label>
+                                        @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación"))
+                                        {
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/ConsumoElectrico/RegistrarConsumoElectricoView">Insertar</a>
+                                                </li>
+                                            </ul>
+                                        }
+                                        @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta"))
+                                        {
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/ConsumoElectrico/ActualizarConsumoElectricoView">Actualizar</a>
+                                                </li>
+                                            </ul>
+                                        }
+                                        @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Gestor Ambiental") || Session["rol"].ToString().Equals("Coordinador de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación"))
+                                        {
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/ConsumoElectrico/MostrarHistoricoElectricoView">Ver Historico</a>
+                                                </li>
+                                            </ul>
+                                        }
+                                    </div>
+                                }
                             </section>
                         </li>
+                        if (Session["rol"].ToString().Equals("Administrador"))
+                        {
+                            <li>
+                                <a href="#">Evaluaciones</a>
+                                <section class="sect">
+                                    <div>
+                                        <label>
+                                            <a href="#">Administrar</a>
+                                        </label>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Inspeccion/LlenarInspeccionView">Llenar Evaluación</a>
+                                            </li>
+                                        </ul>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Inspeccion/VerInspeccionView">Ver Evaluación</a>
+                                            </li>
+                                        </ul>
+                                    </div>
 
-                        <li>
-                            <a href="#">Evaluaciones</a>
-                            <section class="sect">
-                                <div>
-                                    <label>
-                                        <a href="#">Administrar</a>
-                                    </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Inspeccion/LlenarInspeccionView">Llenar Evaluación</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Inspeccion/VerInspeccionView">Ver Evaluación</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <div>
+                                        <label>
+                                            <a href="#">Evaluación</a>
+                                        </label>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Inspeccion/RegistrarInspeccionView">Insertar Evaluación</a>
+                                            </li>
+                                        </ul>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Inspeccion/EliminarInspeccionView">Eliminar Evaluación</a>
+                                            </li>
+                                        </ul>
+                                    </div>
 
-                                <div>
-                                    <label>
-                                        <a href="#">Evaluación</a>
-                                    </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Inspeccion/RegistrarInspeccionView">Insertar Evaluación</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Inspeccion/EliminarInspeccionView">Eliminar Evaluación</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <div>
+                                        <label>
+                                            <a href="#">Macrotema</a>
+                                        </label>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Criterio/RegistrarCriterioView">Insertar Macrotema</a>
+                                            </li>
+                                        </ul>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Criterio/EliminarCriterioView">Eliminar Macrotema</a>
+                                            </li>
+                                        </ul>
+                                    </div>
 
-                                <div>
-                                    <label>
-                                        <a href="#">Macrotema</a>
-                                    </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Criterio/RegistrarCriterioView">Insertar Macrotema</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Criterio/EliminarCriterioView">Eliminar Macrotema</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <div>
+                                        <label>
+                                            <a href="#">Aspecto de mejora</a>
+                                        </label>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Inspeccion/ActualizarHallazgoView">Actualizar Aspecto de mejora</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </section>
+                            </li>
+                            <li>
+                                <a href="#">Configurar</a>
+                                <section class="sect">
+                                    <div>
+                                        <label>
+                                            <a href="#">Planta</a>
+                                        </label>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Planta/RegistrarPlantaView">Registrar</a>
+                                            </li>
+                                        </ul>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="#">Consultar</a>
+                                            </li>
+                                        </ul>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Planta/EliminarPlantaView">Eliminar</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <a href="#">Usuarios</a>
+                                        </label>
+                                        <ul class="children">
+                                            <li style="float: right;">
+                                                @Html.ActionLink("Insertar Usuario", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
+                                            </li>
+                                        </ul>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Usuario/verUsuarios">Ver Usuarios</a>
+                                            </li>
+                                        </ul>
+                                    </div>
 
-                                <div>
-                                    <label>
-                                        <a href="#">Aspecto de mejora</a>
-                                    </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Inspeccion/ActualizarHallazgoView">Actualizar Aspecto de mejora</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </section>
-                        </li>
-                        <li>
-                            <a href="#">Configurar</a>
-                            <section class="sect">
-                                <div>
-                                    <label>
-                                        <a href="#">Planta</a>
-                                    </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Planta/RegistrarPlantaView">Registrar</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="#">Consultar</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Planta/EliminarPlantaView">Eliminar</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <label>
-                                        <a href="#">Usuarios</a>
-                                    </label>
-                                    <ul class="children">
-                                        <li style="float: right;">
-                                            @Html.ActionLink("Insertar Usuario", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
-                                        </li>
-                                    </ul>
-                                    @*<ul class="children">
-                                        <li>
-                                            <a href="#">Eliminar Usuario</a>
-                                        </li>
-                                    </ul>*@
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Usuario/verUsuarios">Ver Usuarios</a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div>
-                                    <label>
-                                        <a href="#">Equipos</a>
-                                    </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Equipo/RegistrarEquipoView">Agregar Equipo Nuevo</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Equipo/ListarEquipos">Lista de Equipos</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <label>
-                                        <a href="#">Vatihorimetro</a>
-                                    </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Vatihorimetro/RegistrarVatihorimetroView">Insertar</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Vatihorimetro/EliminarVatihorimetroView">Eliminar</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <label>
-                                        <a href="#">Hidrometro</a>
-                                    </label>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Hidrometro/RegistrarHidrometroView">Insertar</a>
-                                        </li>
-                                    </ul>
-                                    <ul class="children">
-                                        <li>
-                                            <a href="~/Hidrometro/EliminarHidrometroView">Eliminar</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </section>
-                        </li>
-
+                                    <div>
+                                        <label>
+                                            <a href="#">Equipos</a>
+                                        </label>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Equipo/RegistrarEquipoView">Agregar Equipo Nuevo</a>
+                                            </li>
+                                        </ul>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Equipo/ListarEquipos">Lista de Equipos</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <a href="#">Vatihorimetro</a>
+                                        </label>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Vatihorimetro/RegistrarVatihorimetroView">Insertar</a>
+                                            </li>
+                                        </ul>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Vatihorimetro/EliminarVatihorimetroView">Eliminar</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <a href="#">Hidrometro</a>
+                                        </label>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Hidrometro/RegistrarHidrometroView">Insertar</a>
+                                            </li>
+                                        </ul>
+                                        <ul class="children">
+                                            <li>
+                                                <a href="~/Hidrometro/EliminarHidrometroView">Eliminar</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </section>
+                            </li>
+                        }
                         <li style="float: right;">
                             @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
                         </li>

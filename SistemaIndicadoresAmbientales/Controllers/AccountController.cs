@@ -93,6 +93,8 @@ namespace SistemaIndicadoresAmbientales.Controllers
                 {
                     case SignInStatus.Success:
                         Session["email"] = model.Email;
+                        RolModel rolModel = new RolModel();
+                        Session["rol"] = rolModel.obtenerRolUsuario(model.Email);
                         return RedirectToLocal(returnUrl);
                     case SignInStatus.LockedOut:
                         return View("Lockout");
