@@ -67,6 +67,51 @@ namespace SistemaIndicadoresAmbientales.Controllers
             return View(consumoModel.obtenerConsumoAceiteVehiculos());
         }//ListarConsumoAceiteVehiculos
 
+        public ActionResult RegistrarConsumoExtraVehiculo()
+        {
+            Models.EquipoModel equipoModel = new Models.EquipoModel();
+            ViewData["vehiculos"] = new SelectList(equipoModel.obtenerVehiculos(), "id_activo_placa", "id_activo_placa");
+            return View();
+        }//Registrar consumo aceite vehiculo
+
+        [HttpPost]
+        public ActionResult RegistrarConsumoExtraVehiculo(Entity.ConsumoAceite consumo, string vehiculos, string cant_motorCBx, string cant_cajaCBx, string cant_delanteraCBx, string cant_traseraCBx, string cant_hidraulicoCBx)
+        {
+            try
+            {
+                Models.EquipoModel equipoModel = new Models.EquipoModel();
+                ViewData["vehiculos"] = new SelectList(equipoModel.obtenerVehiculos(), "id_activo_placa", "id_activo_placa");
+                consumo.id_activo_placa = vehiculos;
+                float constante = 0.946353F;
+
+                //Integro los select list al objeto
+                consumo.cant_motor = float.Parse(cant_motorCBx) * constante;
+                consumo.cant_caja = float.Parse(cant_cajaCBx) * constante;
+                consumo.cant_delantera = float.Parse(cant_delanteraCBx) * constante;
+                consumo.cant_trasera = float.Parse(cant_traseraCBx) * constante;
+                consumo.cant_hidraulico = float.Parse(cant_hidraulicoCBx) * constante;
+
+                consumo.fecha_registro = System.DateTime.Now;
+                if (ModelState.IsValid)
+                {
+                    Models.ConsumoAceiteModel sdb = new Models.ConsumoAceiteModel();
+                    if (sdb.crearConsumoAceiteExtraVehiculo(consumo))
+                    {
+                        TempData["success"] = "true";
+                        ModelState.Clear();
+                    }
+                    else
+                    {
+                        TempData["error"] = "false";
+                    }
+                }
+            }
+            catch { };
+
+            return View();
+
+        }//RegistrarConsumoAceiteVehiculos
+
 
     }//fin de clase
 }
