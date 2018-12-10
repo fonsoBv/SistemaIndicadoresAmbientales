@@ -1,284 +1,296 @@
-﻿@using (Html.BeginForm())
+﻿@if (Session["rol"] != null)
 {
-    @Html.AntiForgeryToken()
+    if (Session["rol"].ToString().Equals("Administrador"))
+    {
+        using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <div id="Etiqueta">
-        <h1 class="H1-Etiqueta">Llenar evaluación</h1>
-    </div>
-    <hr />
-    <div id="Formulario">
-        <div style="margin: 0 auto; width: 25%;">
-            @if (TempData["success"] != null)
-            {
-            TempData.Remove("success");
-            <spam class="text-success">Evaluación gurdada</spam>
-            }
-            @if (TempData["error"] != null)
-            {
-            TempData.Remove("error");
-            <spam class="text-danger">Error al guardar evaluación</spam>
-            }
-        </div>
-        @{
-        int primero = 0;
-        foreach (var planta in (ViewData["plantas"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Planta>
-            ))
-            {
-            if (primero == 0)
-            {
-            <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' checked="checked" />
-            <label class="control-label">@planta.nombre &nbsp;</label>
-            primero++;
-            }
-            else
-            {
-            <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' />
-            <label class="control-label">@planta.nombre &nbsp;</label>
-            }
+            <div class="form-horizontal">
+                <div id="Etiqueta">
+                    <h1 class="H1-Etiqueta">Llenar evaluación</h1>
+                </div>
+                <hr />
+                <div id="Formulario">
+                    <div style="margin: 0 auto; width: 25%;">
+                        @if (TempData["success"] != null)
+                        {
+                            TempData.Remove("success");
+                            <spam class="text-success">Evaluación gurdada</spam>
+                        }
+                        @if (TempData["error"] != null)
+                        {
+                            TempData.Remove("error");
+                            <spam class="text-danger">Error al guardar evaluación</spam>
+                        }
+                    </div>
+                    @{
+                        int primero = 0;
+                        foreach (var planta in (ViewData["plantas"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Planta>
+                            ))
+                        {
+                            if (primero == 0)
+                            {
+                                <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' checked="checked" />
+                                <label class="control-label">@planta.nombre &nbsp;</label>
+                                primero++;
+                            }
+                            else
+                            {
+                                <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' />
+                                <label class="control-label">@planta.nombre &nbsp;</label>
+                            }
 
-            }
-            }
-            <br />
-            <br />
-            <div class="FormularioLlenar">
-                @Html.Label("Evaluaciones", htmlAttributes: new { @class = "control-label" })
-                @Html.DropDownList("inspecciones", ViewData["inspecciones"] as SelectList, new { @class = "form-control" })
-                @Html.Label("Fecha", htmlAttributes: new { @class = "control-label" })
-                <input type="date" id="fecha" name="fecha" class="form-control">
-                <p id="spanFecha" class="text-danger"></p>
-            </div>
-            <table id="tb_Criterios" class="table">
-                <thead>
-                    <tr>
-                        <th style="display:none;">
-                            @Html.DisplayName("ID")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Macrotema")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Si")
-                        </th>
-                        <th>
-                            @Html.DisplayName("No")
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="criterios"></tbody>
-            </table>
-            <p id="spanEvaluacion" class="text-danger"></p>
-            <p id="spanHallazgo" class="text-danger"></p>
-            <div>
-                <div style="text-align: center;">
-                    <input value="Guardar" id="Guardar" name="Guardar" onclick="guardarEvaluacion();" type="button" class="from-control">
+                        }
+                    }
+                    <br />
+                    <br />
+                    <div class="FormularioLlenar">
+                        @Html.Label("Evaluaciones", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownList("inspecciones", ViewData["inspecciones"] as SelectList, new { @class = "form-control" })
+                        @Html.Label("Fecha", htmlAttributes: new { @class = "control-label" })
+                        <input type="date" id="fecha" name="fecha" class="form-control">
+                        <p id="spanFecha" class="text-danger"></p>
+                    </div>
+                    <table id="tb_Criterios" class="table">
+                        <thead>
+                            <tr>
+                                <th style="display:none;">
+                                    @Html.DisplayName("ID")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Macrotema")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Si")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("No")
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="criterios"></tbody>
+                    </table>
+                    <p id="spanEvaluacion" class="text-danger"></p>
+                    <p id="spanHallazgo" class="text-danger"></p>
+                    <div>
+                        <div style="text-align: center;">
+                            <input value="Guardar" id="Guardar" name="Guardar" onclick="guardarEvaluacion();" type="button" class="from-control">
+                        </div>
+                    </div>
                 </div>
             </div>
-    </div>
-</div>
-                }
-<!-- The Modal -->
-<div id="registrarHallazgo" class="modal">
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div id="Etiqueta">
-            <h1 class="H1-Etiqueta">Aspecto de mejora</h1>
-        </div>
-        <hr />
-        <div id="Formulario">
-            <div style="text-align: center;">
-                <input type="hidden" id="idCriterio" name="idCriterio" class="form-control" />
-                @Html.Label("Referencia", htmlAttributes: new { @class = "control-label" })
-                <input type="text" id="referencia" name="referencia" class="form-control" />
-                @Html.Label("Descripción", htmlAttributes: new { @class = "control-label" })
-                <textarea id="descripcion" name="descripcion" rows="10" cols="50" class="form-control" style="resize: none;"></textarea>
-                <p id="spanReferencia" class="text-danger"></p>
-                <p id="spanDescripcion" class="text-danger"></p>
-                <input value="Registrar" id="Registrar" name="Registrar" onclick="guardarHallazgo();" type="button" class="from-control">
-            </div>
-        </div>
-    </div>
-</div>
+                        }
+            <!-- The Modal -->
+                        <div id="registrarHallazgo" class="modal">
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <div id="Etiqueta">
+                                    <h1 class="H1-Etiqueta">Aspecto de mejora</h1>
+                                </div>
+                                <hr />
+                                <div id="Formulario">
+                                    <div style="text-align: center;">
+                                        <input type="hidden" id="idCriterio" name="idCriterio" class="form-control" />
+                                        @Html.Label("Referencia", htmlAttributes: new { @class = "control-label" })
+                                        <input type="text" id="referencia" name="referencia" class="form-control" />
+                                        @Html.Label("Descripción", htmlAttributes: new { @class = "control-label" })
+                                        <textarea id="descripcion" name="descripcion" rows="10" cols="50" class="form-control" style="resize: none;"></textarea>
+                                        <p id="spanReferencia" class="text-danger"></p>
+                                        <p id="spanDescripcion" class="text-danger"></p>
+                                        <input value="Registrar" id="Registrar" name="Registrar" onclick="guardarHallazgo();" type="button" class="from-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script type="text/javascript">
-    //variables
-    var close = document.getElementsByClassName("close")[0];
-    var hallazgos = new Array();
-    var macroTemas = new Array();
+                        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+                        <script src="~/Scripts/jquery.validate.min.js"></script>
+                        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+                        <script type="text/javascript">
+                            //variables
+                            var close = document.getElementsByClassName("close")[0];
+                            var hallazgos = new Array();
+                            var macroTemas = new Array();
 
 
-    $(document).ready(function () {
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("obtenerCriterioInspeccion")',
-            dataType: 'json',
-            data: { id: $("#inspecciones").val() },
+                            $(document).ready(function () {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '@Url.Action("obtenerCriterioInspeccion")',
+                                    dataType: 'json',
+                                    data: { id: $("#inspecciones").val() },
 
-            success: function (criterios) {
-                var row = "";
-                $.each(criterios, function (i, criterio) {
-                    row += "<tr><td style='display:none;'>" + criterio.Value + "</td><td>" + criterio.Text + "</td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='S' class='my_chkBox' /></td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='N' class='my_chkBox' /></td><td><a href='#' onclick='hallazgo(" + criterio.Value + ");'>Aspecto de mejora</a></td></tr>";
-                });
-                $("#criterios").html(row);
-            },
-            error: function (ex) {
-                alert('Fallo al cargar los Macrotemas.' + ex);
-            }
-        });
-        return false;
-    });
+                                    success: function (criterios) {
+                                        var row = "";
+                                        $.each(criterios, function (i, criterio) {
+                                            row += "<tr><td style='display:none;'>" + criterio.Value + "</td><td>" + criterio.Text + "</td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='S' class='my_chkBox' /></td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='N' class='my_chkBox' /></td><td><a href='#' onclick='hallazgo(" + criterio.Value + ");'>Aspecto de mejora</a></td></tr>";
+                                        });
+                                        $("#criterios").html(row);
+                                    },
+                                    error: function (ex) {
+                                        alert('Fallo al cargar los Macrotemas.' + ex);
+                                    }
+                                });
+                                return false;
+                            });
 
-    $(document).ready(function () {
-        $("#inspecciones").change(function () {
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerCriterioInspeccion")',
-                dataType: 'json',
-                data: { id: $("#inspecciones").val() },
+                            $(document).ready(function () {
+                                $("#inspecciones").change(function () {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '@Url.Action("obtenerCriterioInspeccion")',
+                                        dataType: 'json',
+                                        data: { id: $("#inspecciones").val() },
 
-                success: function (criterios) {
-                    var row = "";
-                    $.each(criterios, function (i, criterio) {
-                        row += "<tr><td style='display:none;'>" + criterio.Value + "</td><td>" + criterio.Text + "</td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='S' class='my_chkBox' /></td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='N' class='my_chkBox' /></td><td><a href='#' onclick='hallazgo(" + criterio.Value + ");'>Aspecto de mejora</a></td></tr>";
-                    });
-                    $("#criterios").html(row);
-                },
-                error: function (ex) {
-                    alert('Fallo al cargar los Macrotemas.' + ex);
-                }
-            });
-            return false;
-        })
-    });
+                                        success: function (criterios) {
+                                            var row = "";
+                                            $.each(criterios, function (i, criterio) {
+                                                row += "<tr><td style='display:none;'>" + criterio.Value + "</td><td>" + criterio.Text + "</td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='S' class='my_chkBox' /></td><td><input type='radio' id='" + criterio.Value + "' name='" + criterio.Value + "' value='N' class='my_chkBox' /></td><td><a href='#' onclick='hallazgo(" + criterio.Value + ");'>Aspecto de mejora</a></td></tr>";
+                                            });
+                                            $("#criterios").html(row);
+                                        },
+                                        error: function (ex) {
+                                            alert('Fallo al cargar los Macrotemas.' + ex);
+                                        }
+                                    });
+                                    return false;
+                                })
+                            });
 
-    function hallazgo(criterio) {
-        var seleccion = $('input[name=' + criterio + ']:checked').val();
-        if (seleccion == "N") {
-            document.getElementById('registrarHallazgo').style.display = "block";
-            document.getElementById('idCriterio').value = criterio;
-            for (var j = 0; j < hallazgos.length; j++) {
-                var criterioActual = hallazgos[j].Id;
-                if (criterioActual == criterio) {
-                    document.getElementById('descripcion').value = hallazgos[j].Descripcion;
-                    $("#referencia").val(hallazgos[j].Referencia);
-                }
-            }//for j
-        }//if
-    }//hallazgo
+                            function hallazgo(criterio) {
+                                var seleccion = $('input[name=' + criterio + ']:checked').val();
+                                if (seleccion == "N") {
+                                    document.getElementById('registrarHallazgo').style.display = "block";
+                                    document.getElementById('idCriterio').value = criterio;
+                                    for (var j = 0; j < hallazgos.length; j++) {
+                                        var criterioActual = hallazgos[j].Id;
+                                        if (criterioActual == criterio) {
+                                            document.getElementById('descripcion').value = hallazgos[j].Descripcion;
+                                            $("#referencia").val(hallazgos[j].Referencia);
+                                        }
+                                    }//for j
+                                }//if
+                            }//hallazgo
 
-    close.onclick = function () {
-        document.getElementById('registrarHallazgo').style.display = "none";
-    }//boton de cerrar modal
+                            close.onclick = function () {
+                                document.getElementById('registrarHallazgo').style.display = "none";
+                            }//boton de cerrar modal
 
-    function guardarHallazgo() {
-        var criterio = document.getElementById('idCriterio').value;
-        var descripcion = document.getElementById('descripcion').value;
-        var referencia = document.getElementById('referencia').value;
-        if (descripcion != "" && referencia != "") {
-            document.getElementById('registrarHallazgo').style.display = "none";
-            document.getElementById('descripcion').value = "";
-            document.getElementById('referencia').value = "";
-            var existe = 0;
-            for (var j = 0; j < hallazgos.length; j++) {
-                var criterioActual = hallazgos[j].Id;
-                if (criterioActual == criterio) {
-                    var hallazgo = { Id: criterio, Descripcion: descripcion, Referencia: referencia };
-                    hallazgos[j] = hallazgo;
-                    existe = 1;
-                }
-            }//for j
-            if (existe == 0) {
-                var hallazgo = { Id: criterio, Descripcion: descripcion, Referencia: referencia };
-                hallazgos.push(hallazgo);
-            }//if si es nuevo
-            document.getElementById("spanDescripcion").innerHTML = "";
-            document.getElementById("spanReferencia").innerHTML = "";
-        } else {
-            document.getElementById("spanDescripcion").innerHTML = "Se requiere una descripción para el hallazgo";
-            document.getElementById("spanReferencia").innerHTML = "Se requiere una referencia para el hallazgo";
-        }//if-else
-    }//guardarHallazgo
+                            function guardarHallazgo() {
+                                var criterio = document.getElementById('idCriterio').value;
+                                var descripcion = document.getElementById('descripcion').value;
+                                var referencia = document.getElementById('referencia').value;
+                                if (descripcion != "" && referencia != "") {
+                                    document.getElementById('registrarHallazgo').style.display = "none";
+                                    document.getElementById('descripcion').value = "";
+                                    document.getElementById('referencia').value = "";
+                                    var existe = 0;
+                                    for (var j = 0; j < hallazgos.length; j++) {
+                                        var criterioActual = hallazgos[j].Id;
+                                        if (criterioActual == criterio) {
+                                            var hallazgo = { Id: criterio, Descripcion: descripcion, Referencia: referencia };
+                                            hallazgos[j] = hallazgo;
+                                            existe = 1;
+                                        }
+                                    }//for j
+                                    if (existe == 0) {
+                                        var hallazgo = { Id: criterio, Descripcion: descripcion, Referencia: referencia };
+                                        hallazgos.push(hallazgo);
+                                    }//if si es nuevo
+                                    document.getElementById("spanDescripcion").innerHTML = "";
+                                    document.getElementById("spanReferencia").innerHTML = "";
+                                } else {
+                                    document.getElementById("spanDescripcion").innerHTML = "Se requiere una descripción para el hallazgo";
+                                    document.getElementById("spanReferencia").innerHTML = "Se requiere una referencia para el hallazgo";
+                                }//if-else
+                            }//guardarHallazgo
 
-    function guardarEvaluacion() {
-        var planta = $('input[name="planta"]:checked').val();
-        var evaluacion = $("#inspecciones").val();
-        var fecha = $("#fecha").val();
+                            function guardarEvaluacion() {
+                                var planta = $('input[name="planta"]:checked').val();
+                                var evaluacion = $("#inspecciones").val();
+                                var fecha = $("#fecha").val();
 
-        if (planta != "" && evaluacion != "" && fecha != "") {
-            document.getElementById("spanFecha").innerHTML = "";
-            if (obtenerEvaluacion() == 0) {
-                document.getElementById("spanEvaluacion").innerHTML = "";
-                if (validarHallazgos() == 0) {
-                    document.getElementById("spanHallazgo").innerHTML = "";
-                    guardar(planta, evaluacion, fecha);
-                    macroTemas = new Array();
-                }else{
-                    document.getElementById("spanHallazgo").innerHTML = "Hay Macrotemas que no cumplen que no cuentan con un aspecto de mejora";
-                    macroTemas = new Array();
-                }//if-else para validar que aquellos criterios que no cumplen tenga un hallazgo
-            } else {
-                document.getElementById("spanEvaluacion").innerHTML = "Se requiere que complete toda la evaluación";
-                macroTemas = new Array();
-            }//if-else para validar que la evaluacion esta llena
-        } else {
-            document.getElementById("spanFecha").innerHTML = "Se requiere una fecha para registrar la evaluación";
-        }//if-else para validar los campos planta, inspeccion, fecha
-    }//guardarEvaluacion
+                                if (planta != "" && evaluacion != "" && fecha != "") {
+                                    document.getElementById("spanFecha").innerHTML = "";
+                                    if (obtenerEvaluacion() == 0) {
+                                        document.getElementById("spanEvaluacion").innerHTML = "";
+                                        if (validarHallazgos() == 0) {
+                                            document.getElementById("spanHallazgo").innerHTML = "";
+                                            guardar(planta, evaluacion, fecha);
+                                            macroTemas = new Array();
+                                        } else {
+                                            document.getElementById("spanHallazgo").innerHTML = "Hay Macrotemas que no cumplen que no cuentan con un aspecto de mejora";
+                                            macroTemas = new Array();
+                                        }//if-else para validar que aquellos criterios que no cumplen tenga un hallazgo
+                                    } else {
+                                        document.getElementById("spanEvaluacion").innerHTML = "Se requiere que complete toda la evaluación";
+                                        macroTemas = new Array();
+                                    }//if-else para validar que la evaluacion esta llena
+                                } else {
+                                    document.getElementById("spanFecha").innerHTML = "Se requiere una fecha para registrar la evaluación";
+                                }//if-else para validar los campos planta, inspeccion, fecha
+                            }//guardarEvaluacion
 
-    function obtenerEvaluacion() {
-            var flag = 0;
-            for (var i = 1; i < document.getElementById('tb_Criterios').rows.length; i++) {
-                var id = document.getElementById('tb_Criterios').rows[i].cells[0].innerHTML;
-                var nombre = document.getElementById('tb_Criterios').rows[i].cells[1].innerHTML;
-                var cumple = $('input[name=' + id + ']:checked').val();
-                if (cumple != null) {
-                    var macroTema = { Id: id, Nombre: nombre, Cumple: cumple };
-                    macroTemas.push(macroTema);
-                } else {
-                    i = document.getElementById('tb_Criterios').rows.length;
-                    flag = 1;
-                }
-            }
-            return flag;
-    }//ObtenerEvaluacion
+                            function obtenerEvaluacion() {
+                                var flag = 0;
+                                for (var i = 1; i < document.getElementById('tb_Criterios').rows.length; i++) {
+                                    var id = document.getElementById('tb_Criterios').rows[i].cells[0].innerHTML;
+                                    var nombre = document.getElementById('tb_Criterios').rows[i].cells[1].innerHTML;
+                                    var cumple = $('input[name=' + id + ']:checked').val();
+                                    if (cumple != null) {
+                                        var macroTema = { Id: id, Nombre: nombre, Cumple: cumple };
+                                        macroTemas.push(macroTema);
+                                    } else {
+                                        i = document.getElementById('tb_Criterios').rows.length;
+                                        flag = 1;
+                                    }
+                                }
+                                return flag;
+                            }//ObtenerEvaluacion
 
-    function validarHallazgos() {
-        var flag = 1;
-        var noCumplen = 0;
-        for (var i = 0; i < macroTemas.length; i++) {
-            if (macroTemas[i].Cumple == "N") {
-                noCumplen++;
-            }
-        }//for i
-        if(noCumplen == hallazgos.length){
-            flag = 0;
-        }
-        return flag;
-    }//ObtenerEvaluacion
+                            function validarHallazgos() {
+                                var flag = 1;
+                                var noCumplen = 0;
+                                for (var i = 0; i < macroTemas.length; i++) {
+                                    if (macroTemas[i].Cumple == "N") {
+                                        noCumplen++;
+                                    }
+                                }//for i
+                                if (noCumplen == hallazgos.length) {
+                                    flag = 0;
+                                }
+                                return flag;
+                            }//ObtenerEvaluacion
 
-    function guardar(planta, evaluacion, fecha) {
-        var dataToPost = JSON.stringify({ MacroTemas: macroTemas, Hallazgos: hallazgos, Planta: planta, Evaluacion: evaluacion, Fecha: fecha });
-        $.ajax({
-            type: "POST",
-            url: "/Inspeccion/guardarEvaluacion",
-            contentType: "application/json; charset=utf-8", // specify the content type
-            dataType: 'JSON', // make sure you use the correct case for dataType
-            data: dataToPost,
-            traditional: true,
+                            function guardar(planta, evaluacion, fecha) {
+                                var dataToPost = JSON.stringify({ MacroTemas: macroTemas, Hallazgos: hallazgos, Planta: planta, Evaluacion: evaluacion, Fecha: fecha });
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/Inspeccion/guardarEvaluacion",
+                                    contentType: "application/json; charset=utf-8", // specify the content type
+                                    dataType: 'JSON', // make sure you use the correct case for dataType
+                                    data: dataToPost,
+                                    traditional: true,
 
-            success: function (response) {
-                window.location.href = 'LlenarInspeccionView';
-            },
-            error: function (ex) {
-                alert('Error al guardar evaluación.' + ex);
-            }
-        });
-    }//guardarEvaluacion
+                                    success: function (response) {
+                                        window.location.href = 'LlenarInspeccionView';
+                                    },
+                                    error: function (ex) {
+                                        alert('Error al guardar evaluación.' + ex);
+                                    }
+                                });
+                            }//guardarEvaluacion
 
-</script>
+                        </script>
+                            }
+                            else {
+                                Response.Redirect("~/Home/Error", false);
+                            }//else
+                        }
+                        else {
+                            Response.Redirect("~/Home/Error", false);
+                        }

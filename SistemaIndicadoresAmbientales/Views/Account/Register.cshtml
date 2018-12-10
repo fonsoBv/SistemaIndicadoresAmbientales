@@ -1,65 +1,77 @@
-﻿@model SistemaIndicadoresAmbientales.Models.RegisterViewModel
-
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+﻿@if (Session["rol"] != null)
 {
-    @Html.AntiForgeryToken()
-    <div class="form-horizontal">
-        <div id="Etiqueta">
-            <h1 class="H1-Etiqueta">Insertar Usuario</h1>
-        </div>
-        <hr />
-        <div id="Formulario">
-            @{
-                int primero = 0;
-                foreach (var planta in (ViewData["plantas"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Planta>))
-                {
-                    if (primero == 0)
-                    {
-                        <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' checked="checked" />
-                        <label class="control-label">@planta.nombre &nbsp;</label>
-                        primero++;
+    if (Session["rol"].ToString().Equals("Administrador"))
+    {
+        @model SistemaIndicadoresAmbientales.Models.RegisterViewModel
+
+        using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                <div id="Etiqueta">
+                    <h1 class="H1-Etiqueta">Insertar Usuario</h1>
+                </div>
+                <hr />
+                <div id="Formulario">
+                    @{
+                        int primero = 0;
+                        foreach (var planta in (ViewData["plantas"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Planta>))
+                        {
+                            if (primero == 0)
+                            {
+                                <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' checked="checked" />
+                                <label class="control-label">@planta.nombre &nbsp;</label>
+                                primero++;
+                            }
+                            else
+                            {
+                                <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' />
+                                <label class="control-label">@planta.nombre &nbsp;</label>
+                            }
+                        }
+                        <input type="radio" id="planta" name="planta" value="-1" class='my_chkBox' />
+                        <label class="control-label">Todas &nbsp;</label>
                     }
-                    else
-                    {
-                        <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' />
-                        <label class="control-label">@planta.nombre &nbsp;</label>
-                    }
-                }
-                <input type="radio" id="planta" name="planta" value="-1" class='my_chkBox' />
-                <label class="control-label">Todas &nbsp;</label>
-            }
-            <br />
-            <br />
-            <div class="Formulario">
-                @Html.Label("Roles", htmlAttributes: new { @class = "control-label" })
-                @Html.DropDownList("roles", ViewData["roles"] as SelectList, new { @class = "form-control" })
-            </div>
-            @Html.ValidationSummary("", new { @class = "text-danger" })
-            <div class="Formulario">
-                @Html.LabelFor(m => m.Name, new { @class = "control-label" })
-                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-            </div>
-            <div class="Formulario">
-                @Html.LabelFor(m => m.Email, new { @class = "control-label" })
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-            </div>
-            <div class="Formulario">
-                @Html.LabelFor(m => m.Password, new { @class = "control-label" })
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-            </div>
-            <div class="Formulario">
-                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
-                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-            </div>
-            <div>
-                <div style="text-align: center;">
-                    <input type="submit" class="btn btn-default" value="Registrar" />
+                    <br />
+                    <br />
+                    <div class="Formulario">
+                        @Html.Label("Roles", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownList("roles", ViewData["roles"] as SelectList, new { @class = "form-control" })
+                    </div>
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="Formulario">
+                        @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    </div>
+                    <div class="Formulario">
+                        @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    </div>
+                    <div class="Formulario">
+                        @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    </div>
+                    <div class="Formulario">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    </div>
+                    <div>
+                        <div style="text-align: center;">
+                            <input type="submit" class="btn btn-default" value="Registrar" />
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-}
+                        }
 
-@*@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}*@
+                        @*@section Scripts {
+                                @Scripts.Render("~/bundles/jqueryval")
+                            }*@
+                            }
+                            else {
+                                Response.Redirect("~/Home/Error", false);
+                            }//else
+                        }
+                        else {
+                            Response.Redirect("~/Home/Error", false);
+                        }

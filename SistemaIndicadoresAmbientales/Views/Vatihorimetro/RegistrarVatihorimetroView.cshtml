@@ -1,45 +1,57 @@
-﻿@model SistemaIndicadoresAmbientales.Entity.Vatihorimetro
-
-
-@using (Html.BeginForm())
+﻿@if (Session["rol"] != null)
 {
-    @Html.AntiForgeryToken()
+    if (Session["rol"].ToString().Equals("Administrador"))
+    {
+        @model SistemaIndicadoresAmbientales.Entity.Vatihorimetro
 
-    <div id="Etiqueta">
-        <h1 class="H1-Etiqueta">Registrar Vatihorimetro</h1>
-    </div>
-    <div id="Formulario">
-        <div style="margin: 0 auto; width: 25%;">
-            @if (TempData["success"] != null)
-                {
-                    TempData.Remove("success");
-                <spam class="text-success">Vatihorimetro registrado</spam>
-            }
-            @if (TempData["error"] != null)
-                {
-                    TempData.Remove("error");
-                <spam class="text-danger">Error al registrar</spam>
-            }
-        </div>
-    </div>
-    <div id="Formulario">
-       <div class="Formulario">
-            @Html.LabelFor(model => model.Numero_Vatihorimetro, htmlAttributes: new { @class = "control-label" })
-            @Html.EditorFor(model => model.Numero_Vatihorimetro, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Numero_Vatihorimetro, "", new { @class = "text-danger" })
-        </div>
-        <div class="Formulario">
-            @Html.Label("Plantas", htmlAttributes: new { @class = "control-label" })
-            @Html.DropDownList("plantas", ViewData["plantas"] as SelectList, new { @class = "form-control" })
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        </div>
-        <div>
-            <div style="text-align: center;">
-                <input value="Ingresar" id="ingresar" name="Registrar" type="submit" class="from-control">
+
+        using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div id="Etiqueta">
+                <h1 class="H1-Etiqueta">Registrar Vatihorimetro</h1>
             </div>
-        </div>
-    </div>
+            <div id="Formulario">
+                <div style="margin: 0 auto; width: 25%;">
+                    @if (TempData["success"] != null)
+                    {
+                        TempData.Remove("success");
+                        <spam class="text-success">Vatihorimetro registrado</spam>
+                    }
+                    @if (TempData["error"] != null)
+                    {
+                        TempData.Remove("error");
+                        <spam class="text-danger">Error al registrar</spam>
+                    }
+                </div>
+            </div>
+            <div id="Formulario">
+                <div class="Formulario">
+                    @Html.LabelFor(model => model.Numero_Vatihorimetro, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Numero_Vatihorimetro, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Numero_Vatihorimetro, "", new { @class = "text-danger" })
+                </div>
+                <div class="Formulario">
+                    @Html.Label("Plantas", htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownList("plantas", ViewData["plantas"] as SelectList, new { @class = "form-control" })
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                </div>
+                <div>
+                    <div style="text-align: center;">
+                        <input value="Ingresar" id="ingresar" name="Registrar" type="submit" class="from-control">
+                    </div>
+                </div>
+            </div>
+        }
+        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    }
+    else {
+        Response.Redirect("~/Home/Error", false);
+    }//else
 }
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+else {
+    Response.Redirect("~/Home/Error", false);
+}

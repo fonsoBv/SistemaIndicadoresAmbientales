@@ -1,36 +1,48 @@
-﻿@model IEnumerable<SistemaIndicadoresAmbientales.Entity.Usuario>
+﻿@if (Session["rol"] != null)
+{
+    if (Session["rol"].ToString().Equals("Administrador"))
+    {
+        @model IEnumerable<SistemaIndicadoresAmbientales.Entity.Usuario>
 
-<div id="Etiqueta">
-    <h1 class="H1-Etiqueta">Ver Usuarios</h1>
-</div>
-<div id="Formulario">
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Correo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Contrasena)
-            </th>
-        </tr>
+        <div id="Etiqueta">
+            <h1 class="H1-Etiqueta">Ver Usuarios</h1>
+        </div>
+        <div id="Formulario">
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nombre)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Correo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Contrasena)
+                    </th>
+                </tr>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Correo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Contrasena)
-                </td>
-            </tr>
-        }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Correo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Contrasena)
+                        </td>
+                    </tr>
+                }
 
-    </table>
-</div>
+            </table>
+        </div>
+    }
+    else {
+        Response.Redirect("~/Home/Error", false);
+    }//else
+}
+else {
+    Response.Redirect("~/Home/Error", false);
+}

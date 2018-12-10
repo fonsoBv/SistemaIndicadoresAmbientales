@@ -1,302 +1,314 @@
-﻿@using (Html.BeginForm())
+﻿@if (Session["rol"] != null)
 {
-    @Html.AntiForgeryToken()
+    if (Session["rol"].ToString().Equals("Administrador"))
+    {
+        using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <div id="Etiqueta">
-            <h1 class="H1-Etiqueta">Ver evaluación</h1>
-        </div>
-        <hr />
-        <div id="Formulario">
-            <div style="margin: 0 auto; width: 25%;">
-                <p id="mensaje" class="text-success"></p>
-            </div>
-            @{
-                int primero = 0;
-                foreach (var planta in (ViewData["plantas"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Planta>
-                    ))
-                {
-                    if (primero == 0)
-                    {
-                        <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' checked="checked" />
-                        <label class="control-label">@planta.nombre &nbsp;</label>
-                        primero++;
-                    }
-                    else
-                    {
-                        <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' />
-                        <label class="control-label">@planta.nombre &nbsp;</label>
-                    }
-
-                }
-            }
-            <br />
-            <br />
-            <div class="FormularioLlenar">
-                @Html.Label("Evaluaciones", htmlAttributes: new { @class = "control-label" })
-                @Html.DropDownList("inspecciones", ViewData["inspecciones"] as SelectList, new { @class = "form-control" })
-                @Html.Label("Fecha", htmlAttributes: new { @class = "control-label" })
-                <input type="date" id="fecha" name="fecha" class="form-control">
-                <p id="spanFecha" class="text-danger"></p>
-            </div>
-            <div>
-                <div style="text-align: center;">
-                    <input value="Cargar" id="Cargar" name="Cargar" onclick="cargarEvaluacion();" type="button" class="from-control">
+            <div class="form-horizontal">
+                <div id="Etiqueta">
+                    <h1 class="H1-Etiqueta">Ver evaluación</h1>
                 </div>
-            </div>
-            <table id="tb_Criterios" class="table">
-                <thead>
-                    <tr>
-                        <th style="display:none;">
-                            @Html.DisplayName("ID")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Macrotema")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Si")
-                        </th>
-                        <th>
-                            @Html.DisplayName("No")
-                        </th>
-                        <th>Aspecto de mejora</th>
-                    </tr>
-                </thead>
-                <tbody id="criterios"></tbody>
-            </table>
-            <div id="Graficos" style="width= 100%; display: none;">
-                <div style="width: 50%;">
-                    <canvas id="doughnut-evaluacion" width="600" height="350"></canvas>
-                </div>
-                <div style="width: 50%;">
-                    <canvas id="doughnut-hallazgos" width="600" height="350"></canvas>
-                </div>
-            </div>
-            <div id="pdf" style="display: none;">
-                <div id="Encabezado">
-
-                </div>
-                <table id="tb_Evaluacion" name="tb_Evaluacion" class="table table-bordered">
-                    <thead id="titulos"></thead>
-                    <tbody id="macrotemas"></tbody>
-                </table>
-                <div id="HallazgoTextArea">
-
-                </div>
-            </div>
-            <p id="spanEvaluacion" class="text-danger"></p>
-            <p id="spanHallazgo" class="text-danger"></p>
-            <div>
-                <div style="text-align: center;">
-                    <input value="Exportar" id="Imprimir" name="Imprimir" onclick="javascript:exportarPDF();" type="button" class="from-control" style="display: none;">
-                </div>
-            </div>
-        </div>
-    </div>
-                }
-<!-- The Modal -->
-<div id="registrarHallazgo" class="modal">
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div id="Etiqueta">
-            <h1 class="H1-Etiqueta">Aspecto de mejora</h1>
-        </div>
-        <hr />
-        <div id="Formulario">
-            <div style="text-align: center;">
-                <input type="hidden" id="idCriterio" name="idCriterio" class="form-control" />
-                @Html.Label("Referencia", htmlAttributes: new { @class = "control-label" })
-                <input type="text" id="referencia" name="referencia" class="form-control" disabled/>
-                @Html.Label("Descripción", htmlAttributes: new { @class = "control-label" })
-                <textarea id="descripcion" name="descripcion" rows="10" cols="50" class="form-control" style="resize: none;" disabled></textarea>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script type="text/javascript" src="~/Public/PDF/jspdf.min.js"></script>
-<script type="text/javascript">
-    //variables
-    var close = document.getElementsByClassName("close")[0];
-    var hallazgos = new Array();
-    var macroTemas = new Array();
-    var fecha = "";
-    var selected = "";
-    var plantaNombre = "";
-    var siCumple = 0;
-    var noCumple = 0;
-    var hallazgosResuelto = 0;
-    var hallazgosPendientes = 0;
-
-    function cargarEvaluacion() {
-        document.getElementById("mensaje").innerHTML = "";
-
-        hallazgos = new Array();
-        macroTemas = new Array();
-        fecha = "";
-        selected = "";
-        plantaNombre = "";
-        var HallazgosEval = "";
-
-        var planta = $('input[name="planta"]:checked').val();
-        var evaluacion = $("#inspecciones").val();
-        fecha = $("#fecha").val();
-        var combo = document.getElementById("inspecciones");
-        selected = combo.options[combo.selectedIndex].text;
-
-        if (planta != "" && evaluacion != "" && fecha != "") {
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerEvaluacion")',
-                dataType: 'json',
-                data: { id_inspeccion: $("#inspecciones").val(), id_planta: $('input[name="planta"]:checked').val(), fecha: $("#fecha").val() },
-
-                success: function (evaluacion) {
-                    var rowT = "";
-                    var rowM = "";
-                    plantaNombre = evaluacion[0].NombrePlanta;
-                    var encabezado = "<tr><th>Fecha: " + fecha + "</th><th>Evaluación: " + selected + "</th><th>Planta: " + plantaNombre + "</th></tr>";
-                    rowT += "<tr><th>Macrotema</th><th>Si</th><th>No</th><th>Aspecto de mejora</th></tr>";
-                    var row = "";
-                    
-                    var numHallazgo = 1;
-                    for (var i = 0; i < evaluacion.length; i++) {
-                        row += "<tr><td style='display:none;'>" + evaluacion[i].id_Macrotema + "</td><td>" + evaluacion[i].Macrotema + "</td>";
-                        rowM += "<tr><td>" + evaluacion[i].Macrotema + "</td>";
-                        if (evaluacion[i].Cumple == "S") {
-                            row += "<td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' checked/></td><td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' /></td><td><a href='#' onclick='hallazgo(" + evaluacion[i].id_Macrotema + ");'>Aspecto de mejora</a></td></tr>";
-                            rowM += "<td>X</td><td></td><td>-</td></tr>";
-                            siCumple++;
-                        } else {
-                            row += "<td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' /></td><td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' checked /></td><td><a href='#' onclick='hallazgo(" + evaluacion[i].id_Macrotema + ");'>Aspecto de mejora</a></td></tr>";
-                            rowM += "<td></td><td>X</td><td>Aspecto de mejora " + numHallazgo + "</td></tr>";
-                            if (evaluacion[i].Estado == "A") {
-                                HallazgosEval += "<p class='text-danger'>Aspecto de mejora " + numHallazgo + " (" + evaluacion[i].Referencia + "): " + evaluacion[i].Hallazgo + "</p>";
-                                hallazgosPendientes++;
-                            } else {
-                                HallazgosEval += "<p class='text-success'>Aspecto de mejora " + numHallazgo + " (" + evaluacion[i].Referencia + "): " + evaluacion[i].Hallazgo + "</p>";
-                                hallazgosResuelto++;
+                <hr />
+                <div id="Formulario">
+                    <div style="margin: 0 auto; width: 25%;">
+                        <p id="mensaje" class="text-success"></p>
+                    </div>
+                    @{
+                        int primero = 0;
+                        foreach (var planta in (ViewData["plantas"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Planta>
+                            ))
+                        {
+                            if (primero == 0)
+                            {
+                                <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' checked="checked" />
+                                <label class="control-label">@planta.nombre &nbsp;</label>
+                                primero++;
                             }
-                            var hallazgo = { Id: evaluacion[i].id_Macrotema, Descripcion: evaluacion[i].Hallazgo, Referencia: evaluacion[i].Referencia };
-                            hallazgos.push(hallazgo);
-                            numHallazgo++;
-                            noCumple++;
+                            else
+                            {
+                                <input type="radio" id="planta" name="planta" value="@planta.id" class='my_chkBox' />
+                                <label class="control-label">@planta.nombre &nbsp;</label>
+                            }
+
                         }
                     }
-                    $("#titulos").html(rowT);
-                    $("#macrotemas").html(rowM);
-                    $("#criterios").html(row);
-                    $("#Encabezado").html(encabezado);
-                    $('#HallazgoTextArea').html(HallazgosEval)
-                    document.getElementById("spanFecha").innerHTML = "";
-                    document.getElementById('Imprimir').style.display = "";
+                    <br />
+                    <br />
+                    <div class="FormularioLlenar">
+                        @Html.Label("Evaluaciones", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownList("inspecciones", ViewData["inspecciones"] as SelectList, new { @class = "form-control" })
+                        @Html.Label("Fecha", htmlAttributes: new { @class = "control-label" })
+                        <input type="date" id="fecha" name="fecha" class="form-control">
+                        <p id="spanFecha" class="text-danger"></p>
+                    </div>
+                    <div>
+                        <div style="text-align: center;">
+                            <input value="Cargar" id="Cargar" name="Cargar" onclick="cargarEvaluacion();" type="button" class="from-control">
+                        </div>
+                    </div>
+                    <table id="tb_Criterios" class="table">
+                        <thead>
+                            <tr>
+                                <th style="display:none;">
+                                    @Html.DisplayName("ID")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Macrotema")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Si")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("No")
+                                </th>
+                                <th>Aspecto de mejora</th>
+                            </tr>
+                        </thead>
+                        <tbody id="criterios"></tbody>
+                    </table>
+                    <div id="Graficos" style="width= 100%; display: none;">
+                        <div style="width: 50%;">
+                            <canvas id="doughnut-evaluacion" width="600" height="350"></canvas>
+                        </div>
+                        <div style="width: 50%;">
+                            <canvas id="doughnut-hallazgos" width="600" height="350"></canvas>
+                        </div>
+                    </div>
+                    <div id="pdf" style="display: none;">
+                        <div id="Encabezado">
 
-                    graficoEvaluacion();
-                },
-                error: function (ex) {
-                    alert('Fallo al cargar la evaluacion.' + ex);
-                }
-            });
+                        </div>
+                        <table id="tb_Evaluacion" name="tb_Evaluacion" class="table table-bordered">
+                            <thead id="titulos"></thead>
+                            <tbody id="macrotemas"></tbody>
+                        </table>
+                        <div id="HallazgoTextArea">
 
-        } else {
-            document.getElementById("spanFecha").innerHTML = "Se requiere una fecha para cargar la evaluación";
-        }//if-else para validar los campos planta, inspeccion, fecha
-    }//cargarEvaluacion
+                        </div>
+                    </div>
+                    <p id="spanEvaluacion" class="text-danger"></p>
+                    <p id="spanHallazgo" class="text-danger"></p>
+                    <div>
+                        <div style="text-align: center;">
+                            <input value="Exportar" id="Imprimir" name="Imprimir" onclick="javascript:exportarPDF();" type="button" class="from-control" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        }
+                        <!-- The Modal -->
+                        <div id="registrarHallazgo" class="modal">
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <div id="Etiqueta">
+                                    <h1 class="H1-Etiqueta">Aspecto de mejora</h1>
+                                </div>
+                                <hr />
+                                <div id="Formulario">
+                                    <div style="text-align: center;">
+                                        <input type="hidden" id="idCriterio" name="idCriterio" class="form-control" />
+                                        @Html.Label("Referencia", htmlAttributes: new { @class = "control-label" })
+                                        <input type="text" id="referencia" name="referencia" class="form-control" disabled />
+                                        @Html.Label("Descripción", htmlAttributes: new { @class = "control-label" })
+                                        <textarea id="descripcion" name="descripcion" rows="10" cols="50" class="form-control" style="resize: none;" disabled></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-    function graficoEvaluacion() {
-        document.getElementById('Graficos').style.display = "flex";
-        new Chart(document.getElementById("doughnut-evaluacion"), {
-            type: 'doughnut',
-            data: {
-                labels: ["Si cumplen", "No cumplen"],
-                datasets: [
-                  {
-                      label: "Cumplimiento (porcentaje)",
-                      backgroundColor: ["#0174DF", "#DF0101"],
-                      data: [siCumple, noCumple]
-                  }
-                ]
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: 'Evaluación'
-                }
-            }
-        });
-        new Chart(document.getElementById("doughnut-hallazgos"), {
-            type: 'doughnut',
-            data: {
-                labels: ["Resueltos", "Pendientes"],
-                datasets: [
-                  {
-                      label: "Cumplimiento (porcentaje)",
-                      backgroundColor: ["#0174DF", "#DF0101"],
-                      data: [hallazgosResuelto, hallazgosPendientes]
-                  }
-                ]
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: 'Hallazgos'
-                }
-            }
-        });
-    }//graficoEvaluacion
 
-    function hallazgo(criterio) {
-        var seleccion = $('input[name=' + criterio + ']:checked').val();
-        if (seleccion == "N") {
-            document.getElementById('registrarHallazgo').style.display = "block";
-            document.getElementById('idCriterio').value = criterio;
-            for (var j = 0; j < hallazgos.length; j++) {
-                var criterioActual = hallazgos[j].Id;
-                if (criterioActual == criterio) {
-                    document.getElementById('descripcion').value = hallazgos[j].Descripcion;
-                    $("#referencia").val(hallazgos[j].Referencia);
-                }
-            }//for j
-        }//if
-    }//hallazgo
+                        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+                        <script src="~/Scripts/jquery.validate.min.js"></script>
+                        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+                        <script type="text/javascript" src="~/Public/PDF/jspdf.min.js"></script>
+                        <script type="text/javascript">
+                            //variables
+                            var close = document.getElementsByClassName("close")[0];
+                            var hallazgos = new Array();
+                            var macroTemas = new Array();
+                            var fecha = "";
+                            var selected = "";
+                            var plantaNombre = "";
+                            var siCumple = 0;
+                            var noCumple = 0;
+                            var hallazgosResuelto = 0;
+                            var hallazgosPendientes = 0;
 
-    close.onclick = function () {
-        document.getElementById('registrarHallazgo').style.display = "none";
-    }//boton de cerrar modal
+                            function cargarEvaluacion() {
+                                document.getElementById("mensaje").innerHTML = "";
 
-    function exportarPDF() {
-        document.getElementById('pdf').style.display = "block";
-        var pdf = new jsPDF('p', 'pt', 'letter');
-        source = $('#pdf')[0];
+                                hallazgos = new Array();
+                                macroTemas = new Array();
+                                fecha = "";
+                                selected = "";
+                                plantaNombre = "";
+                                var HallazgosEval = "";
 
-        specialElementHandlers = { 
-            '#bypassme': function (element, renderer) {
-                return true
-            }
-        };
-        margins = {
-            top: 50,
-            bottom: 50,
-            left: 72,
-            width: 500
-        };
+                                var planta = $('input[name="planta"]:checked').val();
+                                var evaluacion = $("#inspecciones").val();
+                                fecha = $("#fecha").val();
+                                var combo = document.getElementById("inspecciones");
+                                selected = combo.options[combo.selectedIndex].text;
 
-        pdf.fromHTML(
-          source,
-          margins.left, 
-          margins.top, {
-              'width': margins.width, 
-              'elementHandlers': specialElementHandlers
-          });
-            
-        pdf.save(fecha + ' - ' + plantaNombre + ' ' + selected + '.pdf');
-        document.getElementById('pdf').style.display = "none";
-        document.getElementById("mensaje").innerHTML = "Evaluación exportada";
-    }//pdf
+                                if (planta != "" && evaluacion != "" && fecha != "") {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '@Url.Action("obtenerEvaluacion")',
+                                        dataType: 'json',
+                                        data: { id_inspeccion: $("#inspecciones").val(), id_planta: $('input[name="planta"]:checked').val(), fecha: $("#fecha").val() },
 
-</script>
+                                        success: function (evaluacion) {
+                                            var rowT = "";
+                                            var rowM = "";
+                                            plantaNombre = evaluacion[0].NombrePlanta;
+                                            var encabezado = "<tr><th>Fecha: " + fecha + "</th><th>Evaluación: " + selected + "</th><th>Planta: " + plantaNombre + "</th></tr>";
+                                            rowT += "<tr><th>Macrotema</th><th>Si</th><th>No</th><th>Aspecto de mejora</th></tr>";
+                                            var row = "";
+
+                                            var numHallazgo = 1;
+                                            for (var i = 0; i < evaluacion.length; i++) {
+                                                row += "<tr><td style='display:none;'>" + evaluacion[i].id_Macrotema + "</td><td>" + evaluacion[i].Macrotema + "</td>";
+                                                rowM += "<tr><td>" + evaluacion[i].Macrotema + "</td>";
+                                                if (evaluacion[i].Cumple == "S") {
+                                                    row += "<td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' checked/></td><td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' /></td><td><a href='#' onclick='hallazgo(" + evaluacion[i].id_Macrotema + ");'>Aspecto de mejora</a></td></tr>";
+                                                    rowM += "<td>X</td><td></td><td>-</td></tr>";
+                                                    siCumple++;
+                                                } else {
+                                                    row += "<td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='S' class='my_chkBox' disabled='true' /></td><td><input type='radio' id='" + evaluacion[i].id_Macrotema + "' name='" + evaluacion[i].id_Macrotema + "' value='N' class='my_chkBox' disabled='true' checked /></td><td><a href='#' onclick='hallazgo(" + evaluacion[i].id_Macrotema + ");'>Aspecto de mejora</a></td></tr>";
+                                                    rowM += "<td></td><td>X</td><td>Aspecto de mejora " + numHallazgo + "</td></tr>";
+                                                    if (evaluacion[i].Estado == "A") {
+                                                        HallazgosEval += "<p class='text-danger'>Aspecto de mejora " + numHallazgo + " (" + evaluacion[i].Referencia + "): " + evaluacion[i].Hallazgo + "</p>";
+                                                        hallazgosPendientes++;
+                                                    } else {
+                                                        HallazgosEval += "<p class='text-success'>Aspecto de mejora " + numHallazgo + " (" + evaluacion[i].Referencia + "): " + evaluacion[i].Hallazgo + "</p>";
+                                                        hallazgosResuelto++;
+                                                    }
+                                                    var hallazgo = { Id: evaluacion[i].id_Macrotema, Descripcion: evaluacion[i].Hallazgo, Referencia: evaluacion[i].Referencia };
+                                                    hallazgos.push(hallazgo);
+                                                    numHallazgo++;
+                                                    noCumple++;
+                                                }
+                                            }
+                                            $("#titulos").html(rowT);
+                                            $("#macrotemas").html(rowM);
+                                            $("#criterios").html(row);
+                                            $("#Encabezado").html(encabezado);
+                                            $('#HallazgoTextArea').html(HallazgosEval)
+                                            document.getElementById("spanFecha").innerHTML = "";
+                                            document.getElementById('Imprimir').style.display = "";
+
+                                            graficoEvaluacion();
+                                        },
+                                        error: function (ex) {
+                                            alert('Fallo al cargar la evaluacion.' + ex);
+                                        }
+                                    });
+
+                                } else {
+                                    document.getElementById("spanFecha").innerHTML = "Se requiere una fecha para cargar la evaluación";
+                                }//if-else para validar los campos planta, inspeccion, fecha
+                            }//cargarEvaluacion
+
+                            function graficoEvaluacion() {
+                                document.getElementById('Graficos').style.display = "flex";
+                                new Chart(document.getElementById("doughnut-evaluacion"), {
+                                    type: 'doughnut',
+                                    data: {
+                                        labels: ["Si cumplen", "No cumplen"],
+                                        datasets: [
+                                          {
+                                              label: "Cumplimiento (porcentaje)",
+                                              backgroundColor: ["#0174DF", "#DF0101"],
+                                              data: [siCumple, noCumple]
+                                          }
+                                        ]
+                                    },
+                                    options: {
+                                        title: {
+                                            display: true,
+                                            text: 'Evaluación'
+                                        }
+                                    }
+                                });
+                                new Chart(document.getElementById("doughnut-hallazgos"), {
+                                    type: 'doughnut',
+                                    data: {
+                                        labels: ["Resueltos", "Pendientes"],
+                                        datasets: [
+                                          {
+                                              label: "Cumplimiento (porcentaje)",
+                                              backgroundColor: ["#0174DF", "#DF0101"],
+                                              data: [hallazgosResuelto, hallazgosPendientes]
+                                          }
+                                        ]
+                                    },
+                                    options: {
+                                        title: {
+                                            display: true,
+                                            text: 'Hallazgos'
+                                        }
+                                    }
+                                });
+                            }//graficoEvaluacion
+
+                            function hallazgo(criterio) {
+                                var seleccion = $('input[name=' + criterio + ']:checked').val();
+                                if (seleccion == "N") {
+                                    document.getElementById('registrarHallazgo').style.display = "block";
+                                    document.getElementById('idCriterio').value = criterio;
+                                    for (var j = 0; j < hallazgos.length; j++) {
+                                        var criterioActual = hallazgos[j].Id;
+                                        if (criterioActual == criterio) {
+                                            document.getElementById('descripcion').value = hallazgos[j].Descripcion;
+                                            $("#referencia").val(hallazgos[j].Referencia);
+                                        }
+                                    }//for j
+                                }//if
+                            }//hallazgo
+
+                            close.onclick = function () {
+                                document.getElementById('registrarHallazgo').style.display = "none";
+                            }//boton de cerrar modal
+
+                            function exportarPDF() {
+                                document.getElementById('pdf').style.display = "block";
+                                var pdf = new jsPDF('p', 'pt', 'letter');
+                                source = $('#pdf')[0];
+
+                                specialElementHandlers = {
+                                    '#bypassme': function (element, renderer) {
+                                        return true
+                                    }
+                                };
+                                margins = {
+                                    top: 50,
+                                    bottom: 50,
+                                    left: 72,
+                                    width: 500
+                                };
+
+                                pdf.fromHTML(
+                                  source,
+                                  margins.left,
+                                  margins.top, {
+                                      'width': margins.width,
+                                      'elementHandlers': specialElementHandlers
+                                  });
+
+                                pdf.save(fecha + ' - ' + plantaNombre + ' ' + selected + '.pdf');
+                                document.getElementById('pdf').style.display = "none";
+                                document.getElementById("mensaje").innerHTML = "Evaluación exportada";
+                            }//pdf
+
+                        </script>
+                            }
+                            else {
+                                Response.Redirect("~/Home/Error", false);
+                            }//else
+                        }
+                        else {
+                            Response.Redirect("~/Home/Error", false);
+                        }

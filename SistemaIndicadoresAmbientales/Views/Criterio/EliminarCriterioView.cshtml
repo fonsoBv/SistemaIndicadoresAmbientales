@@ -1,94 +1,106 @@
-﻿@using (Html.BeginForm())
+﻿@if (Session["rol"] != null)
 {
-    @Html.AntiForgeryToken()
+    if (Session["rol"].ToString().Equals("Administrador"))
+    {
+        using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <div id="Etiqueta">
-            <h1 class="H1-Etiqueta">Eliminar Macrotema</h1>
-        </div>
-        <hr />
-        <div id="Formulario">
-            <div style="margin: 0 auto; width: 25%;">
-                @if (TempData["success"] != null)
-                {
-                    TempData.Remove("success");
-                    <spam class="text-success">Macrotema eliminado</spam>
-                }
-                @if (TempData["error"] != null)
-                {
-                    TempData.Remove("error");
-                    <spam class="text-danger">Error al eliminar el macrotema</spam>
-                }
+            <div class="form-horizontal">
+                <div id="Etiqueta">
+                    <h1 class="H1-Etiqueta">Eliminar Macrotema</h1>
+                </div>
+                <hr />
+                <div id="Formulario">
+                    <div style="margin: 0 auto; width: 25%;">
+                        @if (TempData["success"] != null)
+                        {
+                            TempData.Remove("success");
+                            <spam class="text-success">Macrotema eliminado</spam>
+                        }
+                        @if (TempData["error"] != null)
+                        {
+                            TempData.Remove("error");
+                            <spam class="text-danger">Error al eliminar el macrotema</spam>
+                        }
+                    </div>
+                    <div class="Formulario">
+                        @Html.Label("Inspecciones", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownList("inspecciones", ViewData["inspecciones"] as SelectList, new { @class = "form-control" })
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayName("Macrotemas")
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="criterios"></tbody>
+                    </table>
+                </div>
             </div>
-            <div class="Formulario">
-                @Html.Label("Inspecciones", htmlAttributes: new { @class = "control-label" })
-                @Html.DropDownList("inspecciones", ViewData["inspecciones"] as SelectList, new { @class = "form-control" })
-            </div>
+        }
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayName("Macrotemas")
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="criterios"></tbody>
-            </table>
-        </div>
-    </div>
-}
+        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+        <script type="text/javascript">
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script type="text/javascript">
+            $(document).ready(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("obtenerCriterioInspeccion")',
+                    dataType: 'json',
+                    data: { id: $("#inspecciones").val() },
 
-    $(document).ready(function () {
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("obtenerCriterioInspeccion")',
-            dataType: 'json',
-            data: { id: $("#inspecciones").val() },
-
-            success: function (criterios) {
-                var row = "";
-                $.each(criterios, function (i, criterio) {
-                    $("#Prueba").append('<option value="' + criterio.Value + '">' + criterio.Text + '</option>');
-                    row += "<tr><td>" + criterio.Text + "</td><td><a href='/Criterio/EliminarCriterio/" + criterio.Value + "' onclick='return confirm(&#39;Seguro que desea eliminar la inspección: " + criterio.Text + "&#39;);'>Eliminar</a></td></tr>";
+                    success: function (criterios) {
+                        var row = "";
+                        $.each(criterios, function (i, criterio) {
+                            $("#Prueba").append('<option value="' + criterio.Value + '">' + criterio.Text + '</option>');
+                            row += "<tr><td>" + criterio.Text + "</td><td><a href='/Criterio/EliminarCriterio/" + criterio.Value + "' onclick='return confirm(&#39;Seguro que desea eliminar la inspección: " + criterio.Text + "&#39;);'>Eliminar</a></td></tr>";
+                        });
+                        $("#criterios").html(row);
+                    },
+                    error: function (ex) {
+                        alert('Fallo al cargar los Macrotemas.' + ex);
+                    }
                 });
-                $("#criterios").html(row);
-            },
-            error: function (ex) {
-                alert('Fallo al cargar los Macrotemas.' + ex);
-            }
-        });
-        return false;
-    });
-
-    $(document).ready(function () {
-        $("#inspecciones").change(function () {
-            $("#Prueba").empty();
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerCriterioInspeccion")',
-                dataType: 'json',
-                data: { id: $("#inspecciones").val() },
-
-                success: function (criterios) {
-                    var row = "";
-                    $.each(criterios, function (i, criterio) {
-                        $("#Prueba").append('<option value="' + criterio.Value + '">' + criterio.Text + '</option>');
-                        row += "<tr><td>" + criterio.Text + "</td><td><a href='/Criterio/EliminarCriterio/" + criterio.Value + "' onclick='return confirm(&#39;Seguro que desea eliminar la inspección: " + criterio.Text + "&#39;);'>Eliminar</a></td></tr>";
-                    });
-                    $("#criterios").html(row);
-                },
-                error: function (ex) {
-                    alert('Fallo al cargar los Macrotemas.' + ex);
-                }
+                return false;
             });
-            return false;
-        })
-    });
-</script>  
+
+            $(document).ready(function () {
+                $("#inspecciones").change(function () {
+                    $("#Prueba").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("obtenerCriterioInspeccion")',
+                        dataType: 'json',
+                        data: { id: $("#inspecciones").val() },
+
+                        success: function (criterios) {
+                            var row = "";
+                            $.each(criterios, function (i, criterio) {
+                                $("#Prueba").append('<option value="' + criterio.Value + '">' + criterio.Text + '</option>');
+                                row += "<tr><td>" + criterio.Text + "</td><td><a href='/Criterio/EliminarCriterio/" + criterio.Value + "' onclick='return confirm(&#39;Seguro que desea eliminar la inspección: " + criterio.Text + "&#39;);'>Eliminar</a></td></tr>";
+                            });
+                            $("#criterios").html(row);
+                        },
+                        error: function (ex) {
+                            alert('Fallo al cargar los Macrotemas.' + ex);
+                        }
+                    });
+                    return false;
+                })
+            });
+        </script>
+    }
+    else {
+        Response.Redirect("~/Home/Error", false);
+    }//else
+}
+else {
+    Response.Redirect("~/Home/Error", false);
+}

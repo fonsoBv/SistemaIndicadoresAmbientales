@@ -1,39 +1,51 @@
-﻿@model IEnumerable<SistemaIndicadoresAmbientales.Entity.Vatihorimetro>
-
-<div id="Etiqueta">
-    <h1 class="H1-Etiqueta">Eliminar Vatihorimetro</h1>
-</div>
-<div id="Formulario">
-    <div style="margin: 0 auto; width: 25%;">
-        @if (TempData["success"] != null)
-        {
-            TempData.Remove("success");
-            <spam class="text-success">Vatihorimetro eliminado</spam>
-        }
-        @if (TempData["error"] != null)
-        {
-            TempData.Remove("error");
-            <spam class="text-danger">Error al eliminar</spam>
-        }
-    </div>
-</div>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Numero_Vatihorimetro)
-        </th>
-    </tr>
-@foreach (var item in Model)
+﻿@if (Session["rol"] != null)
 {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Numero_Vatihorimetro)
-        </td>
-        <td>
-            @Html.ActionLink("Eliminar", "EliminarVatihorimetro", new { id = item.Id_Vatihorimetro }, new { onclick = "return confirm('Seguro que desea eliminar esta planta: " + item.Numero_Vatihorimetro + "');" })
-        </td>
-    </tr>
-}
+    if (Session["rol"].ToString().Equals("Administrador"))
+    {
+        @model IEnumerable<SistemaIndicadoresAmbientales.Entity.Vatihorimetro>
 
-</table>
+        <div id="Etiqueta">
+            <h1 class="H1-Etiqueta">Eliminar Vatihorimetro</h1>
+        </div>
+        <div id="Formulario">
+            <div style="margin: 0 auto; width: 25%;">
+                @if (TempData["success"] != null)
+                {
+                    TempData.Remove("success");
+                    <spam class="text-success">Vatihorimetro eliminado</spam>
+                }
+                @if (TempData["error"] != null)
+                {
+                    TempData.Remove("error");
+                    <spam class="text-danger">Error al eliminar</spam>
+                }
+            </div>
+        </div>
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Numero_Vatihorimetro)
+                </th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Numero_Vatihorimetro)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Eliminar", "EliminarVatihorimetro", new { id = item.Id_Vatihorimetro }, new { onclick = "return confirm('Seguro que desea eliminar esta planta: " + item.Numero_Vatihorimetro + "');" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    }
+    else {
+        Response.Redirect("~/Home/Error", false);
+    }//else
+}
+else {
+    Response.Redirect("~/Home/Error", false);
+}

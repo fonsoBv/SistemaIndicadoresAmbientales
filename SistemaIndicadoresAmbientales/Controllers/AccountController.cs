@@ -424,6 +424,8 @@ namespace SistemaIndicadoresAmbientales.Controllers
             public ActionResult LogOff()
             {
                 AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                Session["email"] = null;
+                Session["rol"] = null;
                 return RedirectToAction("Index", "Home");
             }
 
