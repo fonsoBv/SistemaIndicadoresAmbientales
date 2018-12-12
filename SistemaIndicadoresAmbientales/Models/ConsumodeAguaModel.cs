@@ -76,6 +76,7 @@ namespace SistemaIndicadoresAmbientales.Models
             cmd.Parameters.AddWithValue("@Anio", Anio);
 
 
+
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
 
@@ -87,11 +88,9 @@ namespace SistemaIndicadoresAmbientales.Models
             {
                 consumoshistorico.Add(new Entity.HistoricoAgua
                 {
-                    Id_Consumo_Agua = Convert.ToInt32(dr["Id_ConsumoAgua"]),
                     Cantidad = Convert.ToInt64(dr["Cantidad"]),
                     Anio = Convert.ToInt32(dr["Anio"]),
                     Mes = Convert.ToInt32(dr["Mes"]),
-                    Numero_Hidrometro = Convert.ToInt32(dr["Numero_Hidrometro"])
                 });
             }
             return consumoshistorico;
@@ -99,14 +98,16 @@ namespace SistemaIndicadoresAmbientales.Models
         }//end HistoricoAgua
 
 
-        public List<Entity.HistoricoAgua> obtenerHistoricoAguaAnual(int planta, int Anio)
+        public List<Entity.HistoricoAgua> obtenerHistoricoAguaAnual(int planta, int Anio1, int Anio2)
         {
             List<Entity.HistoricoAgua> consumoshistorico = new List<Entity.HistoricoAgua>();
 
-            SqlCommand cmd = new SqlCommand("sp_ObtenerHistoricoAguaPorPlantaAnual", connection);
+            SqlCommand cmd = new SqlCommand("sp_ObtenerHistoricoAguaAnual", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Id_Planta", planta);
-            cmd.Parameters.AddWithValue("@Anio", Anio);
+            cmd.Parameters.AddWithValue("@Anio1", Anio1);
+            cmd.Parameters.AddWithValue("@Anio2", Anio2);
+
 
 
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
@@ -120,11 +121,9 @@ namespace SistemaIndicadoresAmbientales.Models
             {
                 consumoshistorico.Add(new Entity.HistoricoAgua
                 {
-                    Id_Consumo_Agua = Convert.ToInt32(dr["Id_ConsumoAgua"]),
                     Cantidad = Convert.ToInt64(dr["Cantidad"]),
                     Anio = Convert.ToInt32(dr["Anio"]),
                     Mes = Convert.ToInt32(dr["Mes"]),
-                    Numero_Hidrometro = Convert.ToInt32(dr["Numero_Hidrometro"])
                 });
             }
             return consumoshistorico;

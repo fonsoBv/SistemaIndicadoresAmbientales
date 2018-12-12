@@ -28,6 +28,25 @@ namespace SistemaIndicadoresAmbientales.Controllers
             }
         }//
 
+        public ActionResult RegistrarConsumoElectricoAntiguoView()
+        {
+            VatihorimetroModel vatiModel = new VatihorimetroModel();
+            PlantaModel planta = new PlantaModel();
+
+            String email = Session["email"].ToString();
+            if (email != null)
+            {
+                int id_planta = planta.obtenerUsuarioPlanta(email);
+                ViewData["Vatis"] = vatiModel.obtenerVatihorimetroPorPlanta(id_planta);
+                return View();
+            }
+            else
+            {
+                return View();
+            }
+        }//
+
+
         public JsonResult ResgistrarConsumoElectricoView(List<ConsumoElectrico> consumo)
         {
             Models.ConsumoElectricoModel bdconsumo = new Models.ConsumoElectricoModel();
@@ -56,6 +75,34 @@ namespace SistemaIndicadoresAmbientales.Controllers
 
         }//edn resgistrar
 
+        public JsonResult RegistrarConsumoElectricoAntiguo(List<ConsumoElectricoAntiguo> consumo)
+        {
+            Models.ConsumoElectricoModel bdconsumo = new Models.ConsumoElectricoModel();
+            bool flag = true;
+            foreach (ConsumoElectricoAntiguo item in consumo)
+            {
+                if (bdconsumo.crearConsumoElectrico(new Entity.ConsumoElectrico
+                {
+                    id_Vatihorimetro = item.Id_Vatihorimetro,
+                    Cantidad = item.Cantidad,
+                    Medida = "kilowatt",
+                    fecha = item.Fecha,
+                    Mes = item.Mes,
+                })) { }
+                else { flag = false; }
+            }//foreach
+            if (flag)
+            {
+                TempData["success"] = "true";
+                return Json("true", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                TempData["error"] = "false";
+                return Json("true", JsonRequestBehavior.AllowGet);
+            }
+
+        }//edn resgistrar
 
         public ActionResult ActualizarConsumoElectricoView()
         {
@@ -116,10 +163,10 @@ namespace SistemaIndicadoresAmbientales.Controllers
             return (Json(consumo, JsonRequestBehavior.AllowGet));
         }//obtenerHistoricoAgua
 
-        public JsonResult obtenerHistoricoElectricoAnual(int planta, int anio)
+        public JsonResult obtenerHistoricoElectricoAnual(int anio1,int anio2)
         {
             Models.ConsumoElectricoModel model = new Models.ConsumoElectricoModel();
-            List<Entity.HistoricoElectrico> consumo = model.obtenerHistoricoElectricoAnual(planta, anio);
+            List<Entity.HistoricoElectrico> consumo = model.obtenerHistoricoElectricoAnual( anio1,anio2);
             ViewData["cantidadConsumos"] = consumo.Count;
             return (Json(consumo, JsonRequestBehavior.AllowGet));
         }//obtenerHistoricoAgua
@@ -133,6 +180,15 @@ namespace SistemaIndicadoresAmbientales.Controllers
             public int Id_Vatihorimetro { get; set; }
             public int Cantidad { get; set; }
             public int Mes { get; set; }
+        }//end class
+
+        public class ConsumoElectricoAntiguo
+        {
+            public int Id_Vatihorimetro { get; set; }
+            public int Cantidad { get; set; }
+            public int Mes { get; set; }
+            public DateTime Fecha { get; set; }
+
         }//end class
     }
 }

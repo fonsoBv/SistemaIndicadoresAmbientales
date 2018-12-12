@@ -41,8 +41,11 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
         <div class="Formulario">
-           <label>Año Anterior:</label>
-            <input type="number" class="form-control" value = "@ViewData["AnioAnterior"]" id="AnioComparar" name="AnioComparar" />
+           <label>Desde:</label>
+            <input type="number" class="form-control"  id="Anio2" name="AnioComparar" />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <label>Hasta:</label>
+            <input type="number" class="form-control"  id="Anio1" name="AnioComparar" />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
         <div class="Formulario">
@@ -51,23 +54,24 @@
         </div>
         <br />
         <br />
+        <table id="Encabezado" class="table">
+            <thead id="EncabezaodHead">
+            <th>Código:</th><th><input class="form-control" type="text" id="Codigo" name="Codigo" /></th>
+            <th>Versión:</th><th><input class="form-control" type="text" id="Version" name="Version" /></th>
+            <th>Rige a partir:</th><th><input class="form-control" type="date" id="FechaRegir" name="FechaRegir"/></th>
+            </thead>
+        </table>
         <div id="pdf" name="pdf">
-            <table id="Encabezado" class="table">
-                <tbody id="EncabezadoBody">
-                <thead id="EncabezaodHead">
-                <th>Nombre de Planta</th>
-                <th>Fecha</th>
+            <table id="EncabezadoHistoricos" class="table">
+                <thead id="EncabezadoBody">
+                   
                 </thead>
-                </tbody>
+                <tbody id="BodyEncabezado"></tbody>
             </table>
             <table id="Historicos" class="table">
+                <thead id="EncabezadoHistoricosBody">
+                </thead>
                 <tbody id="HistoricosBody">
-                    <thead id="HistoricosHead">
-                        <th>N° Hidrometro</th>
-                        <th>Metros Cúbicos</th>
-                        <th>Mes</th>
-                        <th>Año</th>
-                    </thead>
                 </tbody>
             </table>
         </div>
@@ -75,6 +79,8 @@
             <br />
             <div style="text-align: center;">
                 <input value="Exportar" id="Exportar" name="Exportar" onclick="exportarPDF();" type="button" class="from-control">
+                <input value="Cargar" id="Cargar" name="Cargar" onclick="cargar();" type="button" class="from-control">
+
             </div>
         </div>
     </div>
@@ -87,21 +93,18 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script type="text/javascript">
 
-
-
-    $("#plantas").change(function () {
-
+    function cargar() {
         var PlamNOm = $("plantas").selectedI;
         var mes = document.getElementById("Mes").value;
         var planta = document.getElementById("plantas").value;
-        var anio = document.getElementById("AnioComparar").value;
+        var anio1 = document.getElementById("Anio1").value;
+        var anio2 = document.getElementById("Anio2").value;
+
         var combo = document.getElementById("plantas");
         var selected = combo.options[combo.selectedIndex].text
-        var anioAnterior = (anio-1);
         var tipo = $('input[name="tipo"]:checked').val();
-        var tehad = "<th>Id Consumo Agua</th><th>Número Hidrómetro</th><th>Cantidad</th><th>Fecha</th><th>Mes</th>";
         if (tipo == "Anual") {
-        var datos = { "planta": planta, "anio": anio };
+            var datos = { "planta": planta, "anio1": anio1, "anio2": anio2 };
 
             $.ajax({
                 type: 'POST',
@@ -113,200 +116,243 @@
                     var json = JSON.stringify(consumo);
                     alert(json);
                     var body = "";
+                    var headHistoricosBody = "";
                     var cont = 0;
                     var CantidadTotal = 0;
                     var CantidadMes = 0;
-                    for (var i = 0; i < consumo.length; i++) {
-                        body += "<tr><td>" + consumo[i].Numero_Hidrometro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td>" + consumo[i].Anio + "</td>" +
-                            "<td>" + retornarMES(consumo[i].Mes) + "</td></tr>";
-                        cont = (i + 1);
-                        if (cont == consumo.length) {
-                            CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th>Total " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
-                            CantidadTotal = 0;
-                        } else {
-                            if (consumo[i].Anio != consumo[cont].Anio) {
-                                CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th>Total "+consumo[i].Anio+": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
-                                CantidadTotal = 0;
-                            } else {
-                                if (consumo[i].Mes != consumo[cont].Mes) {
-                                    CantidadMes += consumo[i].Cantidad;
-                                    body += "<tr><td>" + retornarMES(consumo[i].Mes) + ": </td><td>" + CantidadMes + "</td><td></td><td></td></tr>";
-                                    CantidadMes = 0;
-                                } else {
-                                    CantidadMes += consumo[i].Cantidad;
-                                }//else - if
-                                CantidadTotal += consumo[i].Cantidad;
-                            }//end if-else
-                        }//end else-if
+                    var TotalAnio = (anio1-anio2) + 1;
+                    headHistoricosBody += "<tr><th>Mes</th>";
+                    for (var i = anio2; i <= anio1; i++) {
+                        headHistoricosBody += "<th>" + i + "</th>";
                     }//end for
-                    var f = new Date();
-                    var head = "<tr><td>" + selected + "</td><td>" + f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear() + "</td></tr>";
-                    $("#HistoricosBody").html(body);
-                    $("#EncabezadoBody").html(head);
+                    headHistoricosBody += "</tr>";
+                    var enero = new Array();
+                    var febrero = new Array();
+                    var marzo = new Array();
+                    var abril = new Array();
+                    var mayo = new Array();
+                    var junio = new Array();
+                    var julio = new Array();
+                    var agosto = new Array();
+                    var setiembre = new Array();
+                    var octubre = new Array();
+                    var noviembre = new Array();
+                    var diciembre = new Array();
+                    var Total = new Array();
 
-
-                }//sucess
-            });
-        } else { //sino es anual es mensual
-            var datos = { "planta": planta,"mes":mes ,"anio": anio };
-
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerHistoricoAgua")',
-                dataType: 'json',
-                data: datos,
-
-                success: function (consumo) {
-                    var json = JSON.stringify(consumo);
-                    var body = "";
-                    var cont = 0;
-                    var CantidadTotal = 0;
+                    for (var u = 0; u < TotalAnio; u++) {
+                        Total.push(0);
+                    }
                     for (var i = 0; i < consumo.length; i++) {
-                        body += "<tr><td>" + consumo[i].Numero_Hidrometro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td></td>" +
-                            "<td></td></tr>";
-                        cont = (i + 1);
-                        if (cont == consumo.length) {
-                            CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th>Cantidad Total: : </th><th>" + CantidadTotal +
-                                "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio +
-                                "</th></tr>";
-                            CantidadTotal = 0;
-                        } else {
-                            if (consumo[i].Mes != consumo[cont].Mes || consumo[i].Anio != consumo[cont].Anio) {
-                                CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th>Cantidad Total: : </th><th>" + CantidadTotal +
-                               "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio +
-                               "</th></tr>";
-                                CantidadTotal = 0;
-                            } else {
-                                CantidadTotal += consumo[i].Cantidad;
-
-                            }
+                        switch (consumo[i].Mes) {
+                            case 1:
+                                enero.push(consumo[i].Cantidad);
+                                break;
+                            case 2:
+                                febrero.push(consumo[i].Cantidad);
+                                break;
+                            case 3:
+                                marzo.push(consumo[i].Cantidad);
+                                break;
+                            case 4:
+                                abril.push(consumo[i].Cantidad);
+                                break;
+                            case 5:
+                                mayo.push(consumo[i].Cantidad);
+                                break;
+                            case 6:
+                                junio.push(consumo[i].Cantidad);
+                                break;
+                            case 7:
+                                julio.push(consumo[i].Cantidad);
+                                break;
+                            case 8:
+                                agosto.push(consumo[i].Cantidad);
+                                break;
+                            case 9:
+                                setiembre.push(consumo[i].Cantidad);
+                                break;
+                            case 10:
+                                octubre.push(consumo[i].Cantidad);
+                                break;
+                            case 11:
+                                noviembre.push(consumo[i].Cantidad);
+                                break;
+                            case 12:
+                                diciembre.push(consumo[i].Cantidad);
+                                break;
+                            default:
+                                enero.push(consumo[i].Cantidad);
+                                break;
                         }
-                    }//end for
-                    var f = new Date();
-                    var head = "<tr><td>" + selected + "</td><td>" + f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear() + "</td></tr>";
-                    $("#HistoricosBody").html(body);
-                    $("#EncabezadoBody").html(head);
+                    }//end for i
+                    for (var j = 1; j <= 12; j++) {
 
+                        switch (j) {
+                            case 1:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + enero[cont] + " </td>";
+                                    Total[cont] += enero[cont];
 
-                }//sucess
-            });
-        }//end if-else
-    });
+                                    cont++;
+                                }
 
-    $("#Mes").change(function () {
-        var PlamNOm = $("plantas").selectedI;
-        var mes = document.getElementById("Mes").value;
-        var planta = document.getElementById("plantas").value;
-        var anio = document.getElementById("AnioComparar").value;
-        var combo = document.getElementById("plantas");
-        var selected = combo.options[combo.selectedIndex].text
-        var anioAnterior = (anio-1);
-        var tipo = $('input[name="tipo"]:checked').val();
-        var tehad = "<th>Id Consumo Agua</th><th>Número Hidrómetro</th><th>Cantidad</th><th>Fecha</th><th>Mes</th>";
-        if (tipo == "Anual") {
-        var datos = { "planta": planta, "anio": anio };
+                                body += "</tr>";
+                                break;
+                            case 2:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + febrero[cont] + " </td>";
+                                    Total[cont] += febrero[cont];
 
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerHistoricoAguaAnual")',
-                dataType: 'json',
-                data: datos,
+                                    cont++;
 
-                success: function (consumo) {
-                    var json = JSON.stringify(consumo);
-                    alert(json);
-                    var body = "";
+                                }
+                                body += "</tr>";
+                                break;
+                            case 3:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + marzo[cont] + " </td>";
+                                    Total[cont] += marzo[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 4:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + abril[cont] + " </td>";
+                                    Total[cont] += abril[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 5:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + mayo[cont] + " </td>";
+                                    Total[cont] += mayo[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 6:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + junio[cont] + " </td>";
+                                    Total[cont] += junio[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 7:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + julio[cont] + " </td>";
+                                    Total[cont] += julio[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 8:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + agosto[cont] + " </td>";
+                                    Total[cont] += agosto[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 9:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + setiembre[cont] + " </td>";
+                                    Total[cont] += setiembre[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 10:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + octubre[cont] + " </td>";
+                                    Total[cont] += octubre[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 11:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + noviembre[cont] + " </td>";
+                                    Total[cont] += noviembre[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 12:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + diciembre[cont] + " </td>";
+                                    Total[cont] += diciembre[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            default:
+                                break;
+                        }//end switch j
+                    }//end for j
+
+                    body += "<tr><th>Total: </th>";
                     var cont = 0;
-                    var CantidadTotal = 0;
-                    var CantidadMes = 0;
-                    for (var i = 0; i < consumo.length; i++) {
-                        body += "<tr><td>" + consumo[i].Numero_Hidrometro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td>" + consumo[i].Anio + "</td>" +
-                            "<td>" + retornarMES(consumo[i].Mes) + "</td></tr>";
-                        cont = (i + 1);
-                        if (cont == consumo.length) {
-                            CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th>Total " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
-                            CantidadTotal = 0;
-                        } else {
-                            if (consumo[i].Anio != consumo[cont].Anio) {
-                                CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th>Total "+consumo[i].Anio+": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
-                                CantidadTotal = 0;
-                            } else {
-                                if (consumo[i].Mes != consumo[cont].Mes) {
-                                    CantidadMes += consumo[i].Cantidad;
-                                    body += "<tr><td>" + retornarMES(consumo[i].Mes) + ": </td><td>" + CantidadMes + "</td><td></td><td></td></tr>";
-                                    CantidadMes = 0;
-                                } else {
-                                    CantidadMes += consumo[i].Cantidad;
-                                }//else - if
-                                CantidadTotal += consumo[i].Cantidad;
-                            }//end if-else
-                        }//end else-if
-                    }//end for
+                    for (var h = anio2; h <= anio1; h++) {
+                        body += "<td>" + Total[cont] + " </td>";
+                        cont++;
+                    }
+                    body += "</tr>";
                     var f = new Date();
-                    var head = "<tr><td>" + selected + "</td><td>" + f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear() + "</td></tr>";
+                    document.getElementById('Codigo').style.display = "";
+                    document.getElementById('Version').style.display = "";
+                    document.getElementById('FechaRegir').style.display = "";
+                    var headBody =  "<tr><th>Código:</th><th>Versión:</th><th>Rige a partir:</th><th>Planta:</th><th>Fecha:</th></tr>"
+                    var head = "<tr><td>" + document.getElementById("Codigo").value + "</td><td>" + document.getElementById("Version").value + "</td><td>" + document.getElementById("FechaRegir").value +
+                    "</td><td>" + selected + "</td><td>" + f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear() + "</td></tr>";
                     $("#HistoricosBody").html(body);
-                    $("#EncabezadoBody").html(head);
+                    $("#EncabezadoBody").html(headBody);
+                    $("#BodyEncabezado").html(head);
+                    $("#EncabezadoHistoricosBody").html(headHistoricosBody);
 
 
                 }//sucess
             });
-        } else { //sino es anual es mensual
-            var datos = { "planta": planta,"mes":mes ,"anio": anio };
+        }
+    }//end function
 
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerHistoricoAgua")',
-                dataType: 'json',
-                data: datos,
-
-                success: function (consumo) {
-                    var json = JSON.stringify(consumo);
-                    var body = "";
-                    var cont = 0;
-                    var CantidadTotal = 0;
-                    for (var i = 0; i < consumo.length; i++) {
-                        body += "<tr><td>" + consumo[i].Numero_Hidrometro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td></td>" +
-                            "<td></td></tr>";
-                        cont = (i + 1);
-                        if (cont == consumo.length) {
-                            CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th>Cantidad Total: : </th><th>" + CantidadTotal +
-                                "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio +
-                                "</th></tr>";
-                            CantidadTotal = 0;
-                        } else {
-                            if (consumo[i].Mes != consumo[cont].Mes || consumo[i].Anio != consumo[cont].Anio) {
-                                CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th>Cantidad Total: : </th><th>" + CantidadTotal +
-                               "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio +
-                               "</th></tr>";
-                                CantidadTotal = 0;
-                            } else {
-                                CantidadTotal += consumo[i].Cantidad;
-
-                            }
-                        }
-                    }//end for
-                    var f = new Date();
-                    var head = "<tr><td>" + selected + "</td><td>" + f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear() + "</td></tr>";
-                    $("#HistoricosBody").html(body);
-                    $("#EncabezadoBody").html(head);
-
-
-                }//sucess
-            });
-        }//end if-else
-    });
     var Mes;
     function retornarMES(mes){
         switch(mes){

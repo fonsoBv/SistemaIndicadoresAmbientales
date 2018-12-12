@@ -4,9 +4,8 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     <div id="Etiqueta">
-        <h1 class="H1-Etiqueta">Históricos consumo eléctrico</h1>
+        <h1 class="H1-Etiqueta">Historico Consumo Electrico</h1>
     </div>
     <div id="Formulario">
         <div class="Formulario">
@@ -41,33 +40,49 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
         <div class="Formulario">
-            <label>Año Anterior:</label>
-            <input type="number" class="form-control" value="@ViewData["AnioAnterior"]" id="AnioComparar" name="AnioComparar" />
+            <label>Desde:</label>
+            <input type="number" class="form-control" id="Anio2" name="AnioComparar" />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <label>Hasta:</label>
+            <input type="number" class="form-control" id="Anio1" name="AnioComparar" />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
         <div class="Formulario">
             <label>Anual:</label><input type="radio" id="tipo" name="tipo" value="Anual" class='my_chkBox' checked="checked" />
             <label>Mensual:</label><input type="radio" id="tipo" name="tipo" value="Mensual" class='my_chkBox' checked="checked" />
         </div>
+        <br />
+        <br />
+        <table id="Encabezado" class="table">
+            <thead id="EncabezaodHead">
+            <th>Código:</th>
+            <th><input class="form-control" type="text" id="Codigo" name="Codigo" /></th>
+            <th>Versión:</th>
+            <th><input class="form-control" type="text" id="Version" name="Version" /></th>
+            <th>Rige a partir:</th>
+            <th><input class="form-control" type="date" id="FechaRegir" name="FechaRegir" /></th>
+            </thead>
+        </table>
+        <table id="EncabezadoHistoricos" class="table">
+            <thead id="EncabezadoBody">
 
+            </thead>
+            <tbody id="BodyEncabezado"></tbody>
+        </table>
         <div id="pdf" name="pdf">
-            <label class="control-label" id="nombrePlanta"></label>
             <table id="Historicos" class="table">
-                <tbody id="HistoricosBody">
-                <thead id="HistoricosHead">
-                <th>N° Consumo</th>
-                <th>N° Vatihorimetro</th>
-                <th>Kilowatts</th>
-                <th>Mes</th>
-                <th>Año</th>
+                <thead id="EncabezadoHistoricosBody">
                 </thead>
-                </tbody>
+                <tbody id="HistoricosBody"></tbody>
             </table>
         </div>
         <div>
             <br />
             <div style="text-align: center;">
+                <img src='~/Public/images/ice.jpg' class="hidden" id="imgICE"/>
                 <input value="Exportar" id="Exportar" name="Exportar" onclick="exportarPDF();" type="button" class="from-control">
+                <input value="Cargar" id="Cargar" name="Cargar" onclick="cargar();" type="button" class="from-control">
+
             </div>
         </div>
     </div>
@@ -81,114 +96,18 @@
 <script type="text/javascript">
 
 
-
-    $("#plantas").change(function () {
-       var mes = document.getElementById("Mes").value;
-        var planta = document.getElementById("plantas").value;
-        var anio = document.getElementById("AnioComparar").value;
-
-        var anioAnterior = (anio-1);
-        var tipo = $('input[name="tipo"]:checked').val();
-        var tehad = "<th>Id Consumo Electrico</th><th>Número Vathorimetro</th><th>Cantidad</th><th>Fecha</th><th>Mes</th>";
-        if (tipo == "Anual") {
-        var datos = { "planta": planta, "anio": anio };
-
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerHistoricoElectricoAnual")',
-                dataType: 'json',
-                data: datos,
-
-                success: function (consumo) {
-                    var json = JSON.stringify(consumo);
-                    var body = "";
-                    var cont = 0;
-                    var CantidadTotal = 0;
-                    var CantidadMes = 0;
-                    for (var i = 0; i < consumo.length; i++) {
-                        body += "<tr><td>" + consumo[i].Id_Consumo_Electrico + "</td><td>" + consumo[i].Numero_Vatihorimetro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td></td>" +
-                            "<td></td></tr>";
-                        cont = (i + 1);
-                        if (cont == consumo.length) {
-                            CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th></th><th>Total " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
-                            CantidadTotal = 0;
-                        } else {
-                            if (consumo[i].Anio != consumo[cont].Anio) {
-                                CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th></th><th>Total "+consumo[i].Anio+": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
-                                CantidadTotal = 0;
-                            } else {
-                                if (consumo[i].Mes != consumo[cont].Mes) {
-                                    CantidadMes += consumo[i].Cantidad;
-                                    body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + ": </th><th>" + CantidadMes + "</th><th></th><th></th></tr>";
-                                    CantidadMes = 0;
-                                } else {
-                                    CantidadMes += consumo[i].Cantidad;
-                                }//else - if
-                                CantidadTotal += consumo[i].Cantidad;
-                            }//end if-else
-                        }//end else-if
-                    }//end for
-
-                    $("#HistoricosBody").html(body);
-
-                }//sucess
-            });
-        } else {
-            var datos = { "planta": planta,"mes":mes ,"anio": anio };
-
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerHistoricoElectrico")',
-                dataType: 'json',
-                data: datos,
-
-                success: function (consumo) {
-                    var json = JSON.stringify(consumo);
-                    var body = "";
-                    var cont = 0;
-                    var CantidadTotal = 0;
-                    for (var i = 0; i < consumo.length; i++) {
-                        body += "<tr><td>" + consumo[i].Id_Consumo_Electrico + "</td><td>" + consumo[i].Numero_Vatihorimetro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td></td>" +
-                            "<td></td></tr>";
-                        cont = (i + 1);
-                        if (cont == consumo.length) {
-                            CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th></th><th></th><th>" + CantidadTotal + "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio + "</th></tr>";
-                            CantidadTotal = 0;
-                        } else {
-                            if (consumo[i].Mes != consumo[cont].Mes || consumo[i].Anio != consumo[cont].Anio) {
-                                CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th></th><th></th><th>" + CantidadTotal + "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio + "</th></tr>";
-                                CantidadTotal = 0;
-                            } else {
-                                CantidadTotal += consumo[i].Cantidad;
-
-                            }
-                        }
-                    }//end for
-
-                    $("#HistoricosBody").html(body);
-
-                }//sucess
-            });
-        }//end if-else
-    });
-
-    $("#Mes").change(function () {
-
+function cargar() {
+        var PlamNOm = $("plantas").selectedI;
         var mes = document.getElementById("Mes").value;
         var planta = document.getElementById("plantas").value;
-        var anio = document.getElementById("AnioComparar").value;
+        var anio1 = document.getElementById("Anio1").value;
+        var anio2 = document.getElementById("Anio2").value;
 
-        var anioAnterior = (anio-1);
+        var combo = document.getElementById("plantas");
+        var selected = combo.options[combo.selectedIndex].text
         var tipo = $('input[name="tipo"]:checked').val();
-        var tehad = "<th>Id Consumo Electrico</th><th>Número Vathorimetro</th><th>Cantidad</th><th>Fecha</th><th>Mes</th>";
         if (tipo == "Anual") {
-        var datos = { "planta": planta, "anio": anio };
+            var datos = { "anio1": anio1, "anio2": anio2 };
 
             $.ajax({
                 type: 'POST',
@@ -199,81 +118,242 @@
                 success: function (consumo) {
                     var json = JSON.stringify(consumo);
                     var body = "";
+                    var headHistoricosBody = "";
                     var cont = 0;
                     var CantidadTotal = 0;
                     var CantidadMes = 0;
-                    for (var i = 0; i < consumo.length; i++) {
-                        body += "<tr><td>" + consumo[i].Id_Consumo_Electrico + "</td><td>" + consumo[i].Numero_Vatihorimetro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td></td>" +
-                            "<td></td></tr>";
-                        cont = (i + 1);
-                        if (cont == consumo.length) {
-                            CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th></th><th>Total " + consumo[i].Anio + ": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
-                            CantidadTotal = 0;
-                        } else {
-                            if (consumo[i].Anio != consumo[cont].Anio) {
-                                CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th></th><th>Total "+consumo[i].Anio+": </th><th>" + CantidadTotal + "</th><th></th><th></th></tr>";
-                                CantidadTotal = 0;
-                            } else {
-                                if (consumo[i].Mes != consumo[cont].Mes) {
-                                    CantidadMes += consumo[i].Cantidad;
-                                    body += "<tr><th></th><th>" + retornarMES(consumo[i].Mes) + ": </th><th>" + CantidadMes + "</th><th></th><th></th></tr>";
-                                    CantidadMes = 0;
-                                } else {
-                                    CantidadMes += consumo[i].Cantidad;
-                                }//else - if
-                                CantidadTotal += consumo[i].Cantidad;
-                            }//end if-else
-                        }//end else-if
+                    var TotalAnio = (anio1-anio2) + 1;
+                    headHistoricosBody += "<tr><th>Mes</th>";
+                    for (var i = anio2; i <= anio1; i++) {
+                        headHistoricosBody += "<th>" + i + "</th>";
                     }//end for
+                    headHistoricosBody += "</tr>";
+                    var enero = new Array();
+                    var febrero = new Array();
+                    var marzo = new Array();
+                    var abril = new Array();
+                    var mayo = new Array();
+                    var junio = new Array();
+                    var julio = new Array();
+                    var agosto = new Array();
+                    var setiembre = new Array();
+                    var octubre = new Array();
+                    var noviembre = new Array();
+                    var diciembre = new Array();
+                    var Total = new Array();
 
-                    $("#HistoricosBody").html(body);
-
-                }//sucess
-            });
-        } else {
-            var datos = { "planta": planta,"mes":mes ,"anio": anio };
-
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("obtenerHistoricoElectrico")',
-                dataType: 'json',
-                data: datos,
-
-                success: function (consumo) {
-                    var json = JSON.stringify(consumo);
-                    var body = "";
-                    var cont = 0;
-                    var CantidadTotal = 0;
+                    for (var u = 0; u < TotalAnio; u++) {
+                        Total.push(0);
+                    }
                     for (var i = 0; i < consumo.length; i++) {
-                        body += "<tr><td>" + consumo[i].Id_Consumo_Electrico + "</td><td>" + consumo[i].Numero_Vatihorimetro +
-                            "</td><td>" + consumo[i].Cantidad + " </td><td></td>" +
-                            "<td></td></tr>";
-                        cont = (i + 1);
-                        if (cont == consumo.length) {
-                            CantidadTotal += consumo[i].Cantidad;
-                            body += "<tr><th></th><th></th><th>" + CantidadTotal + "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio + "</th></tr>";
-                            CantidadTotal = 0;
-                        } else {
-                            if (consumo[i].Mes != consumo[cont].Mes || consumo[i].Anio != consumo[cont].Anio) {
-                                CantidadTotal += consumo[i].Cantidad;
-                                body += "<tr><th></th><th></th><th>" + CantidadTotal + "</th><th>" + retornarMES(consumo[i].Mes) + "</th><th>" + consumo[i].Anio + "</th></tr>";
-                                CantidadTotal = 0;
-                            } else {
-                                CantidadTotal += consumo[i].Cantidad;
-
-                            }
+                        switch (consumo[i].Mes) {
+                            case 1:
+                                enero.push(consumo[i].Cantidad);
+                                break;
+                            case 2:
+                                febrero.push(consumo[i].Cantidad);
+                                break;
+                            case 3:
+                                marzo.push(consumo[i].Cantidad);
+                                break;
+                            case 4:
+                                abril.push(consumo[i].Cantidad);
+                                break;
+                            case 5:
+                                mayo.push(consumo[i].Cantidad);
+                                break;
+                            case 6:
+                                junio.push(consumo[i].Cantidad);
+                                break;
+                            case 7:
+                                julio.push(consumo[i].Cantidad);
+                                break;
+                            case 8:
+                                agosto.push(consumo[i].Cantidad);
+                                break;
+                            case 9:
+                                setiembre.push(consumo[i].Cantidad);
+                                break;
+                            case 10:
+                                octubre.push(consumo[i].Cantidad);
+                                break;
+                            case 11:
+                                noviembre.push(consumo[i].Cantidad);
+                                break;
+                            case 12:
+                                diciembre.push(consumo[i].Cantidad);
+                                break;
+                            default:
+                                enero.push(consumo[i].Cantidad);
+                                break;
                         }
-                    }//end for
+                    }//end for i
+                    for (var j = 1; j <= 12; j++) {
 
+                        switch (j) {
+                            case 1:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + enero[cont] + " </td>";
+                                    Total[cont] += enero[cont];
+
+                                    cont++;
+                                }
+
+                                body += "</tr>";
+                                break;
+                            case 2:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + febrero[cont] + " </td>";
+                                    Total[cont] += febrero[cont];
+
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 3:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + marzo[cont] + " </td>";
+                                    Total[cont] += marzo[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 4:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + abril[cont] + " </td>";
+                                    Total[cont] += abril[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 5:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + mayo[cont] + " </td>";
+                                    Total[cont] += mayo[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 6:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + junio[cont] + " </td>";
+                                    Total[cont] += junio[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 7:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + julio[cont] + " </td>";
+                                    Total[cont] += julio[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 8:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + agosto[cont] + " </td>";
+                                    Total[cont] += agosto[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 9:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + setiembre[cont] + " </td>";
+                                    Total[cont] += setiembre[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 10:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + octubre[cont] + " </td>";
+                                    Total[cont] += octubre[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 11:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + noviembre[cont] + " </td>";
+                                    Total[cont] += noviembre[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            case 12:
+                                body += "<tr><td>" + retornarMES(j) + "</td>";
+                                var cont = 0;
+                                for (var h = anio2; h <= anio1; h++) {
+                                    body += "<td>" + diciembre[cont] + " </td>";
+                                    Total[cont] += diciembre[cont];
+                                    cont++;
+
+                                }
+                                body += "</tr>";
+                                break;
+                            default:
+                                break;
+                        }//end switch j
+                    }//end for j
+
+                    body += "<tr><th>Total: </th>";
+                    var cont = 0;
+                    for (var h = anio2; h <= anio1; h++) {
+                        body += "<td>" + Total[cont] + " </td>";
+                        cont++;
+                    }
+                    body += "</tr>";
+                    var f = new Date();
+                    document.getElementById('Codigo').style.display = "";
+                    document.getElementById('Version').style.display = "";
+                    document.getElementById('FechaRegir').style.display = "";
+                    var headBody =  "<tr><th>Código:</th><th>Versión:</th><th>Rige a partir:</th><th>Planta:</th><th>Fecha:</th></tr>"
+                    var head = "<tr><td>" + document.getElementById("Codigo").value + "</td><td>" + document.getElementById("Version").value + "</td><td>" + document.getElementById("FechaRegir").value +
+                    "</td><td>" + selected + "</td><td>" + f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear() + "</td></tr>";
                     $("#HistoricosBody").html(body);
+                    $("#EncabezadoBody").html(headBody);
+                    $("#BodyEncabezado").html(head);
+                    $("#EncabezadoHistoricosBody").html(headHistoricosBody);
+
 
                 }//sucess
             });
-        }//end if-else
-    });
+        }
+    }//end function
 
 
     var Mes;
@@ -319,7 +399,7 @@
             }
         };
         margins = {
-            top: 50,
+            top: 100,
             bottom: 50,
             left: 72,
             width: 600
@@ -335,9 +415,70 @@
         var combo = document.getElementById("plantas");
         var selected = combo.options[combo.selectedIndex].text;
         var f = new Date();
-        pdf.save(selected + "Reporte" + f.getDay() + "/" + f.getMonth() + "/" + f.getYear() + ".pdf");
+        var img = document.getElementById("imgICE");
+        pdf.rect(5, 10, 65, 72);
+        pdf.addImage(img, "JPEG", 10, 12, 60, 60);
+
+        pdf.setFontSize(13);
+        pdf.rect(70, 10, 430, 20);
+        pdf.text(120, 22, "INSTITUTO COSTARRICENSE DE ELECTRICIDAD");
+
+        pdf.setFontSize(9);
+        pdf.rect(500, 10, 110, 12);
+        pdf.text(510, 20, "Código: ");
+
+        pdf.setFontSize(9);
+        pdf.rect(500, 22, 110, 12);
+        pdf.text(510, 32, document.getElementById('Codigo').value);
+        
+
+        pdf.setFontSize(9);
+        pdf.rect(500, 34, 110, 12);
+        pdf.text(510, 44, "Versión: ");
+
+
+        pdf.setFontSize(9);
+        pdf.rect(500, 46, 110, 12);
+        pdf.text(510, 56,  document.getElementById('Version').value);
+
+        pdf.setFontSize(9);
+        pdf.rect(500, 58, 110, 12);
+        pdf.text(510, 68, "Rige a partir de:") 
+
+        pdf.setFontSize(9);
+        pdf.rect(500, 70, 110, 12);
+        pdf.text(510, 80,document.getElementById('FechaRegir').value); 
+
+        pdf.setFontSize(13);
+        pdf.rect(70, 30, 430, 20);
+        pdf.text(210, 43, "NEGOCIO GENERACIÓN");
+
+        pdf.setFontSize(13);
+        pdf.rect(70, 50, 430, 20);
+        pdf.text(100, 63, "CONTROL CONSUMO ELÉCTRICO PLANTAS REGIÓN HUETAR");
+
+        pdf.setFontSize(9);
+        pdf.rect(70, 70, 430, 12);
+        pdf.text(390, 80, "Fecha Revisión: " + f.getDay() + "-" + f.getMonth() + "-" + f.getYear());
+
+        pdf.save("Reporte Anual: " + f.getYear() + ".pdf");
 
     }//pdf
+
+    function crearPDF(){
+        var img_url = "ice.jpg";
+        getImgFromUrl(img_url,function(img){
+            crearPDF(img);
+        });
+    }
+
+    function getImgFromUrl(img_url,callback) {
+        var img = new Image();
+        img.src = img_url;
+        img.onload = function () {
+            callback(img);
+        };
+    }
 
 </script>
 

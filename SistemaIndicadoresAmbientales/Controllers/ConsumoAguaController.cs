@@ -26,6 +26,23 @@ namespace SistemaIndicadoresAmbientales.Controllers
             }
         }//end mostrar vista
 
+        public ActionResult RegistrarConsumoAguaAntiguoView()
+        {
+            Models.HidrometroModel hidroModel = new Models.HidrometroModel();
+            PlantaModel planta = new PlantaModel();
+            String email = Session["email"].ToString();
+            if (email != null)
+            {
+                int id_planta = planta.obtenerUsuarioPlanta(email);
+                ViewData["Hidros"] = hidroModel.obtenerHidrometrosPorPlanta(id_planta);
+                return View();
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         public JsonResult ResgistrarConsumoAguaView(List<ConsumoAgua> consumo)
         {
             Models.ConsumodeAguaModel bdconsumo = new Models.ConsumodeAguaModel();
@@ -52,6 +69,32 @@ namespace SistemaIndicadoresAmbientales.Controllers
                 return Json("true", JsonRequestBehavior.AllowGet);
             }
         }//end registrar
+
+        public JsonResult ResgistrarConsumoAguaAntiguoView(List<ConsumoAguaAntiguo> consumo)
+        {
+            Models.ConsumodeAguaModel bdconsumo = new Models.ConsumodeAguaModel();
+            var flag = true;
+            foreach (ConsumoAguaAntiguo item in consumo)
+            {
+                if (bdconsumo.crearConsumoAgua(new Entity.ConsumodeAgua
+                {
+                    Id_Hidrometro = item.Id_Hidrometro,
+                    Cantidad = item.Cantidad,
+                    Medida = "m3",
+                    Fecha = item.Fecha,
+                    Mes = item.Mes,
+                })) { }
+                else { flag = false; }
+            }//foreach
+            if (flag){
+                TempData["success"] = "true";
+                return Json("true", JsonRequestBehavior.AllowGet);
+            }else{
+                TempData["error"] = "false";
+                return Json("true", JsonRequestBehavior.AllowGet);
+            }
+        }//end registrar
+
 
         public ActionResult ActualizarConsumoAguaView()
         {
@@ -107,10 +150,10 @@ namespace SistemaIndicadoresAmbientales.Controllers
             return (Json(consumo,JsonRequestBehavior.AllowGet));
         }//obtenerHistoricoAgua
 
-        public JsonResult obtenerHistoricoAguaAnual(int planta, int anio)
+        public JsonResult obtenerHistoricoAguaAnual(int planta, int anio1,int anio2)
         {
             Models.ConsumodeAguaModel model = new Models.ConsumodeAguaModel();
-            List<Entity.HistoricoAgua> consumo = model.obtenerHistoricoAguaAnual(planta,anio);
+            List<Entity.HistoricoAgua> consumo = model.obtenerHistoricoAguaAnual(planta,anio1,anio2);
             ViewData["cantidadConsumos"] = consumo.Count;
             return (Json(consumo, JsonRequestBehavior.AllowGet));
         }//obtenerHistoricoAgua
@@ -129,5 +172,16 @@ namespace SistemaIndicadoresAmbientales.Controllers
             public int Mes { get; set; }
 
         }//end ConsumoAgua
+
+        public class ConsumoAguaAntiguo
+        {
+            public int Id_Hidrometro { get; set; }
+            public int Cantidad { get; set; }
+            public int Mes { get; set; }
+            public DateTime Fecha { get; set; }
+
+
+        }//end ConsumoAgua
+
     }//end class
 }//end namespace

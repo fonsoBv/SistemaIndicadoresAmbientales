@@ -41,11 +41,9 @@ namespace SistemaIndicadoresAmbientales.Models
              {
                 consumoshistorico.Add(new Entity.HistoricoElectrico
                 {
-                    Id_Consumo_Electrico = Convert.ToInt32(dr["Id_ConsumoElectrico"]),
                     Cantidad = Convert.ToInt64(dr["Cantidad"]),
                     Anio = Convert.ToInt32(dr["Anio"]),
                     Mes = Convert.ToInt32(dr["Mes"]),
-                    Numero_Vatihorimetro = Convert.ToInt32(dr["Numero_Vatihorimetro"])
                 });
             }
             return consumoshistorico;
@@ -53,15 +51,14 @@ namespace SistemaIndicadoresAmbientales.Models
         }//end HistoricoAgua
 
 
-        public List<Entity.HistoricoElectrico> obtenerHistoricoElectricoAnual(int planta, int Anio)
+        public List<Entity.HistoricoElectrico> obtenerHistoricoElectricoAnual(int Anio1,int Anio2)
         {
             List<Entity.HistoricoElectrico> consumoshistorico = new List<Entity.HistoricoElectrico>();
 
-            SqlCommand cmd = new SqlCommand("sp_ObtenerHistoricoElectricoPorPlantaAnual", connection);
+            SqlCommand cmd = new SqlCommand("sp_ObtenerHistoricoElectricoAnual", connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@Id_Planta", planta);
-            cmd.Parameters.AddWithValue("@Anio", Anio);
-
+            cmd.Parameters.AddWithValue("@Anio1", Anio1);
+            cmd.Parameters.AddWithValue("@Anio2", Anio2);
 
             SqlDataAdapter sd = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -74,11 +71,9 @@ namespace SistemaIndicadoresAmbientales.Models
             {
                 consumoshistorico.Add(new Entity.HistoricoElectrico
                 {
-                    Id_Consumo_Electrico = Convert.ToInt32(dr["Id_Consumo_Electrico"]),
                     Cantidad = Convert.ToInt64(dr["Cantidad"]),
                     Anio = Convert.ToInt32(dr["Anio"]),
                     Mes = Convert.ToInt32(dr["Mes"]),
-                    Numero_Vatihorimetro = Convert.ToInt32(dr["Numero_Vatihorimetro"])
                 });
             }
             return consumoshistorico;
