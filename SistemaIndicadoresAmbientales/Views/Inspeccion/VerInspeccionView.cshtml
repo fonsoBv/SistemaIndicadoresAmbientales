@@ -88,8 +88,22 @@
 
                         </div>
                     </div>
+                    <img src='~/Public/images/ice2.jpg' class="hidden" id="imgICE" />
                     <p id="spanEvaluacion" class="text-danger"></p>
                     <p id="spanHallazgo" class="text-danger"></p>
+                    <table id="formato" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Código:</th>
+                                <th><input class="form-control" type="text" id="Codigo" name="Codigo" /></th>
+                                <th>Versión:</th>
+                                <th><input class="form-control" type="text" id="Version" name="Version" /></th>
+                                <th>Rige:</th>
+                                <th><input class="form-control" type="date" id="FechaRegir" name="FechaRegir" /></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <p id="spanFormato" class="text-danger"></p>
                     <div>
                         <div style="text-align: center;">
                             <input value="Exportar" id="Imprimir" name="Imprimir" onclick="javascript:exportarPDF();" type="button" class="from-control" style="display: none;">
@@ -164,9 +178,11 @@
                                             var rowT = "";
                                             var rowM = "";
                                             plantaNombre = evaluacion[0].NombrePlanta;
-                                            var encabezado = "<tr><th>Fecha: " + fecha + "</th><th>Evaluación: " + selected + "</th><th>Planta: " + plantaNombre + "</th></tr>";
+                                            var encabezado = "<tr><th>Centro de trabajo: " + plantaNombre + "</th></tr>";
                                             rowT += "<tr><th>Macrotema</th><th>Si</th><th>No</th><th>Aspecto de mejora</th></tr>";
                                             var row = "";
+
+                                            HallazgosEval += "<p>Observaciones:</p>";
 
                                             var numHallazgo = 1;
                                             for (var i = 0; i < evaluacion.length; i++) {
@@ -199,6 +215,7 @@
                                             $('#HallazgoTextArea').html(HallazgosEval)
                                             document.getElementById("spanFecha").innerHTML = "";
                                             document.getElementById('Imprimir').style.display = "";
+                                            document.getElementById('formato').style.display = "";
 
                                             graficoEvaluacion();
                                         },
@@ -274,33 +291,71 @@
                             }//boton de cerrar modal
 
                             function exportarPDF() {
-                                document.getElementById('pdf').style.display = "block";
-                                var pdf = new jsPDF('p', 'pt', 'letter');
-                                source = $('#pdf')[0];
+                                var codigo = document.getElementById('Codigo').value;
+                                var version = document.getElementById('Version').value;
+                                var rige = document.getElementById('FechaRegir').value;
+                                if(codigo != "" && version != "" && rige != ""){
+                                    document.getElementById('pdf').style.display = "block";
+                                    var pdf = new jsPDF('p', 'pt', 'letter');
+                                    source = $('#pdf')[0];
 
-                                specialElementHandlers = {
-                                    '#bypassme': function (element, renderer) {
-                                        return true
-                                    }
-                                };
-                                margins = {
-                                    top: 50,
-                                    bottom: 50,
-                                    left: 72,
-                                    width: 500
-                                };
+                                    specialElementHandlers = {
+                                        '#bypassme': function (element, renderer) {
+                                            return true
+                                        }
+                                    };
+                                    margins = {
+                                        top: 130,
+                                        bottom: 50,
+                                        left: 72,
+                                        width: 500
+                                    };
 
-                                pdf.fromHTML(
-                                  source,
-                                  margins.left,
-                                  margins.top, {
-                                      'width': margins.width,
-                                      'elementHandlers': specialElementHandlers
-                                  });
+                                    pdf.fromHTML(
+                                      source,
+                                      margins.left,
+                                      margins.top, {
+                                          'width': margins.width,
+                                          'elementHandlers': specialElementHandlers
+                                      });
 
-                                pdf.save(fecha + ' - ' + plantaNombre + ' ' + selected + '.pdf');
-                                document.getElementById('pdf').style.display = "none";
-                                document.getElementById("mensaje").innerHTML = "Evaluación exportada";
+                                    var combo = document.getElementById("inspecciones");
+                                    var evaluacion = combo.options[combo.selectedIndex].text;
+                                    var img = document.getElementById("imgICE");
+                                    pdf.rect(50, 40, 65, 72);
+                                    pdf.addImage(img, "JPEG", 55, 60, 57, 37);
+
+                                    pdf.setFontSize(13);
+                                    pdf.rect(115, 40, 350, 36);
+                                    pdf.text(137, 55, "INSTITUTO COSTARRICENSE DE ELECTRICIDAD \n                    NEGOCIO GENERACIÓN");
+
+                                    pdf.setFontSize(13);
+                                    pdf.rect(115, 76, 350, 36);
+                                    pdf.text(157, 95, evaluacion);
+
+                                    pdf.setFontSize(9);
+                                    pdf.rect(50, 112, 500, 12);
+                                    pdf.text(430, 122, "Fecha Revisión: " + fecha);
+
+                                    pdf.setFontSize(9);
+                                    pdf.rect(465, 40, 85, 24);
+                                    pdf.text(475, 50, "Código: \n" + codigo);
+
+                                    pdf.setFontSize(9);
+                                    pdf.rect(465, 64, 85, 24);
+                                    pdf.text(475, 74, "Versión: \n" + version);
+
+                                    pdf.setFontSize(9);
+                                    pdf.rect(465, 88, 85, 24);
+                                    pdf.text(475, 98, "Rige a partir de: \n" + rige);
+
+                                    pdf.save(fecha + ' - ' + plantaNombre + ' ' + selected + '.pdf');
+                                    document.getElementById('pdf').style.display = "none";
+                                    document.getElementById("mensaje").innerHTML = "Evaluación exportada";
+                                    document.getElementById("spanFormato").innerHTML = "";
+                                } else {
+                                    document.getElementById("spanFormato").innerHTML = "Debe ingresar el código, la versión y desde cuando rige";
+                                }
                             }//pdf
 
                         </script>
