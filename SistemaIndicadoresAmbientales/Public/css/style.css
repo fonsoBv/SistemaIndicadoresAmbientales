@@ -863,7 +863,8 @@ img.img-responsive {
                 display: block;
                 border: 0px;
                 max-width: 140px;
-                list-style-image: url('/wps/contenthandler/!ut/p/digest!3ioXuRVaB9xl5hTwDf1jbA/dav/fs-type1/themes/theme.ICE/images/listStyle.png');
+                /*list-style-image: url('/wps/contenthandler/!ut/p/digest!3ioXuRVaB9xl5hTwDf1jbA/dav/fs-type1/themes/theme.ICE/images/listStyle.jpg');*/
+                /*list-style-image: url('../images/listStyle.png');*/
                 /**********************/
                 padding-left: 1em;
                 text-indent: -.7em;
