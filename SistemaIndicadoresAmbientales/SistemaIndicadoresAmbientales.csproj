@@ -299,6 +299,12 @@
     <Content Include="Views\Home\AcercaDe.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\ConsumoAceite\RegistrarConsumoExtraVehiculo.cshtml" />
+    <Content Include="Views\ConsumoElectrico\MostrarHistoricoElectricoView.cshtml" />
+    <Content Include="Views\ConsumoAgua\HistoricoPorHidrometroView.cshtml" />
+    <Content Include="Views\ConsumoAgua\RegistrarConsumoAguaAntiguoView.cshtml" />
+    <Content Include="Views\ConsumoElectrico\HistoricoPorMedidorView.cshtml" />
+    <Content Include="Views\ConsumoElectrico\RegistrarConsumoElectricoAntiguoView.cshtml" />
+    <Content Include="Views\CompostEntrada\HistoricoEntradaCompost.cshtml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -363,6 +369,7 @@
     <Compile Include="Entity\Hallazgo.cs" />
     <Compile Include="Entity\Hidrometro.cs" />
     <Compile Include="Entity\HistoricoAgua.cs" />
+    <Compile Include="Entity\HistoricoCompost.cs" />
     <Compile Include="Entity\HistoricoElectrico.cs" />
     <Compile Include="Entity\Inspeccion.cs" />
     <Compile Include="Entity\Planta.cs" />
