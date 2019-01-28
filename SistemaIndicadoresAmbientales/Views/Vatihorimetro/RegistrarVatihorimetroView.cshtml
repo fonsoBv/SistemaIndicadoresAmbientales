@@ -38,15 +38,16 @@
                     @Html.ValidationMessageFor(model => model.Nombre_Medidor, "", new { @class = "text-danger" })
                 </div>
                 <div class="Formulario">
-                    @Html.LabelFor(model => model.Ubicacion, htmlAttributes: new { @class = "control-label" })
-                    @Html.EditorFor(model => model.Ubicacion, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Ubicacion, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.NISE, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.NISE, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NISE, "", new { @class = "text-danger" })
                 </div>
                 <div class="Formulario">
                     @Html.LabelFor(model => model.Localizacion, htmlAttributes: new { @class = "control-label" })
                     @Html.EditorFor(model => model.Localizacion, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Localizacion, "", new { @class = "text-danger" })
                 </div>
+                
                 <div class="Formulario">
                     @Html.Label("Plantas", htmlAttributes: new { @class = "control-label" })
                     @Html.DropDownList("plantas", ViewData["plantas"] as SelectList, new { @class = "form-control" })

@@ -61,6 +61,20 @@ namespace SistemaIndicadoresAmbientales.Controllers
             return (Json(list, JsonRequestBehavior.AllowGet));
         }//end obtenerConsumoAguaActualizar
 
+        public ActionResult HistoricoEntradaCompost()
+        {
+            return View();
+        }
+
+        public JsonResult obtenerConsumoEntradaHistorica(int planta,int mes)
+        {
+            Models.CompostEntradaModel model = new Models.CompostEntradaModel();
+            List<Entity.ConsumoEntradaActualizar> list = model.obtenerConsumosActualizarEntrada(mes, planta);
+            ViewData["cantidadConsumos"] = list.Count;
+
+            return (Json(list, JsonRequestBehavior.AllowGet));
+        }//end obtenerConsumoAguaActualizar
+
         public ActionResult ActualizarCompostEntradaView()
         {
             Models.PlantaModel palnta = new Models.PlantaModel();

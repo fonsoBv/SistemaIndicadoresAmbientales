@@ -13,7 +13,7 @@ namespace SistemaIndicadoresAmbientales.Entity
         public String Medida { get; set; }
         [Display(Name = "Cantidad")]
         [Required(ErrorMessage = "Requiere la cantidad de kilowatts")]
-        public float Cantidad { get; set; }
+        public decimal Cantidad { get; set; }
         public int id_Vatihorimetro { get; set; }
         public DateTime fecha { get; set; }
         public int Mes { get; set; }

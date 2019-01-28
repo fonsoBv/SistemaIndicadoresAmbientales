@@ -28,6 +28,13 @@ namespace SistemaIndicadoresAmbientales.Controllers
             }
         }//
 
+        public ActionResult ObtenerVatis(int id_planta)
+        {
+            Models.VatihorimetroModel vatiModel = new Models.VatihorimetroModel();
+            PlantaModel planta = new PlantaModel();
+            return Json(vatiModel.obtenerVatihorimetroPorPlanta(id_planta), JsonRequestBehavior.AllowGet);
+        }//end mostrar vista
+
         public ActionResult RegistrarConsumoElectricoAntiguoView()
         {
             VatihorimetroModel vatiModel = new VatihorimetroModel();
@@ -141,6 +148,22 @@ namespace SistemaIndicadoresAmbientales.Controllers
             }//end if-else
         }//end actualizar consumo
 
+        public JsonResult obtenerHistoricoElectricoAnualporHidrometro(int vati, int anio1, int anio2)
+        {
+            Models.ConsumoElectricoModel model = new Models.ConsumoElectricoModel();
+            List<Entity.HistoricoElectrico> consumo = model.obtenerHistoricoElectricoAnualporHidrometro(vati, anio1, anio2);
+            ViewData["cantidadConsumos"] = consumo.Count;
+            return (Json(consumo, JsonRequestBehavior.AllowGet));
+        }//obtenerHistoricoAgua
+
+
+        public ActionResult HistoricoPorMedidorView()
+        {
+            Models.PlantaModel palnta = new Models.PlantaModel();
+            ViewData["plantas"] = new SelectList(palnta.obtenerPlantas(), "id", "nombre");
+            return View();
+        }
+
 
 
         public ActionResult MostrarHistoricoElectricoView()
@@ -173,19 +196,19 @@ namespace SistemaIndicadoresAmbientales.Controllers
 
         public class ActualizarConsumo{
             public int Id_Consumo_Electrico { get; set; }
-            public int Cantidad { get; set; }
+            public decimal Cantidad { get; set; }
         }//end class
 
         public class ConsumoElectrico{
             public int Id_Vatihorimetro { get; set; }
-            public int Cantidad { get; set; }
+            public decimal Cantidad { get; set; }
             public int Mes { get; set; }
         }//end class
 
         public class ConsumoElectricoAntiguo
         {
             public int Id_Vatihorimetro { get; set; }
-            public int Cantidad { get; set; }
+            public decimal Cantidad { get; set; }
             public int Mes { get; set; }
             public DateTime Fecha { get; set; }
 

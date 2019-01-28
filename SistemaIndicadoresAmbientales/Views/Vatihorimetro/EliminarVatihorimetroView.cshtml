@@ -35,7 +35,7 @@
                         @Html.DisplayFor(modelItem => item.Numero_Vatihorimetro)
                     </td>
                     <td>
-                        @Html.ActionLink("Eliminar", "EliminarVatihorimetro", new { id = item.Id_Vatihorimetro }, new { onclick = "return confirm('Seguro que desea eliminar esta planta: " + item.Numero_Vatihorimetro + "');" })
+                        @Html.ActionLink("Eliminar", "EliminarVatihorimetro", new { id = item.Id_Vatihorimetro }, new { onclick = "return confirm('Seguro que desea eliminar este hidrometro: " + item.Numero_Vatihorimetro + "');" })
                     </td>
                 </tr>
             }

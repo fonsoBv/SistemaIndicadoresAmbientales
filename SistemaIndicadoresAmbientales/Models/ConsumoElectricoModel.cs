@@ -19,6 +19,36 @@ namespace SistemaIndicadoresAmbientales.Models
         }//constructor
 
 
+        public List<Entity.HistoricoElectrico> obtenerHistoricoElectricoAnualporHidrometro(int vatihorimetro, int Anio1, int Anio2)
+        {
+            List<Entity.HistoricoElectrico> consumoshistorico = new List<Entity.HistoricoElectrico>();
+
+            SqlCommand cmd = new SqlCommand("sp_ObtenerHistoricoElectricoAnualporMedidor", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Anio1", Anio1);
+            cmd.Parameters.AddWithValue("@Anio2", Anio2);
+            cmd.Parameters.AddWithValue("@Id_Vatihorimetro", vatihorimetro);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                consumoshistorico.Add(new Entity.HistoricoElectrico
+                {
+                    Cantidad = Convert.ToDecimal(dr["Cantidad"]),
+                    Anio = Convert.ToInt32(dr["Anio"]),
+                    Mes = Convert.ToInt32(dr["Mes"]),
+                });
+            }
+            return consumoshistorico;
+
+        }//eend obtener por medidor
+
         public List<Entity.HistoricoElectrico> obtenerHistoricoElectrico(int planta, int Mes, int Anio)
         {
             List<Entity.HistoricoElectrico> consumoshistorico = new List<Entity.HistoricoElectrico>();
@@ -41,7 +71,7 @@ namespace SistemaIndicadoresAmbientales.Models
              {
                 consumoshistorico.Add(new Entity.HistoricoElectrico
                 {
-                    Cantidad = Convert.ToInt64(dr["Cantidad"]),
+                    Cantidad = Convert.ToDecimal(dr["Cantidad"]),
                     Anio = Convert.ToInt32(dr["Anio"]),
                     Mes = Convert.ToInt32(dr["Mes"]),
                 });
@@ -71,7 +101,7 @@ namespace SistemaIndicadoresAmbientales.Models
             {
                 consumoshistorico.Add(new Entity.HistoricoElectrico
                 {
-                    Cantidad = Convert.ToInt64(dr["Cantidad"]),
+                    Cantidad = Convert.ToDecimal(dr["Cantidad"]),
                     Anio = Convert.ToInt32(dr["Anio"]),
                     Mes = Convert.ToInt32(dr["Mes"]),
                 });
@@ -119,7 +149,7 @@ namespace SistemaIndicadoresAmbientales.Models
                     new Entity.ConsumoElectrico
                     {
                         id_Consumo_Electrico = Convert.ToInt32(dr["Id_Consumo_Electrico"]),
-                        Cantidad = Convert.ToInt64(dr["Cantidad"]),
+                        Cantidad = Convert.ToDecimal(dr["Cantidad"]),
                         fecha = Convert.ToDateTime(dr["Fecha"]),
                         id_Vatihorimetro = Convert.ToInt32(dr["id_Vatihorimetro"]),
                         Medida = Convert.ToString(dr["Medida"]),
@@ -153,7 +183,7 @@ namespace SistemaIndicadoresAmbientales.Models
                 consumosElectrico.Add(new Entity.ConsumoElectricoActualizar
                 {
                     Id_Consumo_Electrico = Convert.ToInt32(dr["Id_Consumo_Electrico"]),
-                    Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                    Cantidad = Convert.ToDecimal(dr["Cantidad"]),
                     Numero_Vatihorimetro = Convert.ToInt32(dr["Numero_Vatihorimetro"]),
                 });
             }
@@ -162,7 +192,7 @@ namespace SistemaIndicadoresAmbientales.Models
 
 
 
-        public bool actualizarConsumoElectrico(int Cantidad, int Id_Consumo_Electrico)
+        public bool actualizarConsumoElectrico(decimal Cantidad, int Id_Consumo_Electrico)
         {
             SqlCommand cmd = new SqlCommand("sp_Actualizar_Consumo_Electrico", connection);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -199,7 +229,7 @@ namespace SistemaIndicadoresAmbientales.Models
                 consumosElectrico = new Entity.ConsumoElectrico
                 {
                     id_Consumo_Electrico = Convert.ToInt32(dr["Id_Consumo_Agua"]),
-                    Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                    Cantidad = Convert.ToDecimal(dr["Cantidad"]),
                     fecha = Convert.ToDateTime(dr["Fecha"]),
                     id_Vatihorimetro = Convert.ToInt32(dr["Id_Vatihorimetro"]),
                     Medida = Convert.ToString(dr["Medida"]),

@@ -17,7 +17,12 @@ namespace SistemaIndicadoresAmbientales.Entity
         public String Medida { get; set; }
         [Display(Name = "Cantidad")]
         [Required(ErrorMessage = "Requiere la cantidad de m3.")]
-        public float Cantidad { get; set; }
+        public decimal Cantidad { get; set; }
+        [Display(Name = "LecturaActual")]
+        [Required(ErrorMessage = "Requiere la LecturaActual.")]
+        public decimal LecturaActual { get; set; }
+        [Required(ErrorMessage = "Requiere la LecturaAnterior.")]
+        public decimal LecturaAnterior { get; set; }
         [Display(Name = "Id_Hidrometro")]
         public int Id_Hidrometro { get; set; }
         [Display(Name = "Fecha")]

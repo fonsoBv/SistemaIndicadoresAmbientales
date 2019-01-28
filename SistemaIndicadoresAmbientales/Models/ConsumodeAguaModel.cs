@@ -24,7 +24,7 @@ namespace SistemaIndicadoresAmbientales.Models
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Id_Hidrometro", consumo.Id_Hidrometro);
             cmd.Parameters.AddWithValue("@Medidad", consumo.Medida);
-            cmd.Parameters.AddWithValue("@Cantidad", consumo.Cantidad);
+            cmd.Parameters.AddWithValue("@LecturaActual", consumo.LecturaActual);
             cmd.Parameters.AddWithValue("@Fecha", consumo.Fecha);
             cmd.Parameters.AddWithValue("@Mes", consumo.Mes);
             connection.Open();
@@ -55,7 +55,7 @@ namespace SistemaIndicadoresAmbientales.Models
                     new Entity.ConsumodeAgua
                     {
                         Id_Consumo_Agua = Convert.ToInt32(dr["id_Consumo_Agua"]),
-                        Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                        Cantidad = Convert.ToInt64(dr["Cantidad"]),
                         Fecha = Convert.ToDateTime(dr["fecha"]),
                         Id_Hidrometro = Convert.ToInt32(dr["id_Hidrometro"]),
                         Medida = Convert.ToString(dr["Medida"])
@@ -98,13 +98,12 @@ namespace SistemaIndicadoresAmbientales.Models
         }//end HistoricoAgua
 
 
-        public List<Entity.HistoricoAgua> obtenerHistoricoAguaAnual(int planta, int Anio1, int Anio2)
+        public List<Entity.HistoricoAgua> obtenerHistoricoAguaAnual( int Anio1, int Anio2)
         {
             List<Entity.HistoricoAgua> consumoshistorico = new List<Entity.HistoricoAgua>();
 
             SqlCommand cmd = new SqlCommand("sp_ObtenerHistoricoAguaAnual", connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@Id_Planta", planta);
             cmd.Parameters.AddWithValue("@Anio1", Anio1);
             cmd.Parameters.AddWithValue("@Anio2", Anio2);
 
@@ -121,7 +120,7 @@ namespace SistemaIndicadoresAmbientales.Models
             {
                 consumoshistorico.Add(new Entity.HistoricoAgua
                 {
-                    Cantidad = Convert.ToInt64(dr["Cantidad"]),
+                    Cantidad = Convert.ToDecimal(dr["Cantidad"]),
                     Anio = Convert.ToInt32(dr["Anio"]),
                     Mes = Convert.ToInt32(dr["Mes"]),
                 });
@@ -129,6 +128,67 @@ namespace SistemaIndicadoresAmbientales.Models
             return consumoshistorico;
 
         }//end historico Agua Anual
+
+
+
+        public List<Entity.HistoricoAgua> obtenerHistoricoAguaAnualporHidrometro(int hidrometro,int Anio1, int Anio2)
+        {
+            List<Entity.HistoricoAgua> consumoshistorico = new List<Entity.HistoricoAgua>();
+
+            SqlCommand cmd = new SqlCommand("sp_ObtenerHistoricoAguaAnualporMedidor", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Anio1", Anio1);
+            cmd.Parameters.AddWithValue("@Anio2", Anio2);
+            cmd.Parameters.AddWithValue("@Id_Hidrometro", hidrometro);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                consumoshistorico.Add(new Entity.HistoricoAgua
+                {
+                    Cantidad = Convert.ToDecimal(dr["Cantidad"]),
+                    Anio = Convert.ToInt32(dr["Anio"]),
+                    Mes = Convert.ToInt32(dr["Mes"]),
+                });
+            }
+            return consumoshistorico;
+
+        }//eend obtener por medidor
+
+        public List<Entity.HistoricoAgua> obtenerMedidores(int planta)
+        {
+            List<Entity.HistoricoAgua> consumoshistorico = new List<Entity.HistoricoAgua>();
+
+            SqlCommand cmd = new SqlCommand("sp_ObtenerHidrometrosPorPlanta", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Id_Planta", planta);
+
+            SqlDataAdapter sd = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            connection.Open();
+            sd.Fill(dt);
+            connection.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                consumoshistorico.Add(new Entity.HistoricoAgua
+                {
+                    Cantidad = Convert.ToDecimal(dr["Cantidad"]),
+                    Anio = Convert.ToInt32(dr["Anio"]),
+                    Mes = Convert.ToInt32(dr["Mes"]),
+                });
+            }
+            return consumoshistorico;
+
+        }//eend obtener por medidor
+
 
         public Entity.ConsumodeAgua obtenerConsumodeAgua(DateTime fecha, int mes)
         {
@@ -151,7 +211,7 @@ namespace SistemaIndicadoresAmbientales.Models
                 consumosdeAgua = new Entity.ConsumodeAgua
                 {
                     Id_Consumo_Agua = Convert.ToInt32(dr["id_Consumo_Agua"]),
-                    Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                    Cantidad = Convert.ToInt64(dr["Cantidad"]),
                     Fecha = Convert.ToDateTime(dr["fecha"]),
                     Id_Hidrometro = Convert.ToInt32(dr["id_Hidrometro"]),
                     Medida = Convert.ToString(dr["Medida"])
@@ -184,7 +244,7 @@ namespace SistemaIndicadoresAmbientales.Models
                 consumosdeAgua.Add(new Entity.ConsumoAguaActualizar
                 {
                     Id_Consumo_Agua = Convert.ToInt32(dr["id_Consumo_Agua"]),
-                    Cantidad = Convert.ToInt32(dr["Cantidad"]),
+                    Cantidad = Convert.ToInt64(dr["Cantidad"]),
                     Numero_Hidrometro = Convert.ToInt32(dr["Numero_Hidrometro"]),
                 });
             }
@@ -195,7 +255,7 @@ namespace SistemaIndicadoresAmbientales.Models
 
 
 
-        public bool actualizarConsumodeAgua(int Cantidad,int Id_Consumo_Agua)
+        public bool actualizarConsumodeAgua(decimal Cantidad,int Id_Consumo_Agua)
         {
             SqlCommand cmd = new SqlCommand("sp_Actualizar_Consumo_Agua", connection);
             cmd.CommandType = CommandType.StoredProcedure;

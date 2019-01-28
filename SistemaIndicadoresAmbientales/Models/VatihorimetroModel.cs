@@ -26,8 +26,11 @@ namespace SistemaIndicadoresAmbientales.Models
             SqlCommand cmd = new SqlCommand("sp_crearVatihorimetro", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Numero_Vatihorimetro", vatihorimetro.Numero_Vatihorimetro);
-            cmd.Parameters.AddWithValue("@Id_Planta", planta);
-            cmd.Parameters.AddWithValue("@EstadoBl", "A");
+            cmd.Parameters.AddWithValue("@Nombre_Medidor", vatihorimetro.Nombre_Medidor);
+            cmd.Parameters.AddWithValue("@NISE", vatihorimetro.NISE);
+            cmd.Parameters.AddWithValue("@Localizacion", vatihorimetro.Localizacion);
+            cmd.Parameters.AddWithValue("@Id_planta", planta);
+            cmd.Parameters.AddWithValue("@EstadoBL", "A");
 
 
             connection.Open();
@@ -59,6 +62,9 @@ namespace SistemaIndicadoresAmbientales.Models
                     {
                         Id_Vatihorimetro = Convert.ToInt32(dr["Id_Vatihorimetro"]),
                         Numero_Vatihorimetro = Convert.ToInt32(dr["Numero_Vatihorimetro"]),
+                        Nombre_Medidor = Convert.ToString(dr["Nombre_Medidor"]),
+                        NISE = Convert.ToInt32(dr["NISE"]),
+                        Localizacion = Convert.ToInt64(dr["Localizacion"]),
                         Id_Planta = Convert.ToInt32(dr["Id_Planta"])
                     });
             }//end foreach
