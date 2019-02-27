@@ -23,7 +23,7 @@ namespace SistemaIndicadoresAmbientales.Models
             SqlCommand cmd = new SqlCommand("sp_crearHidrometro", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Numero_Hidrometro", hidrometro.Numero_Hidrometro);
-            cmd.Parameters.AddWithValue("@NISE", hidrometro.NISE);
+            cmd.Parameters.AddWithValue("@Nombre_Hidrometro", hidrometro.Nombre_Hidrometro);
             cmd.Parameters.AddWithValue("@Id_Planta", planta);
             cmd.Parameters.AddWithValue("@EstadoBl", "A");
 
@@ -57,7 +57,7 @@ namespace SistemaIndicadoresAmbientales.Models
                      {
                          Id_Hidrometro = Convert.ToInt32(dr["Id_Hidrometro"]),
                          Numero_Hidrometro = Convert.ToInt32(dr["Numero_Hidrometro"]),
-                         NISE = Convert.ToInt32(dr["NISE"]),
+                         Nombre_Hidrometro = Convert.ToString(dr["Nombre_Hidrometro"]),
                          Id_Planta = Convert.ToInt32(dr["Id_Planta"])
                      });
             }//end foreach
@@ -85,6 +85,7 @@ namespace SistemaIndicadoresAmbientales.Models
                      {
                          Id_Hidrometro = Convert.ToInt32(dr["Id_Hidrometro"]),
                          Numero_Hidrometro = Convert.ToInt32(dr["Numero_Hidrometro"]),
+                         Nombre_Hidrometro = Convert.ToString(dr["Nombre_Hidrometro"]),
                          Id_Planta = Convert.ToInt32(dr["Id_Planta"])
                      });
             }//end foreach
@@ -98,7 +99,7 @@ namespace SistemaIndicadoresAmbientales.Models
             SqlCommand cmd = new SqlCommand("sp_actualizarHidrometro", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Numero_Hidrometro", hidrometro.Numero_Hidrometro);
-            cmd.Parameters.AddWithValue("@NISE", hidrometro.NISE);
+            cmd.Parameters.AddWithValue("@Nombre_Hidrometro", hidrometro.Nombre_Hidrometro);
             cmd.Parameters.AddWithValue("@Id_Planta", hidrometro.Id_Planta);
             connection.Open();
             int i = cmd.ExecuteNonQuery();

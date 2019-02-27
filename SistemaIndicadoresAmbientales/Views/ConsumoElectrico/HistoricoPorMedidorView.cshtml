@@ -6,7 +6,7 @@
     @Html.AntiForgeryToken()
 
     <div id="Etiqueta">
-        <h1 class="H1-Etiqueta">Historico Consumo de Agua</h1>
+        <h1 class="H1-Etiqueta">Historico Consumo de Electrico</h1>
     </div>
     <div id="Formulario">
         <div class="Formulario">
@@ -16,11 +16,19 @@
             }
         </div>
         <div class="Formulario">
-           <label>Desde:</label>
-            <input type="number" class="form-control"  id="Anio1" name="AnioComparar" />
+            @Html.Label("Plantas:", htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownList("plantas", ViewData["plantas"] as SelectList, new { @class = "form-control" })
+        </div>
+        <div class="Formulario">
+            @Html.Label("Medidores:", htmlAttributes: new { @class = "control-label" })
+            <select name="Medidores" id="Medidores" class="form-control"></select>
+        </div>
+        <div class="Formulario">
+            <label>Desde:</label>
+            <input type="number" class="form-control" id="Anio1" name="AnioComparar" />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <label>Hasta:</label>
-            <input type="number" class="form-control"  id="Anio2" name="AnioComparar" />
+            <input type="number" class="form-control" id="Anio2" name="AnioComparar" />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
         <div class="Formulario">
@@ -29,16 +37,6 @@
         </div>
         <br />
         <br />
-        <table id="Encabezado" class="table">
-            <thead id="EncabezaodHead">
-            <th>Código:</th>
-            <th><input class="form-control" type="text" id="Codigo" name="Codigo" /></th>
-            <th>Versión:</th>
-            <th><input class="form-control" type="text" id="Version" name="Version" /></th>
-            <th>Rige a partir:</th>
-            <th><input class="form-control" type="date" id="FechaRegir" name="FechaRegir" /></th>
-            </thead>
-        </table>
         <table id="EncabezadoHistoricos" class="table">
             <thead id="EncabezadoBody">
             </thead>
@@ -61,7 +59,7 @@
             </div>
         </div>
     </div>
-   }
+                }
 <link href="~/Public/css/DataTable.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
 <script src="~/Public/js/jquery-1.9.1.min.js"></script>
@@ -70,18 +68,42 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script type="text/javascript">
 
+    $("#plantas").change(function () {
+        var id_planta = document.getElementById("plantas").value;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ObtenerVatis")',
+            dataType: 'json',
+            data: {"id_planta":id_planta},
+            success: function (vatis) {
+                var json = JSON.stringify(vatis);
+                alert(json);
+
+                var body = "";
+                for (i = 0; i < vatis.length; i++) {
+                    body += "<option value='" + vatis[i].Id_Vatihorimetro + "'>" + vatis[i].Numero_Vatihorimetro + "-"
+                        + vatis[i].Nombre_Medidor + "</option>";
+                }//end for
+                $("#Medidores").html(body);
+            }//end funcion success
+
+        });
+    });
+
+
    function cargar() {
         var PlamNOm = $("plantas").selectedI;
         var anio1 = document.getElementById("Anio1").value;
         var anio2 = document.getElementById("Anio2").value;
+        var vati = document.getElementById("Medidores").value;
 
         var tipo = $('input[name="tipo"]:checked').val();
         if (tipo == "Anual") {
-            var datos = { "anio1": anio1, "anio2": anio2 };
+            var datos = {"vati" : vati, "anio1": anio1, "anio2": anio2 };
 
             $.ajax({
                 type: 'POST',
-                url: '@Url.Action("obtenerHistoricoAguaAnual")',
+                url: '@Url.Action("obtenerHistoricoElectricoAnualporHidrometro")',
                 dataType: 'json',
                 data: datos,
 
@@ -320,15 +342,7 @@
                     }
                     body += "</tr>";
                     var f = new Date();
-                    document.getElementById('Codigo').style.display = "";
-                    document.getElementById('Version').style.display = "";
-                    document.getElementById('FechaRegir').style.display = "";
-                    var headBody =  "<tr><th>Código:</th><th>Versión:</th><th>Rige a partir:</th><th>Fecha:</th></tr>"
-                    var head = "<tr><td>" + document.getElementById("Codigo").value + "</td><td>" + document.getElementById("Version").value + "</td><td>" + document.getElementById("FechaRegir").value +
-                    "</td><td>" + f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear() + "</td></tr>";
                     $("#HistoricosBody").html(body);
-                    $("#EncabezadoBody").html(headBody);
-                    $("#BodyEncabezado").html(head);
                     $("#EncabezadoHistoricosBody").html(headHistoricosBody);
 
 
@@ -435,7 +449,7 @@
 
         pdf.setFontSize(13);
         pdf.rect(70, 50, 430, 20);
-        pdf.text(100, 63, "CONTROL CONSUMO AGUA PLANTAS REGIÓN HUETAR");
+        pdf.text(100, 63, "CONTROL CONSUMO ElÉCTRICO PLANTAS REGIÓN HUETAR");
 
         pdf.setFontSize(9);
         pdf.rect(70, 70, 430, 12);
@@ -446,5 +460,7 @@
     }//pdf
 
 </script>
+
+
 
 

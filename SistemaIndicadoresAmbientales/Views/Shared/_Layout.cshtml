@@ -79,6 +79,11 @@
                                                     <a href="~/ConsumoAgua/RegistrarConsumoAguaView">Insertar</a>
                                                 </li>
                                             </ul>
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/ConsumoAgua/RegistrarConsumoAguaAntiguoView">Insertar Antiguo</a>
+                                                </li>
+                                            </ul>
                                         }
                                         @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta"))
                                         {
@@ -93,6 +98,11 @@
                                             <ul class="children">
                                                 <li>
                                                     <a href="~/ConsumoAgua/MostrarHistoricoAguaView">Ver Historico</a>
+                                                </li>
+                                            </ul>
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/ConsumoAgua/HistoricoPorHidrometroView">Ver Historico por Medidor</a>
                                                 </li>
                                             </ul>
                                         }
@@ -216,6 +226,11 @@
                                                     <a href="~/ConsumoElectrico/RegistrarConsumoElectricoView">Insertar</a>
                                                 </li>
                                             </ul>
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/ConsumoElectrico/RegistrarConsumoElectricoAntiguoView">Insertar Antiguo</a>
+                                                </li>
+                                            </ul>
                                         }
                                         @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta"))
                                         {
@@ -224,12 +239,18 @@
                                                     <a href="~/ConsumoElectrico/ActualizarConsumoElectricoView">Actualizar</a>
                                                 </li>
                                             </ul>
+
                                         }
                                         @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Gestor Ambiental") || Session["rol"].ToString().Equals("Coordinador de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación"))
                                         {
                                             <ul class="children">
                                                 <li>
                                                     <a href="~/ConsumoElectrico/MostrarHistoricoElectricoView">Ver Historico</a>
+                                                </li>
+                                            </ul>
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/ConsumoElectrico/HistoricoPorMedidorView">Ver Historico por medidor</a>
                                                 </li>
                                             </ul>
                                         }

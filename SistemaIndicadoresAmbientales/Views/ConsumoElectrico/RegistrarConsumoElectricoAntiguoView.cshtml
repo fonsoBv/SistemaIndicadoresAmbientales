@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="Formulario">
-            @Html.Label("Mes del Consumo:", htmlAttributes: new { @class = "control-label" })
+            <label class="control-label">Mes del Consumo:</label>
             <select name="Mes" id="Mes">
                 <option value="01">Enero</option>
                 <option value="02">Febrero</option>
@@ -46,38 +46,42 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
         <div class="Formulario">
+            <label class="control-label">Fecha Consumo:</label>
+            <input type="date" class="form-control" name="FechaConsumo" id="FechaConsumo" />
+        </div>
+        <div class="Formulario">
             <table class="table">
                 <thead>
-                    <th>Nombre Medidor</th>
-                    <th>Numero Medidor</th>
-                    <th>NISE</th>
-                    <th>Kilowatts</th>
+                <th>Nombre Medidor</th>
+                <th>Numero Medidor</th>
+                <th>NISE</th>
+                <th>Kilowatts</th>
 
                 </thead>
-                @{
-                    int cont = 0;
-                    foreach (var item in (ViewData["Vatis"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Vatihorimetro>))
-                    {
-                        <tr>
-                            <td>
-                                @Html.Label(item.Nombre_Medidor + "")
-                            </td>
-                            <td>
-                                @Html.Label(item.Numero_Vatihorimetro + "")
-                            </td>
-                            <td>
-                                @Html.Label(item.NISE + "")
-                            </td>
-                            <td>
-                                <input type="hidden" value="@item.Id_Vatihorimetro" name="id+@cont" id="id+@cont" />
-                                <input type="number" name="k+@cont" id="k+@cont" />
-                            </td>
-                        </tr>
-                        cont++;
-                    }//end for
-                }
-            </table>
-            <input type="hidden" value="@cont" id="tamanio" />
+                    @{
+                        int cont = 0;
+                        foreach (var item in (ViewData["Vatis"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Vatihorimetro>))
+                        {
+                            <tr>
+                                <td>
+                                    @Html.Label(item.Nombre_Medidor + "")
+                                </td>
+                                <td>
+                                    @Html.Label(item.Numero_Vatihorimetro + "")
+                                </td>
+                                <td>
+                                    @Html.Label(item.NISE + "")
+                                </td>
+                                <td>
+                                    <input type="hidden" value="@item.Id_Vatihorimetro" name="id+@cont" id="id+@cont" />
+                                    <input type="number" name="k+@cont" id="k+@cont" />
+                                </td>
+                            </tr>
+                            cont++;
+                        }//end for
+                    }
+                </table>
+                <input type="hidden" value="@cont" id="tamanio" />
 
         </div>
         <div>
@@ -86,7 +90,7 @@
             </div>
         </div>
     </div>
-                    }
+                        }
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
@@ -97,25 +101,27 @@
         consumos = new Array();
         for (var i = 0; i < cantidad ; i++) {
             var id = document.getElementById("id+" + i).value;
-            var cant = parseFloat(document.getElementById("k+" + i).value);
+            var cant = document.getElementById("k+" + i).value;
             consumos.push({
                 Id_Vatihorimetro: document.getElementById("id+" + i).value,
                 Cantidad: document.getElementById("k+" + i).value,
                 Mes: document.getElementById("Mes").value,
+                Fecha: document.getElementById("FechaConsumo").value
 
             });
         }//
         var dataPost = JSON.stringify({ consumo: consumos });
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'ResgistrarConsumoElectricoView');
+        xhr.open('POST', 'RegistrarConsumoElectricoAntiguo');
         xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
         xhr.send(dataPost);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                window.location.href = 'RegistrarConsumoElectricoView';;
+                window.location.href = 'RegistrarConsumoElectricoAntiguoView';;
 
             }//end if
         }//end function
     }
 
 </script>
+

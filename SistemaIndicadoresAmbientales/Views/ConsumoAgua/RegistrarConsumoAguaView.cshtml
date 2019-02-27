@@ -47,13 +47,21 @@
     </div>
         <div class="Formulario">
             <table class="table">
+                <thead>
+                    <th>Nombre Medidor</th>
+                    <th>Número Medidor</th>
+                    <th>Lectura Actual</th>
+                </thead>
                 @{
                     int cont = 0;
                     foreach (var item in (ViewData["Hidros"] as IEnumerable<SistemaIndicadoresAmbientales.Entity.Hidrometro>))
                     {
                         <tr>
                             <td>
-                                @Html.Label(item.Numero_Hidrometro + ":")
+                                @Html.Label(item.Nombre_Hidrometro + "")
+                            </td>
+                            <td>
+                                @Html.Label(item.Numero_Hidrometro + "")
                             </td>
                             <td>
                                 <input type="hidden" value="@item.Id_Hidrometro" name="id+@cont" id="id+@cont" />
@@ -84,10 +92,10 @@
         consumos = new Array();
         for (var i = 0; i < cantidad ; i++) {
             var id = document.getElementById("id+" + i).value;
-            var cant = document.getElementById("m3+" + i).value;
+            var cant = parseFloat(document.getElementById("m3+" + i).value);
             consumos.push({
-                Id_Hidrometro: document.getElementById("id+" + i).value,
-                Cantidad: document.getElementById("m3+" + i).value,
+                Id_Hidrometro: id,
+                LecturaActual: cant,
                 Mes: document.getElementById("Mes").value,
 
             });

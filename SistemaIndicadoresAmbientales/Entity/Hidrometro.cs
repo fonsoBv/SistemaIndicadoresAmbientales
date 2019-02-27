@@ -8,13 +8,13 @@ namespace SistemaIndicadoresAmbientales.Entity
 {
     public class Hidrometro
     {
-        [Display(Name = "Id_Hidrometro")]
+        [Display(Name = "Id Hidrometro")]
         public int Id_Hidrometro { get; set; }
-        [Display(Name = "Id_Planta")]
+        [Display(Name = "Id Planta")]
         public int Id_Planta { get; set; }
-        [Display(Name = "NISE")]
-        public int NISE { get; set; }
-        [Display(Name = "Numero_Hidrometro")]
+        [Display(Name = "Nombre Medidor")]
+        public String Nombre_Hidrometro { get; set; }
+        [Display(Name = "Numero Hidrometro")]
         public int Numero_Hidrometro { get; set; }
 
 

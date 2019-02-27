@@ -26,6 +26,13 @@ namespace SistemaIndicadoresAmbientales.Controllers
             }
         }//end mostrar vista
 
+        public ActionResult ObtenerHidros(int id_planta)
+        {
+            Models.HidrometroModel hidroModel = new Models.HidrometroModel();
+            PlantaModel planta = new PlantaModel();
+            return Json(hidroModel.obtenerHidrometrosPorPlanta(id_planta),JsonRequestBehavior.AllowGet);
+        }//end mostrar vista
+
         public ActionResult RegistrarConsumoAguaAntiguoView()
         {
             Models.HidrometroModel hidroModel = new Models.HidrometroModel();
@@ -36,12 +43,10 @@ namespace SistemaIndicadoresAmbientales.Controllers
                 int id_planta = planta.obtenerUsuarioPlanta(email);
                 ViewData["Hidros"] = hidroModel.obtenerHidrometrosPorPlanta(id_planta);
                 return View();
-            }
-            else
-            {
+            }else{
                 return View();
             }
-        }
+       } 
 
         public JsonResult ResgistrarConsumoAguaView(List<ConsumoAgua> consumo)
         {
@@ -52,7 +57,7 @@ namespace SistemaIndicadoresAmbientales.Controllers
                 if (bdconsumo.crearConsumoAgua(new Entity.ConsumodeAgua
                 {
                     Id_Hidrometro = item.Id_Hidrometro,
-                    Cantidad = item.Cantidad,
+                    LecturaActual = item.LecturaActual,
                     Medida = "m3",
                     Fecha = System.DateTime.Now,
                     Mes = item.Mes,
@@ -142,7 +147,7 @@ namespace SistemaIndicadoresAmbientales.Controllers
 
         }//MostrarHistoricoAgua
 
-        public JsonResult obtenerHistoricoAgua(int planta,int mes,int anio)
+        public JsonResult obtenerHistoricoAguaAnual(int planta,int mes,int anio)
        {
             Models.ConsumodeAguaModel model = new Models.ConsumodeAguaModel();
             List<Entity.HistoricoAgua> consumo = model.obtenerHistoricoAgua(planta,mes,anio);
@@ -150,10 +155,17 @@ namespace SistemaIndicadoresAmbientales.Controllers
             return (Json(consumo,JsonRequestBehavior.AllowGet));
         }//obtenerHistoricoAgua
 
-        public JsonResult obtenerHistoricoAguaAnual(int planta, int anio1,int anio2)
+        public ActionResult HistoricoPorHidrometroView()
+        {
+            Models.PlantaModel palnta = new Models.PlantaModel();
+            ViewData["plantas"] = new SelectList(palnta.obtenerPlantas(), "id", "nombre");
+            return View();
+        }
+
+        public JsonResult obtenerHistoricoAguaAnualporHidrometro(int hidro,int anio1,int anio2)
         {
             Models.ConsumodeAguaModel model = new Models.ConsumodeAguaModel();
-            List<Entity.HistoricoAgua> consumo = model.obtenerHistoricoAguaAnual(planta,anio1,anio2);
+            List<Entity.HistoricoAgua> consumo = model.obtenerHistoricoAguaAnualporHidrometro(hidro,anio1,anio2);
             ViewData["cantidadConsumos"] = consumo.Count;
             return (Json(consumo, JsonRequestBehavior.AllowGet));
         }//obtenerHistoricoAgua
@@ -162,13 +174,13 @@ namespace SistemaIndicadoresAmbientales.Controllers
         public class ActualizarConsumo
         {
             public int Id_Consumo_Agua { get; set; }
-            public int Cantidad { get; set; }
+            public decimal Cantidad { get; set; }
 
         }//end ActualizarConsumo
         public class ConsumoAgua
         {
             public int Id_Hidrometro { get; set; }
-            public int Cantidad { get; set; }
+            public decimal LecturaActual { get; set; }
             public int Mes { get; set; }
 
         }//end ConsumoAgua
@@ -176,7 +188,8 @@ namespace SistemaIndicadoresAmbientales.Controllers
         public class ConsumoAguaAntiguo
         {
             public int Id_Hidrometro { get; set; }
-            public int Cantidad { get; set; }
+            public decimal Cantidad { get; set; }
+            public decimal LecturaActual { get; set; }
             public int Mes { get; set; }
             public DateTime Fecha { get; set; }
 
