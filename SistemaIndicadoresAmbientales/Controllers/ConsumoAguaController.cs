@@ -147,10 +147,10 @@ namespace SistemaIndicadoresAmbientales.Controllers
 
         }//MostrarHistoricoAgua
 
-        public JsonResult obtenerHistoricoAguaAnual(int planta,int mes,int anio)
+        public JsonResult obtenerHistoricoAguaAnual(int anio1,int anio2)
        {
             Models.ConsumodeAguaModel model = new Models.ConsumodeAguaModel();
-            List<Entity.HistoricoAgua> consumo = model.obtenerHistoricoAgua(planta,mes,anio);
+            List<Entity.HistoricoAgua> consumo = model.obtenerHistoricoAguaAnual(anio1,anio2);
             ViewData["cantidadConsumos"] = consumo.Count;
             return (Json(consumo,JsonRequestBehavior.AllowGet));
         }//obtenerHistoricoAgua

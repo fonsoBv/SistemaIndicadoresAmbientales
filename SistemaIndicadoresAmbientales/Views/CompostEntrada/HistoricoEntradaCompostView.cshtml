@@ -1,5 +1,5 @@
 ﻿
-@model SistemaIndicadoresAmbientales.Entity.ConsumodeAgua
+@model SistemaIndicadoresAmbientales.Entity.HistoricoCompost
 
 
 @using (Html.BeginForm())
@@ -7,7 +7,7 @@
     @Html.AntiForgeryToken()
 
     <div id="Etiqueta">
-        <h1 class="H1-Etiqueta">Históricos de Entrada de Material Orgánico</h1>
+        <h1 class="H1-Etiqueta">Históricos de Salida de Compost</h1>
     </div>
     <div id="Formulario">
         <div class="Formulario">
@@ -23,10 +23,6 @@
             <label>Hasta:</label>
             <input type="number" class="form-control" id="Anio2" name="AnioComparar" />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        </div>
-        <div class="Formulario">
-            <label>Anual:</label><input type="radio" id="tipo" name="tipo" value="Anual" class='my_chkBox' checked="checked" />
-            <label>Mensual:</label><input type="radio" id="tipo" name="tipo" value="Mensual" class='my_chkBox' checked="checked" />
         </div>
         <br />
         <br />
@@ -73,27 +69,28 @@
 
    function cargar() {
         var PlamNOm = $("plantas").selectedI;
-        var anio1 = document.getElementById("Anio1").value;
-        var anio2 = document.getElementById("Anio2").value;
+        var Anio1 = document.getElementById("Anio1").value;
+        var Anio2 = document.getElementById("Anio2").value;
 
         var tipo = $('input[name="tipo"]:checked').val();
-        if (tipo == "Anual") {
-            var datos = { "anio1": anio1, "anio2": anio2 };
+        var datos = { "Anio1": Anio1, "Anio2": Anio2 };
 
             $.ajax({
                 type: 'POST',
-                url: '@Url.Action("obtenerHistoricoCompostAnual")',
+                url: '@Url.Action("obtenerConsumoEntradaHistorica")',
                 dataType: 'json',
                 data: datos,
 
                 success: function (consumo) {
                     var json = JSON.stringify(consumo);
-                    alert(json);
                     var body = "";
                     var headHistoricosBody = "";
                     var cont = 0;
                     var CantidadTotal = 0;
                     var CantidadMes = 0;
+                    var anio1 = Anio1;
+                    var anio2 = Anio2;
+
                     var TotalAnio = (anio1-anio2) + 1;
                     headHistoricosBody += "<tr><th>Mes</th>";
                     for (var i = anio2; i <= anio1; i++) {
@@ -119,6 +116,9 @@
                         Total.push(0);
                     }
                     for (var i = 0; i < consumo.length; i++) {
+                        if (consumo[i].Cantidad == null) {
+                            consumo[i].Cantidad = 0;
+                        }
                         switch (consumo[i].Mes) {
                             case 1:
                                 enero.push(consumo[i].Cantidad);
@@ -168,9 +168,12 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + enero[cont] + " </td>";
-                                    Total[cont] += enero[cont];
-
+                                    if (enero[cont] != null) {
+                                        body += "<td>" + enero[cont] + " </td>";
+                                        Total[cont] += enero[cont];
+                                    } else {
+                                        body += "<td>" + 0 + " </td>";
+                                    }
                                     cont++;
                                 }
 
@@ -180,9 +183,12 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + febrero[cont] + " </td>";
-                                    Total[cont] += febrero[cont];
-
+                                    if (febrero[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + febrero[cont] + " </td>";
+                                        Total[cont] += febrero[cont];
+                                    }
                                     cont++;
 
                                 }
@@ -192,8 +198,12 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + marzo[cont] + " </td>";
-                                    Total[cont] += marzo[cont];
+                                    if (marzo[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + marzo[cont] + " </td>";
+                                        Total[cont] += marzo[cont];
+                                    }
                                     cont++;
 
                                 }
@@ -203,10 +213,13 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + abril[cont] + " </td>";
-                                    Total[cont] += abril[cont];
+                                    if (abril[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + abril[cont] + " </td>";
+                                        Total[cont] += abril[cont];
+                                    }
                                     cont++;
-
                                 }
                                 body += "</tr>";
                                 break;
@@ -214,8 +227,12 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + mayo[cont] + " </td>";
-                                    Total[cont] += mayo[cont];
+                                    if (mayo[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + mayo[cont] + " </td>";
+                                        Total[cont] += mayo[cont];
+                                    }
                                     cont++;
 
                                 }
@@ -225,10 +242,13 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + junio[cont] + " </td>";
-                                    Total[cont] += junio[cont];
+                                    if (junio[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + junio[cont] + " </td>";
+                                        Total[cont] += junio[cont];
+                                    }
                                     cont++;
-
                                 }
                                 body += "</tr>";
                                 break;
@@ -236,8 +256,12 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + julio[cont] + " </td>";
-                                    Total[cont] += julio[cont];
+                                    if (julio[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + julio[cont] + " </td>";
+                                        Total[cont] += julio[cont];
+                                    }
                                     cont++;
 
                                 }
@@ -247,10 +271,13 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + agosto[cont] + " </td>";
-                                    Total[cont] += agosto[cont];
+                                    if (agosto[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + agosto[cont] + " </td>";
+                                        Total[cont] += agosto[cont];
+                                    }
                                     cont++;
-
                                 }
                                 body += "</tr>";
                                 break;
@@ -258,10 +285,13 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + setiembre[cont] + " </td>";
-                                    Total[cont] += setiembre[cont];
+                                    if (setiembre[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + setiembre[cont] + " </td>";
+                                        Total[cont] += setiembre[cont];
+                                    }
                                     cont++;
-
                                 }
                                 body += "</tr>";
                                 break;
@@ -269,10 +299,13 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + octubre[cont] + " </td>";
-                                    Total[cont] += octubre[cont];
+                                    if (octubre[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + octubre[cont] + " </td>";
+                                        Total[cont] += octubre[cont];
+                                    }
                                     cont++;
-
                                 }
                                 body += "</tr>";
                                 break;
@@ -280,8 +313,12 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + noviembre[cont] + " </td>";
-                                    Total[cont] += noviembre[cont];
+                                    if (noviembre[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + noviembre[cont] + " </td>";
+                                        Total[cont] += noviembre[cont];
+                                    }
                                     cont++;
 
                                 }
@@ -291,10 +328,13 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + diciembre[cont] + " </td>";
-                                    Total[cont] += diciembre[cont];
+                                    if (diciembre[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + diciembre[cont] + " </td>";
+                                        Total[cont] += diciembre[cont];
+                                    }
                                     cont++;
-
                                 }
                                 body += "</tr>";
                                 break;
@@ -335,7 +375,7 @@
 
                 }//sucess
             });
-        }
+        
     }//end function
 
 
@@ -436,7 +476,7 @@
 
         pdf.setFontSize(13);
         pdf.rect(70, 50, 430, 20);
-        pdf.text(100, 63, "CONTROL CONSUMOS PLANTAS REGIÓN HUETAR");
+        pdf.text(100, 63, "CONTROL PRODUCIÓN DE COMPOST DE PLANTAS REGIÓN HUETAR");
 
         pdf.setFontSize(9);
         pdf.rect(70, 70, 430, 12);
@@ -447,5 +487,6 @@
     }//pdf
 
 </script>
+
 
 

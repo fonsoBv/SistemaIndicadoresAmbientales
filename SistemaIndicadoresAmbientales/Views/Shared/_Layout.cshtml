@@ -97,12 +97,12 @@
                                         {
                                             <ul class="children">
                                                 <li>
-                                                    <a href="~/ConsumoAgua/MostrarHistoricoAguaView">Ver Historico</a>
+                                                    <a href="~/ConsumoAgua/MostrarHistoricoAguaView">Historico</a>
                                                 </li>
                                             </ul>
                                             <ul class="children">
                                                 <li>
-                                                    <a href="~/ConsumoAgua/HistoricoPorHidrometroView">Ver Historico por Medidor</a>
+                                                    <a href="~/ConsumoAgua/HistoricoPorHidrometroView">Historico por medidor</a>
                                                 </li>
                                             </ul>
                                         }
@@ -154,7 +154,7 @@
                                     {
                                         <ul class="children">
                                             <li>
-                                                <a href="~/ConsumoAceite/Index">Registrar Consumo Nuevo</a>
+                                                <a href="~/ConsumoAceite/Index">Registrar consumo nuevo</a>
                                             </li>
                                         </ul>
                                     }
@@ -177,7 +177,7 @@
                                         {
                                             <ul class="children">
                                                 <li>
-                                                    <a href="~/CompostEntrada/RegistrarCompostEntradaView">Insertar Material Organico</a>
+                                                    <a href="~/CompostEntrada/RegistrarCompostEntradaView">Insertar material órganico</a>
                                                 </li>
                                             </ul>
                                         }
@@ -185,7 +185,7 @@
                                         {
                                             <ul class="children">
                                                 <li>
-                                                    <a href="~/CompostEntrada/ActualizarCompostEntradaView">Actualizar Material Organico</a>
+                                                    <a href="~/CompostEntrada/ActualizarCompostEntradaView">Actualizar material órganico</a>
                                                 </li>
                                             </ul>
                                         }
@@ -193,7 +193,7 @@
                                         {
                                             <ul class="children">
                                                 <li>
-                                                    <a href="~/CompostSalida/RegistrarCompostSalidaView">Insertar Abono</a>
+                                                    <a href="~/CompostSalida/RegistrarCompostSalidaView">Insertar Compost</a>
                                                 </li>
                                             </ul>
                                         }
@@ -201,7 +201,15 @@
                                         {
                                             <ul class="children">
                                                 <li>
-                                                    <a href="~/CompostSalida/ActualizarCompostSalidaView">Actualizar Abono</a>
+                                                    <a href="~/CompostSalida/ActualizarCompostSalidaView">Actualizar compost</a>
+                                                </li>
+                                            </ul>
+                                        }
+                                        @if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta"))
+                                        {
+                                            <ul class="children">
+                                                <li>
+                                                    <a href="~/CompostEntrada/HistoricoEntradaCompostView">Producción de compost anual</a>
                                                 </li>
                                             </ul>
                                         }
@@ -209,7 +217,7 @@
                                         {
                                             <ul class="children">
                                                 <li>
-                                                    <a href="#">Ver Historico</a>
+                                                    <a href="~/CompostEntrada/HistoricoEntradaCompostView">Material órganico anual</a>
                                                 </li>
                                             </ul>
                                         }
@@ -228,7 +236,7 @@
                                             </ul>
                                             <ul class="children">
                                                 <li>
-                                                    <a href="~/ConsumoElectrico/RegistrarConsumoElectricoAntiguoView">Insertar Antiguo</a>
+                                                    <a href="~/ConsumoElectrico/RegistrarConsumoElectricoAntiguoView">Insertar antiguo</a>
                                                 </li>
                                             </ul>
                                         }
@@ -236,7 +244,7 @@
                                         {
                                             <ul class="children">
                                                 <li>
-                                                    <a href="~/ConsumoElectrico/ActualizarConsumoElectricoView">Actualizar</a>
+                                                    <a href="~/ConsumoElectrico/ActualizarConsumoElectricoView">Actualizar consumo</a>
                                                 </li>
                                             </ul>
 
@@ -245,12 +253,12 @@
                                         {
                                             <ul class="children">
                                                 <li>
-                                                    <a href="~/ConsumoElectrico/MostrarHistoricoElectricoView">Ver Historico</a>
+                                                    <a href="~/ConsumoElectrico/MostrarHistoricoElectricoView">Histórico eléctrico</a>
                                                 </li>
                                             </ul>
                                             <ul class="children">
                                                 <li>
-                                                    <a href="~/ConsumoElectrico/HistoricoPorMedidorView">Ver Historico por medidor</a>
+                                                    <a href="~/ConsumoElectrico/HistoricoPorMedidorView">Historico por medidor</a>
                                                 </li>
                                             </ul>
                                         }
@@ -374,7 +382,7 @@
                                     </div>
                                     <div>
                                         <label>
-                                            <a href="#">Vatihorimetro</a>
+                                            <a href="#">Medidor</a>
                                         </label>
                                         <ul class="children">
                                             <li>

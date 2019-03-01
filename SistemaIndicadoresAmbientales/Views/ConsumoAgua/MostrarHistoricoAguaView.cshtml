@@ -16,17 +16,14 @@
             }
         </div>
         <div class="Formulario">
-           <label>Desde:</label>
-            <input type="number" class="form-control"  id="Anio1" name="AnioComparar" />
+            <label>Desde:</label>
+            <input type="number" class="form-control" id="Anio1" name="AnioComparar" />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <label>Hasta:</label>
-            <input type="number" class="form-control"  id="Anio2" name="AnioComparar" />
+            <input type="number" class="form-control" id="Anio2" name="AnioComparar" />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
-        <div class="Formulario">
-            <label>Anual:</label><input type="radio" id="tipo" name="tipo" value="Anual" class='my_chkBox' checked="checked" />
-            <label>Mensual:</label><input type="radio" id="tipo" name="tipo" value="Mensual" class='my_chkBox' checked="checked" />
-        </div>
+      
         <br />
         <br />
         <table id="Encabezado" class="table">
@@ -61,7 +58,7 @@
             </div>
         </div>
     </div>
-   }
+                }
 <link href="~/Public/css/DataTable.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
 <script src="~/Public/js/jquery-1.9.1.min.js"></script>
@@ -70,13 +67,12 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script type="text/javascript">
 
-   function cargar() {
+    function cargar() {
         var PlamNOm = $("plantas").selectedI;
         var anio1 = document.getElementById("Anio1").value;
         var anio2 = document.getElementById("Anio2").value;
 
         var tipo = $('input[name="tipo"]:checked').val();
-        if (tipo == "Anual") {
             var datos = { "anio1": anio1, "anio2": anio2 };
 
             $.ajax({
@@ -93,7 +89,7 @@
                     var cont = 0;
                     var CantidadTotal = 0;
                     var CantidadMes = 0;
-                    var TotalAnio = (anio1-anio2) + 1;
+                    var TotalAnio = (anio1 - anio2) + 1;
                     headHistoricosBody += "<tr><th>Mes</th>";
                     for (var i = anio2; i <= anio1; i++) {
                         headHistoricosBody += "<th>" + i + "</th>";
@@ -160,6 +156,7 @@
                                 break;
                         }
                     }//end for i
+
                     for (var j = 1; j <= 12; j++) {
 
                         switch (j) {
@@ -167,9 +164,12 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + enero[cont] + " </td>";
-                                    Total[cont] += enero[cont];
-
+                                    if (enero[cont] != null) {
+                                        body += "<td>" + enero[cont] + " </td>";
+                                        Total[cont] += enero[cont];
+                                    } else {
+                                        body += "<td>" + 0 + " </td>";
+                                    }
                                     cont++;
                                 }
 
@@ -179,9 +179,12 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + febrero[cont] + " </td>";
-                                    Total[cont] += febrero[cont];
-
+                                    if (febrero[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + febrero[cont] + " </td>";
+                                        Total[cont] += febrero[cont];
+                                    }
                                     cont++;
 
                                 }
@@ -191,8 +194,12 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + marzo[cont] + " </td>";
-                                    Total[cont] += marzo[cont];
+                                    if (marzo[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + marzo[cont] + " </td>";
+                                        Total[cont] += marzo[cont];
+                                    }
                                     cont++;
 
                                 }
@@ -202,10 +209,13 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + abril[cont] + " </td>";
-                                    Total[cont] += abril[cont];
+                                    if (abril[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + abril[cont] + " </td>";
+                                        Total[cont] += abril[cont];
+                                    }
                                     cont++;
-
                                 }
                                 body += "</tr>";
                                 break;
@@ -213,8 +223,12 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + mayo[cont] + " </td>";
-                                    Total[cont] += mayo[cont];
+                                    if (mayo[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + mayo[cont] + " </td>";
+                                        Total[cont] += mayo[cont];
+                                    }
                                     cont++;
 
                                 }
@@ -224,10 +238,13 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + junio[cont] + " </td>";
-                                    Total[cont] += junio[cont];
+                                    if (junio[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + junio[cont] + " </td>";
+                                        Total[cont] += junio[cont];
+                                    }
                                     cont++;
-
                                 }
                                 body += "</tr>";
                                 break;
@@ -235,8 +252,12 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + julio[cont] + " </td>";
-                                    Total[cont] += julio[cont];
+                                    if (julio[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + julio[cont] + " </td>";
+                                        Total[cont] += julio[cont];
+                                    }
                                     cont++;
 
                                 }
@@ -246,10 +267,13 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + agosto[cont] + " </td>";
-                                    Total[cont] += agosto[cont];
+                                    if (agosto[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + agosto[cont] + " </td>";
+                                        Total[cont] += agosto[cont];
+                                    }
                                     cont++;
-
                                 }
                                 body += "</tr>";
                                 break;
@@ -257,10 +281,13 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + setiembre[cont] + " </td>";
-                                    Total[cont] += setiembre[cont];
+                                    if (setiembre[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + setiembre[cont] + " </td>";
+                                        Total[cont] += setiembre[cont];
+                                    }
                                     cont++;
-
                                 }
                                 body += "</tr>";
                                 break;
@@ -268,10 +295,13 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + octubre[cont] + " </td>";
-                                    Total[cont] += octubre[cont];
+                                    if (octubre[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + octubre[cont] + " </td>";
+                                        Total[cont] += octubre[cont];
+                                    }
                                     cont++;
-
                                 }
                                 body += "</tr>";
                                 break;
@@ -279,8 +309,12 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + noviembre[cont] + " </td>";
-                                    Total[cont] += noviembre[cont];
+                                    if (noviembre[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + noviembre[cont] + " </td>";
+                                        Total[cont] += noviembre[cont];
+                                    }
                                     cont++;
 
                                 }
@@ -290,10 +324,13 @@
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    body += "<td>" + diciembre[cont] + " </td>";
-                                    Total[cont] += diciembre[cont];
+                                    if (diciembre[cont] == null) {
+                                        body += "<td>" + 0 + " </td>";
+                                    } else {
+                                        body += "<td>" + diciembre[cont] + " </td>";
+                                        Total[cont] += diciembre[cont];
+                                    }
                                     cont++;
-
                                 }
                                 body += "</tr>";
                                 break;
@@ -314,7 +351,7 @@
                     var promedio = 0;
 
                     for (var y = anio2; y <= anio1; y++) {
-                        promedio = (Total[cont2]/12);
+                        promedio = (Total[cont2] / 12);
                         body += "<td>" + promedio + " </td>";
                         cont2++;
                     }
@@ -323,7 +360,7 @@
                     document.getElementById('Codigo').style.display = "";
                     document.getElementById('Version').style.display = "";
                     document.getElementById('FechaRegir').style.display = "";
-                    var headBody =  "<tr><th>Código:</th><th>Versión:</th><th>Rige a partir:</th><th>Fecha:</th></tr>"
+                    var headBody = "<tr><th>Código:</th><th>Versión:</th><th>Rige a partir:</th><th>Fecha:</th></tr>"
                     var head = "<tr><td>" + document.getElementById("Codigo").value + "</td><td>" + document.getElementById("Version").value + "</td><td>" + document.getElementById("FechaRegir").value +
                     "</td><td>" + f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear() + "</td></tr>";
                     $("#HistoricosBody").html(body);
@@ -334,13 +371,13 @@
 
                 }//sucess
             });
-        }
+        
     }//end function
 
 
     var Mes;
-    function retornarMES(mes){
-        switch(mes){
+    function retornarMES(mes) {
+        switch (mes) {
             case 1:
                 return "Enero";
             case 2:
@@ -419,7 +456,7 @@
 
         pdf.setFontSize(9);
         pdf.rect(500, 46, 110, 12);
-        pdf.text(510, 56,  document.getElementById('Version').value);
+        pdf.text(510, 56, document.getElementById('Version').value);
 
         pdf.setFontSize(9);
         pdf.rect(500, 58, 110, 12);
@@ -427,7 +464,7 @@
 
         pdf.setFontSize(9);
         pdf.rect(500, 70, 110, 12);
-        pdf.text(510, 80,document.getElementById('FechaRegir').value);
+        pdf.text(510, 80, document.getElementById('FechaRegir').value);
 
         pdf.setFontSize(13);
         pdf.rect(70, 30, 430, 20);
@@ -446,5 +483,3 @@
     }//pdf
 
 </script>
-
-
