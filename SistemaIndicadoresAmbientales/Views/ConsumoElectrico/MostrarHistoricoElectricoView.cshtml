@@ -22,7 +22,10 @@
             <input type="number" class="form-control" id="Anio1" name="AnioComparar" />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
-        
+        <div class="Formulario">
+            <label>Anual:</label><input type="radio" id="tipo" name="tipo" value="Anual" class='my_chkBox' checked="checked" />
+            <label>Mensual:</label><input type="radio" id="tipo" name="tipo" value="Mensual" class='my_chkBox' checked="checked" />
+        </div>
         <br />
         <br />
         <table id="Encabezado" class="table">
@@ -78,7 +81,8 @@ function cargar() {
         var combo = document.getElementById("plantas");
         var selected = combo.options[combo.selectedIndex].text
         var tipo = $('input[name="tipo"]:checked').val();
-        var datos = { "anio1": anio1, "anio2": anio2 };
+        if (tipo == "Anual") {
+            var datos = { "anio1": anio1, "anio2": anio2 };
 
             $.ajax({
                 type: 'POST',
@@ -159,8 +163,6 @@ function cargar() {
                                 break;
                         }
                     }//end for i
-                   
-
                     for (var j = 1; j <= 12; j++) {
 
                         switch (j) {
@@ -168,12 +170,9 @@ function cargar() {
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    if (enero[cont] != null) {
-                                        body += "<td>" + enero[cont] + " </td>";
-                                        Total[cont] += enero[cont];
-                                    } else {
-                                        body += "<td>" + 0 + " </td>";
-                                    }
+                                    body += "<td>" + enero[cont] + " </td>";
+                                    Total[cont] += enero[cont];
+
                                     cont++;
                                 }
 
@@ -183,12 +182,9 @@ function cargar() {
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    if (febrero[cont] == null) {
-                                        body += "<td>" + 0 + " </td>";
-                                    } else {
-                                        body += "<td>" + febrero[cont] + " </td>";
-                                        Total[cont] += febrero[cont];
-                                    }
+                                    body += "<td>" + febrero[cont] + " </td>";
+                                    Total[cont] += febrero[cont];
+
                                     cont++;
 
                                 }
@@ -198,12 +194,8 @@ function cargar() {
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    if (marzo[cont] == null) {
-                                        body += "<td>" + 0 + " </td>";
-                                    } else {
-                                        body += "<td>" + marzo[cont] + " </td>";
-                                        Total[cont] += marzo[cont];
-                                    }
+                                    body += "<td>" + marzo[cont] + " </td>";
+                                    Total[cont] += marzo[cont];
                                     cont++;
 
                                 }
@@ -213,13 +205,10 @@ function cargar() {
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    if (abril[cont] == null) {
-                                        body += "<td>" + 0 + " </td>";
-                                    } else {
-                                        body += "<td>" + abril[cont] + " </td>";
-                                        Total[cont] += abril[cont];
-                                    }
+                                    body += "<td>" + abril[cont] + " </td>";
+                                    Total[cont] += abril[cont];
                                     cont++;
+
                                 }
                                 body += "</tr>";
                                 break;
@@ -227,12 +216,8 @@ function cargar() {
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    if (mayo[cont] == null) {
-                                        body += "<td>" + 0 + " </td>";
-                                    } else {
-                                        body += "<td>" + mayo[cont] + " </td>";
-                                        Total[cont] += mayo[cont];
-                                    }
+                                    body += "<td>" + mayo[cont] + " </td>";
+                                    Total[cont] += mayo[cont];
                                     cont++;
 
                                 }
@@ -242,13 +227,10 @@ function cargar() {
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    if (junio[cont] == null) {
-                                        body += "<td>" + 0 + " </td>";
-                                    } else {
-                                        body += "<td>" + junio[cont] + " </td>";
-                                        Total[cont] += junio[cont];
-                                    }
+                                    body += "<td>" + junio[cont] + " </td>";
+                                    Total[cont] += junio[cont];
                                     cont++;
+
                                 }
                                 body += "</tr>";
                                 break;
@@ -256,12 +238,8 @@ function cargar() {
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    if (julio[cont] == null) {
-                                        body += "<td>" + 0 + " </td>";
-                                    } else {
-                                        body += "<td>" + julio[cont] + " </td>";
-                                        Total[cont] += julio[cont];
-                                    }
+                                    body += "<td>" + julio[cont] + " </td>";
+                                    Total[cont] += julio[cont];
                                     cont++;
 
                                 }
@@ -271,13 +249,10 @@ function cargar() {
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    if (agosto[cont] == null) {
-                                        body += "<td>" + 0 + " </td>";
-                                    } else {
-                                        body += "<td>" + agosto[cont] + " </td>";
-                                        Total[cont] += agosto[cont];
-                                    }
+                                    body += "<td>" + agosto[cont] + " </td>";
+                                    Total[cont] += agosto[cont];
                                     cont++;
+
                                 }
                                 body += "</tr>";
                                 break;
@@ -285,13 +260,10 @@ function cargar() {
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    if (setiembre[cont] == null) {
-                                        body += "<td>" + 0 + " </td>";
-                                    } else {
-                                        body += "<td>" + setiembre[cont] + " </td>";
-                                        Total[cont] += setiembre[cont];
-                                    }
+                                    body += "<td>" + setiembre[cont] + " </td>";
+                                    Total[cont] += setiembre[cont];
                                     cont++;
+
                                 }
                                 body += "</tr>";
                                 break;
@@ -299,13 +271,10 @@ function cargar() {
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    if (octubre[cont] == null) {
-                                        body += "<td>" + 0 + " </td>";
-                                    } else {
-                                        body += "<td>" + octubre[cont] + " </td>";
-                                        Total[cont] += octubre[cont];
-                                    }
+                                    body += "<td>" + octubre[cont] + " </td>";
+                                    Total[cont] += octubre[cont];
                                     cont++;
+
                                 }
                                 body += "</tr>";
                                 break;
@@ -313,12 +282,8 @@ function cargar() {
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    if (noviembre[cont] == null) {
-                                        body += "<td>" + 0 + " </td>";
-                                    } else {
-                                        body += "<td>" + noviembre[cont] + " </td>";
-                                        Total[cont] += noviembre[cont];
-                                    }
+                                    body += "<td>" + noviembre[cont] + " </td>";
+                                    Total[cont] += noviembre[cont];
                                     cont++;
 
                                 }
@@ -328,13 +293,10 @@ function cargar() {
                                 body += "<tr><td>" + retornarMES(j) + "</td>";
                                 var cont = 0;
                                 for (var h = anio2; h <= anio1; h++) {
-                                    if (diciembre[cont] == null) {
-                                        body += "<td>" + 0 + " </td>";
-                                    } else {
-                                        body += "<td>" + diciembre[cont] + " </td>";
-                                        Total[cont] += diciembre[cont];
-                                    }
+                                    body += "<td>" + diciembre[cont] + " </td>";
+                                    Total[cont] += diciembre[cont];
                                     cont++;
+
                                 }
                                 body += "</tr>";
                                 break;
@@ -342,6 +304,7 @@ function cargar() {
                                 break;
                         }//end switch j
                     }//end for j
+
                     body += "<tr><th>Total </th>";
                     var cont = 0;
                     for (var h = anio2; h <= anio1; h++) {
@@ -374,7 +337,7 @@ function cargar() {
 
                 }//sucess
             });
-        
+        }
     }//end function
 
 

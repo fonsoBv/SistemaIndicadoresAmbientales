@@ -41,11 +41,10 @@ namespace SistemaIndicadoresAmbientales.Models
         {
             List<Entity.HistoricoCompost> consumoshistorico = new List<Entity.HistoricoCompost>();
 
-            SqlCommand cmd = new SqlCommand("sp_ObtenerHistoricoCompostAnio", connection);
+            SqlCommand cmd = new SqlCommand("sp_ObtenerHistoricoCompostAnual", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Anio1", Anio1);
             cmd.Parameters.AddWithValue("@Anio2", Anio2);
-
 
 
 
@@ -68,39 +67,6 @@ namespace SistemaIndicadoresAmbientales.Models
             return consumoshistorico;
 
         }//end historico Agua Anual
-
-        public List<Entity.HistoricoCompost> obtenerHistoricoOrganicoAnual(int Anio1, int Anio2)
-        {
-            List<Entity.HistoricoCompost> consumoshistorico = new List<Entity.HistoricoCompost>();
-
-            SqlCommand cmd = new SqlCommand("sp_obtenerHistoricoOrganicoAnual", connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@Anio1", Anio1);
-            cmd.Parameters.AddWithValue("@Anio2", Anio2);
-
-
-
-
-            SqlDataAdapter sd = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-
-            connection.Open();
-            sd.Fill(dt);
-            connection.Close();
-
-            foreach (DataRow dr in dt.Rows)
-            {
-                consumoshistorico.Add(new Entity.HistoricoCompost
-                {
-                    Cantidad = Convert.ToDecimal(dr["Cantidad"]),
-                    Anio = Convert.ToInt32(dr["Anio"]),
-                    Mes = Convert.ToInt32(dr["Mes"]),
-                });
-            }
-            return consumoshistorico;
-
-        }//end historico Agua Anual
-
         public List<Entity.Entrada> obtenerCompostEntradas()
         {
             List<Entity.Entrada> compostEntradas = new List<Entity.Entrada>();
