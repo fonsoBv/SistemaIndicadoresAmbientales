@@ -1,53 +1,64 @@
-﻿
-
-@using (Html.BeginForm())
+﻿@if (Session["rol"] != null)
 {
-    <div id="Etiqueta">
-        <h1 class="H1-Etiqueta">Nuevo consumo de Aceite</h1>
-    </div>
+    if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación") || Session["rol"].ToString().Equals("Encargado Fondo de Trabajo"))
+    {
+        using (Html.BeginForm())
+        {
+            <div id="Etiqueta">
+                <h1 class="H1-Etiqueta">Nuevo consumo de Aceite</h1>
+            </div>
 
-    <div class="row">
-        <div class="col-md-4">
-            <h3> @Html.Label("Cambio de aceite para Equipo Menor") </h3>
+            <div class="row">
+                <div class="col-md-4">
+                    <h3> @Html.Label("Cambio de aceite para Equipo Menor") </h3>
+                    <br /> <br />
+                    <div>
+                        <h5> @Html.ActionLink("Registrar consumo con valores normales", "")</h5>
+                        <br />
+                        <h5> @Html.ActionLink("Registrar consumo de relleno o reajuste", "")</h5>
+                        <br />
+                        <h5> @Html.ActionLink("Ver Historial", "")</h5>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h3> @Html.Label("Cambio de aceite para Vehiculos") </h3>
+                    <br /> <br />
+                    <div>
+                        <h5> @Html.ActionLink("Registrar consumo con valores normales", "RegistrarConsumoVehiculo")</h5>
+                        <br />
+                        <h5> @Html.ActionLink("Registrar consumo de relleno o reajuste", "RegistrarConsumoExtraVehiculo")</h5>
+                        <br />
+                        <h5> @Html.ActionLink("Ver Historial", "ListarConsumoAceiteVehiculos")</h5>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h3> @Html.Label("Cambio de aceite para Maquinaria") </h3>
+                    <br /> <br />
+                    <div>
+                        <h5> @Html.ActionLink("Registrar consumo con valores normales", "")</h5>
+                        <br />
+                        <h5> @Html.ActionLink("Registrar consumo de relleno o reajuste", "")</h5>
+                        <br />
+                        <h5> @Html.ActionLink("Ver Historial", "")</h5>
+                    </div>
+                </div>
+            </div>
+
             <br /> <br />
             <div>
-                <h5> @Html.ActionLink("Registrar consumo con valores normales", "")</h5>
-                <br />
-                <h5> @Html.ActionLink("Registrar consumo de relleno o reajuste", "")</h5>
-                <br />
-                <h5> @Html.ActionLink("Ver Historial", "")</h5>
+                @Html.ActionLink("Ver Historico General", "Index")
             </div>
-        </div>
-        <div class="col-md-4">
-            <h3> @Html.Label("Cambio de aceite para Vehiculos") </h3>
-            <br /> <br />
-            <div>
-                <h5> @Html.ActionLink("Registrar consumo con valores normales", "RegistrarConsumoVehiculo")</h5>
-                <br />
-                <h5> @Html.ActionLink("Registrar consumo de relleno o reajuste", "RegistrarConsumoExtraVehiculo")</h5>
-                <br />
-                <h5> @Html.ActionLink("Ver Historial", "ListarConsumoAceiteVehiculos")</h5>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <h3> @Html.Label("Cambio de aceite para Maquinaria") </h3>
-            <br /> <br />
-            <div>
-                <h5> @Html.ActionLink("Registrar consumo con valores normales", "")</h5>
-                <br />
-                <h5> @Html.ActionLink("Registrar consumo de relleno o reajuste", "")</h5>
-                <br />
-                <h5> @Html.ActionLink("Ver Historial", "")</h5>
-            </div>
-        </div>
-    </div>
 
-    <br /> <br />
-    <div>
-        @Html.ActionLink("Ver Historico General", "Index")
-    </div>
-
+        }
+    }
+    else
+    {
+        Response.Redirect("~/Home/Error", false);
+    }//else
 }
-
+else
+{
+    Response.Redirect("~/Home/Error", false);
+}
 
 

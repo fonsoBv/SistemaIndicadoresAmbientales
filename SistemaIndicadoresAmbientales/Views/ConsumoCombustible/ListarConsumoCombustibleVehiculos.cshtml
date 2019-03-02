@@ -1,66 +1,81 @@
-﻿@model IEnumerable<SistemaIndicadoresAmbientales.Entity.ConsumoCombustible>
+﻿@if (Session["rol"] != null)
+{
+    if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Gestor Ambiental") || Session["rol"].ToString().Equals("Coordinador de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación"))
+    {
+        @model IEnumerable<SistemaIndicadoresAmbientales.Entity.ConsumoCombustible>
 
-<div id="Etiqueta">
-    <h1 class="H1-Etiqueta">Consumos de Combustible (Vehiculos)</h1>
-</div>
+        <div id="Etiqueta">
+            <h1 class="H1-Etiqueta">Consumos de Combustible (Vehiculos)</h1>
+        </div>
 
-<div class="col-md-5 bg-info">
-    @Html.Label("Filtrar: ", htmlAttributes: new { @class = "control-label col-md-3" })
-    <p class="col-md-3">
-        @Html.ActionLink("Equipo Menor", "ListarConsumoCombustibleEqMenor")
-    </p>
-    <p class="col-md-3">
-        @Html.ActionLink("Maquinaria", "ListarConsumoCombustibleMaquinaria")
-    </p>
-    <p class="col-md-3">
-        @Html.ActionLink("Volver", "ListarConsumoCombustible")
-    </p>
-</div>
+        <div class="col-md-5 bg-info">
+            @Html.Label("Filtrar: ", htmlAttributes: new { @class = "control-label col-md-3" })
+            <p class="col-md-3">
+                @Html.ActionLink("Equipo Menor", "ListarConsumoCombustibleEqMenor")
+            </p>
+            <p class="col-md-3">
+                @Html.ActionLink("Maquinaria", "ListarConsumoCombustibleMaquinaria")
+            </p>
+            <p class="col-md-3">
+                @Html.ActionLink("Volver", "ListarConsumoCombustible")
+            </p>
+        </div>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.id_activo_placa)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.cant_combustible)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.factura)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.fecha_factura)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.fecha_registro)
-        </th>
-        <th></th>
-    </tr>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.id_activo_placa)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.cant_combustible)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.factura)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.fecha_factura)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.fecha_registro)
+                </th>
+                <th></th>
+            </tr>
 
-@foreach (var item in Model) {
-    <tr>
+            @foreach (var item in Model)
+            {
+                <tr>
 
-        <td>
-            @Html.DisplayFor(modelItem => item.id_activo_placa)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.cant_combustible)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.factura)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.fecha_factura)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.fecha_registro)
-        </td>
-        <td>
-            @*@Html.ActionLink("Editar", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-            @*@Html.ActionLink("Detalles", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Eliminar", "Delete", new { /* id=item.PrimaryKey */ })*@
-        </td>
-    </tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.id_activo_placa)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cant_combustible)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.factura)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fecha_factura)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fecha_registro)
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Editar", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                        @*@Html.ActionLink("Detalles", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Eliminar", "Delete", new { /* id=item.PrimaryKey */ })*@
+                    </td>
+                </tr>
+            }
+
+        </table>
+    }
+    else
+    {
+        Response.Redirect("~/Home/Error", false);
+    }//else
 }
-
-</table>
+else
+{
+    Response.Redirect("~/Home/Error", false);
+}

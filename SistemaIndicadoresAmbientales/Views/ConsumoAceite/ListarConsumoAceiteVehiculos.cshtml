@@ -1,92 +1,107 @@
-﻿@model IEnumerable<SistemaIndicadoresAmbientales.Entity.ConsumoAceite>
-<br />
-<p>
-    @Html.ActionLink("Volver", "Index")
-</p>
-<br />
-<table class="table">
-    <tr>
-        @*<th>
-            @Html.DisplayNameFor(model => model.id_consumo)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.factura)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.id_activo_placa)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.cant_motor)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.cant_caja)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.cant_delantera)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.cant_trasera)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.cant_hidraulico)
-        </th>
-        
-        <th>
-            @Html.DisplayNameFor(model => model.fecha_factura)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.fecha_registro)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.tipo)
-        </th>*@
-        
-        <th></th>
-    </tr>
+﻿@if (Session["rol"] != null)
+{
+    if (Session["rol"].ToString().Equals("Administrador") || Session["rol"].ToString().Equals("Encargado de Planta") || Session["rol"].ToString().Equals("Gestor Ambiental") || Session["rol"].ToString().Equals("Coordinador de Planta") || Session["rol"].ToString().Equals("Asistente SIG - Operación"))
+    {
+        @model IEnumerable<SistemaIndicadoresAmbientales.Entity.ConsumoAceite>
+        <br />
+        <p>
+            @Html.ActionLink("Volver", "Index")
+        </p>
+        <br />
+        <table class="table">
+            <tr>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.id_consumo)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.factura)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.id_activo_placa)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.cant_motor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.cant_caja)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.cant_delantera)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.cant_trasera)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.cant_hidraulico)
+                </th>
 
-@foreach (var item in Model) {
-    <tr>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.id_consumo)
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.factura)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.id_activo_placa)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.cant_motor)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.cant_caja)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.cant_delantera)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.cant_trasera)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.cant_hidraulico)
-        </td>
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.fecha_factura)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.fecha_registro)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.tipo)
-        </td>*@
-       
-        <td>
-            @Html.ActionLink("Edit", "ListarConsumoAceiteVehiculos", new { /* id=item.PrimaryKey */ }) |
-            @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
-        </td>
-    </tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.fecha_factura)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.fecha_registro)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.tipo)
+                    </th>*@
+
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.id_consumo)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.factura)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.id_activo_placa)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cant_motor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cant_caja)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cant_delantera)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cant_trasera)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cant_hidraulico)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fecha_factura)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fecha_registro)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.tipo)
+                        </td>*@
+
+                    <td>
+                        @Html.ActionLink("Edit", "ListarConsumoAceiteVehiculos", new { /* id=item.PrimaryKey */ }) |
+                        @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                    </td>
+                </tr>
+            }
+
+        </table>
+    }
+    else
+    {
+        Response.Redirect("~/Home/Error", false);
+    }//else
 }
-
-</table>
+else
+{
+    Response.Redirect("~/Home/Error", false);
+}
