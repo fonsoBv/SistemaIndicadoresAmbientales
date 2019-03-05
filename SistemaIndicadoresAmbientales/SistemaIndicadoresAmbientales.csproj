@@ -25,6 +25,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -365,6 +366,7 @@
     <Compile Include="Entity\Hallazgo.cs" />
     <Compile Include="Entity\Hidrometro.cs" />
     <Compile Include="Entity\HistoricoAgua.cs" />
+    <Compile Include="Entity\HistoricoCompost.cs" />
     <Compile Include="Entity\HistoricoElectrico.cs" />
     <Compile Include="Entity\Inspeccion.cs" />
     <Compile Include="Entity\Planta.cs" />
