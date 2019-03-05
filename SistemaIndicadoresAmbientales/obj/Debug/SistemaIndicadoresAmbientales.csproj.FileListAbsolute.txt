@@ -529,3 +529,4 @@ C:\Users\bryan\Desktop\ICE\SistemaIndicadoresAmbientales\bin\System.Web.Mvc.xml
 C:\Users\bryan\Desktop\ICE\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.dll
 C:\Users\bryan\Desktop\ICE\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.pdb
 C:\Users\ajoha\Documents\GitHub\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.csproj.CoreCompileInputs.cache
+C:\Users\ajoha\Documents\GitHub\SistemaIndicadoresAmbientales\SistemaIndicadoresAmbientales\obj\Debug\SistemaIndicadoresAmbientales.csprojAssemblyReference.cache
